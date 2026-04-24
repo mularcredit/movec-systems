@@ -1,0 +1,62 @@
+# fly.toml app configuration file generated for movec-connect
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'movec-connect'
+primary_region = 'ams'
+
+[build]
+  # Pass staged Fly secrets as Docker build-time ARGs so Vite can embed them.
+  # Set with: flyctl secrets set VITE_SUPABASE_URL=... VITE_SUPABASE_ANON_KEY=... --stage
+  [build.args]
+    VITE_SUPABASE_URL = "https://dfqzjkkorbebqzimusey.supabase.co"
+    VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmcXpqa2tvcmJlYnF6aW11c2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNjQwMjgsImV4cCI6MjA5MTk0MDAyOH0.ZQxxEgXSljETemN0qkqj1VlqH7wrDsgsT_imvaBdnl0"
+
+
+# ─── HTTPS / Web API ─────────────────────────────────────────────────────────
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+# ─── Health Check ─────────────────────────────────────────────────────────────
+[checks]
+  [checks.status]
+    port = 3000
+    type = 'http'
+    interval = '15s'
+    timeout = '2s'
+    method = 'GET'
+    path = '/health'
+
+# ─── RADIUS (UDP) ─────────────────────────────────────────────────────────────
+[[services]]
+  internal_port = 1812
+  protocol = "udp"
+  processes = ["app"]
+  [[services.ports]]
+    port = 1812
+    handlers = []
+
+[[services]]
+  internal_port = 1813
+  protocol = "udp"
+  processes = ["app"]
+  [[services.ports]]
+    port = 1813
+    handlers = []
+[[services]]
+  internal_port = 11812
+  protocol = "udp"
+  processes = ["app"]
+  [[services.ports]]
+    port = 11812
+    handlers = []
+# ─── VM ───────────────────────────────────────────────────────────────────────
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'

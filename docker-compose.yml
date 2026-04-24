@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+    ports:
+      # HTTP API & Frontend
+      - "3000:3000"
+      # RADIUS Auth
+      - "1812:1812/udp"
+      # RADIUS Acct
+      - "1813:1813/udp"
+      # RADIUS Diag
+      - "11812:11812/udp"
+    env_file:
+      - .env
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,242 @@
+import React, { useState, useEffect } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { 
+  LayoutDashboard, Users, UserCheck, Box, MessageSquare, 
+  CreditCard, BarChart2, Server, Settings, HelpCircle,
+  Wifi, Shield, Activity, Share2, Radio, Terminal, Cpu, Clock, ChevronDown, ChevronRight, Bookmark,
+  LogOut, User, Bell, Menu, X
+} from 'lucide-react';
+import { supabase } from '../../lib/supabase';
+import clsx from 'clsx';
+
+export default function DashboardLayout() {
+  const [networkOpen, setNetworkOpen]   = useState(true);
+  const [profileOpen, setProfileOpen]   = useState(false);
+  const [sidebarOpen, setSidebarOpen]   = useState(false);
+  const [userData, setUserData]         = useState<{ name: string; email: string } | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserData({
+          name: user.user_metadata?.full_name || 'System User',
+          email: user.email || ''
+        });
+      }
+    };
+    getUser();
+
+    // Close dropdown on click outside
+    const close = () => {
+      setProfileOpen(false);
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, []);
+
+  // Close sidebar on route change (for mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  const navGroups = [
+    { label: 'Dashboard',        path: '/',                icon: LayoutDashboard },
+    { label: 'Active Users',     path: '/customers/active', icon: UserCheck },
+    { label: 'All Users',        path: '/customers/all',   icon: Users },
+    { label: 'Packages',         path: '/packages',        icon: Box },
+    { label: 'Communication',    path: '/communication',   icon: MessageSquare },
+    { label: 'Payments',         path: '/payments',        icon: CreditCard },
+    { label: 'Payment Monitor',  path: '/payment-monitor', icon: Activity },
+    { label: 'Statistics',       path: '/statistics',      icon: BarChart2 },
+  ];
+
+  const networkSubmenu = [
+    { label: 'Routers', path: '/network/routers', icon: Server },
+    { label: 'Hotspot Server', path: '/network/hotspot', icon: Wifi },
+    { label: 'PPPoE Server', path: '/network/pppoe', icon: Share2 },
+    { label: 'Scripts & Schedulers', path: '/network/scripts', icon: Terminal },
+    { label: 'Firewall', path: '/network/firewall', icon: Shield },
+    { label: 'DHCP', path: '/network/dhcp', icon: Cpu },
+    { label: 'Interfaces', path: '/network/interfaces', icon: Activity },
+    { label: 'Wireless', path: '/network/wireless', icon: Radio },
+    { label: 'Router Stats', path: '/network/stats', icon: BarChart2 },
+    { label: 'Live Monitor', path: '/network/monitor', icon: Clock },
+  ];
+
+  const bottomGroup = [
+    { label: 'Settings', path: '/settings', icon: Settings },
+    { label: 'Subscription', path: '/subscriptions', icon: Bookmark },
+    { label: 'Help', path: '/help', icon: HelpCircle },
+  ];
+
+  const Item = ({ item, isSub = false }: any) => {
+    const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+    
+    return (
+      <NavLink
+        to={item.path}
+        className={clsx(
+          "flex items-center px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 group mb-0.5 relative",
+          isSub ? "ml-6" : "",
+          isActive 
+            ? "bg-white/10 text-white shadow-sm" 
+            : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+        )}
+      >
+        {isActive && !isSub && <div className="absolute left-[-16px] w-1 h-5 bg-emerald-500 rounded-full" />}
+        <item.icon className={clsx("shrink-0", isSub ? "w-4 h-4 mr-3" : "w-4 h-4 mr-3", isActive && "text-emerald-400")} />
+        {item.label}
+      </NavLink>
+    );
+  };
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-[#fbfbfd] font-sans">
+      {/* MOBILE BACKDROP */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside className={clsx(
+        "fixed inset-y-0 left-0 w-64 bg-[#0a0f1d] flex flex-col z-50 lg:static lg:translate-x-0 transition-transform duration-300 border-r border-[#1f2937]/50",
+        sidebarOpen ? "translate-x-0 shadow-2xl shadow-slate-900" : "-translate-x-full"
+      )}>
+        <div className="h-14 lg:h-20 flex items-center px-4 border-b border-white/5 shrink-0 justify-between lg:justify-start">
+          <div className="px-3">
+            <img src="/logo.png" alt="Logo" className="h-8 lg:h-10 w-auto" />
+          </div>
+          <button 
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden p-2 text-slate-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col hide-scrollbar space-y-6">
+          <div>
+            <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest px-2 mb-3">Core Operation</div>
+            {navGroups.map((item) => <Item key={item.path} item={item} />)}
+          </div>
+
+          <div>
+            <button 
+              onClick={() => setNetworkOpen(!networkOpen)}
+              className="w-full flex items-center justify-between px-2 py-1.5 text-slate-400 hover:text-slate-200 transition group mb-2"
+            >
+              <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest">Network Edge</div>
+              {networkOpen ? <ChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100" /> : <ChevronRight className="w-3 h-3 opacity-50 group-hover:opacity-100" />}
+            </button>
+            
+            {networkOpen && (
+              <div className="relative before:absolute before:left-4 before:top-1 before:bottom-1 before:w-[1px] before:bg-white/5">
+                {networkSubmenu.map((item) => <Item key={item.path} item={item} isSub />)}
+              </div>
+            )}
+          </div>
+          
+          <div className="mt-auto">
+            <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest px-2 mb-3">Platform System</div>
+            {bottomGroup.map((item) => <Item key={item.path} item={item} />)}
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-1 overflow-y-auto flex flex-col relative bg-[#fbfbfd]">
+        {/* Top Header */}
+        <header className="h-14 bg-white/80 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between px-4 lg:px-8 shadow-[0_1px_2px_rgba(0,0,0,0.02)] z-30 shrink-0 sticky top-0">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 transition"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <h2 className="text-[13px] lg:text-[14px] font-medium text-slate-700">Platform Command</h2>
+          </div>
+          
+          <div className="flex items-center gap-3 lg:gap-5">
+            {/* Global Status */}
+            <div className="hidden sm:flex px-2.5 py-1 bg-[#fbfbfd] text-slate-600 border border-slate-200 text-[11px] font-medium rounded-md items-center shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 shadow-[0_0_6px_rgba(16,185,129,0.5)]"></span>
+              API Connected
+            </div>
+
+            <button className="text-slate-400 hover:text-slate-600 transition relative p-1">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 border-2 border-white rounded-full"></span>
+            </button>
+
+            {/* Profile Dropdown */}
+            <div className="relative" onClick={(e) => e.stopPropagation()}>
+              <button 
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-2 lg:gap-3 hover:bg-slate-50 p-1 lg:p-1.5 lg:pr-2 rounded-full transition-all group"
+              >
+                <div className="w-7 h-7 lg:w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-[11px] lg:text-[12px] font-medium shadow-sm transition-transform group-hover:scale-105">
+                  {userData?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                </div>
+                <div className="hidden lg:block text-left">
+                  <p className="text-[13px] font-medium text-slate-800 leading-none mb-0.5">{userData?.name}</p>
+                  <p className="text-[11px] text-slate-400 leading-none truncate w-32">Movec Administrator</p>
+                </div>
+                <ChevronDown className={clsx("w-3.5 h-3.5 text-slate-400 transition-transform", profileOpen && "rotate-180")} />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl shadow-slate-200/50 py-1.5 animate-in fade-in zoom-in-95 duration-100 z-40">
+                  <div className="px-4 py-3 border-b border-slate-100 mb-1">
+                    <p className="text-[13px] font-medium text-slate-800 truncate">{userData?.name}</p>
+                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{userData?.email}</p>
+                  </div>
+                  
+                  <button 
+                    onClick={() => { setProfileOpen(false); navigate('/settings'); }}
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-slate-600 hover:bg-slate-50 transition"
+                  >
+                    <User className="w-4 h-4 mr-3 text-slate-400" />
+                    My Profile
+                  </button>
+                  <button 
+                    onClick={() => { setProfileOpen(false); navigate('/settings'); }}
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-slate-600 hover:bg-slate-50 transition"
+                  >
+                    <Settings className="w-4 h-4 mr-3 text-slate-400" />
+                    Account Settings
+                  </button>
+                  
+                  <div className="h-px bg-slate-100 my-1"></div>
+                  
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-rose-600 hover:bg-rose-50 transition"
+                  >
+                    <LogOut className="w-4 h-4 mr-3" />
+                    Logout Session
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Page Payload */}
+        <div className="p-4 lg:p-8 pb-12 flex-1 max-w-[1400px] w-full mx-auto animate-in fade-in duration-500">
+           <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+}

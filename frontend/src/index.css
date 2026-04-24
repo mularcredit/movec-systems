@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#fbfbfd] text-[#1a1f36] antialiased font-sans selection:bg-emerald-500/20 selection:text-emerald-900;
+  }
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
+
+@layer components {
+  /* Ultra-Refined Card Style */
+  .card {
+    @apply bg-white rounded-xl border border-slate-200/60 shadow-[0_2px_8px_rgb(0,0,0,0.04)] p-6 transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-[0_8px_24px_rgb(0,0,0,0.06)] hover:border-slate-200;
+  }
+  
+  /* Primary Button: Subtle, sophisticated depth */
+  .btn-primary {
+    @apply relative bg-[#10b981] hover:bg-[#059669] text-white font-medium px-4 py-2 rounded-lg transition-all shadow-[0_1px_2px_rgba(0,0,0,0.05),0_1px_4px_rgba(16,185,129,0.2)] hover:shadow-[0_4px_12px_rgba(16,185,129,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center;
+  }
+
+  /* Secondary Button: Sharp border, clean focus */
+  .btn-secondary {
+    @apply relative bg-white tracking-wide text-slate-700 text-sm font-medium border border-[#e2e8f0] px-4 py-2 rounded-lg transition-all shadow-sm hover:shadow-md hover:border-slate-300 flex items-center justify-center;
+  }
+  
+  /* Input Fields: Focus rings, subtle bg, high padding */
+  .input-field {
+    @apply block w-full rounded-lg border border-slate-200 shadow-sm focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 text-[14px] px-3.5 py-2.5 bg-white text-slate-800 transition-all placeholder:text-slate-400;
+  }
+  
+  /* Status Badges */
+  .badge-success {
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100;
+  }
+  .badge-error {
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100;
+  }
+  .badge-warning {
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-100;
+  }
+
+  /* Auth page — high visibility labels, subtle placeholders */
+  .auth-input {
+    @apply block w-full rounded-full border border-slate-200 bg-white px-6 py-4 text-[13px] font-normal text-slate-800 placeholder:text-slate-300 focus:border-black focus:ring-4 focus:ring-black/5 transition-all outline-none shadow-sm;
+  }
+
+  /* Auth submit button */
+  .auth-btn {
+    @apply w-full rounded-full bg-black hover:bg-slate-800 active:bg-slate-900 text-white text-[13px] font-medium py-4 px-6 transition-all shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+}
