@@ -21,30 +21,17 @@ exports.getLiveSessions = async (req, res) => {
         // 2. Fetch RADIUS sessions (In-memory)
         const radiusSessions = radiusServer.getActiveSessions();
         const tenantRadiusSessions = radiusSessions.filter(s => s.routerId !== 'unknown'); 
-        // Note: In a multi-tenant setup, we should ensure radiusServer tracks tenant_id
         
-        tenantRadiusSessions.forEach(s => {
-            liveData.push({
-                source: 'radius',
-                username: s.username,
-                ip: s.ip,
-                mac: s.mac,
-                uptime: s.uptime,
-                download: (s.tx / (1024 * 1024)).toFixed(2) + ' MB',
-                upload: (s.rx / (1024 * 1024)).toFixed(2) + ' MB',
-                router_name: 'RADIUS Node',
-                status: 'active'
-            });
-        });
+        const radiusSessionMap = new Map();
+        tenantRadiusSessions.forEach(s => radiusSessionMap.set(s.username, s));
 
-        // 3. Fetch MikroTik sessions (Live API)
+        // 3. Fetch MikroTik sessions (Live API) for ALL routers with credentials
         const tikPromises = routers
-            .filter(r => r.vendor === 'mikrotik')
+            .filter(r => r.username_encrypted && r.password_encrypted)
             .map(async (r) => {
                 try {
                     const sessions = await mikrotikService.getDetailedActiveSessions(req.tenant_id, r.id);
                     return sessions.map(s => ({
-                        source: 'mikrotik',
                         username: s.username,
                         ip: s.address,
                         mac: s.caller_id || s.mac || 'N/A',
@@ -54,17 +41,55 @@ exports.getLiveSessions = async (req, res) => {
                         router_name: r.name,
                         router_id: r.id,
                         session_id: s.id,
-                        service: s.service,
-                        status: 'active'
+                        service: s.service
                     }));
                 } catch (e) {
-                    console.error(`[Session Controller] Failed to fetch from ${r.name}:`, e.message);
+                    console.error(`[Session Controller] Failed to fetch API sessions from ${r.name}:`, e.message);
                     return [];
                 }
             });
 
         const tikResults = await Promise.all(tikPromises);
-        tikResults.forEach(batch => liveData.push(...batch));
+        const seenUsernames = new Set();
+
+        tikResults.forEach(batch => {
+            batch.forEach(apiSession => {
+                seenUsernames.add(apiSession.username);
+                const rSession = radiusSessionMap.get(apiSession.username);
+                
+                liveData.push({
+                    source: rSession ? 'hybrid' : 'mikrotik',
+                    username: apiSession.username,
+                    ip: apiSession.ip,
+                    mac: apiSession.mac,
+                    uptime: apiSession.uptime,
+                    download: rSession ? (rSession.tx / (1024 * 1024)).toFixed(2) + ' MB' : apiSession.download,
+                    upload: rSession ? (rSession.rx / (1024 * 1024)).toFixed(2) + ' MB' : apiSession.upload,
+                    router_name: apiSession.router_name,
+                    router_id: apiSession.router_id,
+                    session_id: apiSession.session_id,
+                    service: apiSession.service,
+                    status: 'active'
+                });
+            });
+        });
+
+        // 4. Add any RADIUS sessions not caught by the API (e.g. non-MikroTik NAS or API down)
+        tenantRadiusSessions.forEach(s => {
+            if (!seenUsernames.has(s.username)) {
+                liveData.push({
+                    source: 'radius',
+                    username: s.username,
+                    ip: s.ip,
+                    mac: s.mac,
+                    uptime: s.uptime,
+                    download: (s.tx / (1024 * 1024)).toFixed(2) + ' MB',
+                    upload: (s.rx / (1024 * 1024)).toFixed(2) + ' MB',
+                    router_name: 'RADIUS Node',
+                    status: 'active'
+                });
+            }
+        });
 
         return res.json({
             success: true,
