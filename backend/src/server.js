@@ -40,6 +40,7 @@ const customerRoutes      = require('./routes/customers');
 const servicesRoutes      = require('./routes/services');
 const settingsRoutes      = require('./routes/settings');
 const paymentMonitorRoutes = require('./routes/paymentMonitor');
+const sessionsRoutes       = require('./routes/sessions');
 const billingWorker       = require('./workers/billingWorker');
 const radiusServer        = require('./services/radiusServer');
 
@@ -62,6 +63,7 @@ app.use('/api/customers',       requireAuth, customerRoutes);
 app.use('/api/services',        requireAuth, servicesRoutes);
 app.use('/api/settings',        requireAuth, settingsRoutes);
 app.use('/api/payment-monitor', requireAuth, paymentMonitorRoutes);
+app.use('/api/sessions',        requireAuth, sessionsRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', version: '1.0.2' });

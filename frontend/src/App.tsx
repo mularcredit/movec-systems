@@ -28,6 +28,7 @@ import RouterWizard from './pages/Network/Routers/OnboardingWizard';
 import RouterDetail from './pages/Network/Routers/RouterDetail';
 import EditRouter from './pages/Network/Routers/EditRouter';
 import NetworkModuleRedirect from './pages/Network/NetworkModuleRedirect';
+import LiveSessions from './pages/Network/LiveSessions';
 
 import { apiFetch } from './lib/apiClient';
 
@@ -157,7 +158,7 @@ function App() {
           <Route path="/network/stats"      element={<NetworkModuleRedirect tab="stats" label="Router Telemetry" />} />
           
           <Route path="/network/scripts"    element={<NetworkModuleRedirect tab="scripts" label="Routing Scripts & Schedulers" />} />
-          <Route path="/network/monitor"    element={<NetworkModuleRedirect tab="monitor" label="Live Bandwidth Monitor" />} />
+          <Route path="/network/monitor"    element={<LiveSessions />} />
 
           <Route path="/settings" element={<Settings />} />
           <Route path="/help"     element={<Placeholder title="Ticketing & Helpdesk" />} />

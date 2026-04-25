@@ -67,7 +67,7 @@ export default function DashboardLayout() {
     { label: 'Interfaces', path: '/network/interfaces', icon: Activity },
     { label: 'Wireless', path: '/network/wireless', icon: Radio },
     { label: 'Router Stats', path: '/network/stats', icon: BarChart2 },
-    { label: 'Live Monitor', path: '/network/monitor', icon: Clock },
+    { label: 'Live Subscriber Hub', path: '/network/monitor', icon: Activity },
   ];
 
   const bottomGroup = [
