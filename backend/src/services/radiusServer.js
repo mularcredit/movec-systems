@@ -9,6 +9,47 @@ const supabase = require('../utils/supabase');
 const { decrypt } = require('../utils/crypto');
 
 // =============================================================================
+// IN-MEMORY SESSION TRACKER (Live Telemetry)
+// =============================================================================
+const activeSessions = new Map();
+
+function trackSession(packet, rinfo, router) {
+    const username = packet.attributes['User-Name'];
+    const status = packet.attributes['Acct-Status-Type'];
+    const sessionId = packet.attributes['Acct-Session-Id'];
+
+    if (!username || !sessionId) return;
+
+    if (status === 'Start' || status === 'Interim-Update') {
+        activeSessions.set(sessionId, {
+            username,
+            sessionId,
+            nasIp: rinfo.address,
+            ip: packet.attributes['Framed-IP-Address'] || 'N/A',
+            mac: packet.attributes['Calling-Station-Id'] || 'N/A',
+            uptime: packet.attributes['Acct-Session-Time'] || 0,
+            tx: packet.attributes['Acct-Output-Octets'] || 0,
+            rx: packet.attributes['Acct-Input-Octets'] || 0,
+            lastUpdate: Date.now(),
+            routerId: router?.id || 'unknown',
+            service: packet.attributes['Service-Type'] || 'PPPoE'
+        });
+    } else if (status === 'Stop') {
+        activeSessions.delete(sessionId);
+    }
+}
+
+// Clean up stale sessions (older than 10 mins without update)
+setInterval(() => {
+    const now = Date.now();
+    for (const [id, session] of activeSessions.entries()) {
+        if (now - session.lastUpdate > 10 * 60 * 1000) {
+            activeSessions.delete(id);
+        }
+    }
+}, 60000);
+
+// =============================================================================
 // SHARED SECRET RESOLVER
 // =============================================================================
 async function resolveSecret(nasIp) {
@@ -224,6 +265,7 @@ function createListener(port, typeLabel) {
             if (packet.code === 'Access-Request') {
                 await handleAccessRequest(packet, rinfo, socket, secret, router);
             } else if (packet.code === 'Accounting-Request') {
+                trackSession(packet, rinfo, router);
                 const response = radius.encode_response({
                     packet,
                     code: 'Accounting-Response',
@@ -265,4 +307,7 @@ function start() {
     }
 }
 
-module.exports = { start };
+module.exports = { 
+    start,
+    getActiveSessions: () => Array.from(activeSessions.values())
+};

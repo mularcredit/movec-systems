@@ -180,7 +180,7 @@ async function connectToRouter(tenant_id, router_id) {
         );
     }
 
-    const port   = Number(router.api_port) || 8729;
+    const port   = resolveEffectiveApiPort(router);
     const useTls = port === 8729;
 
     // Enforce API-SSL policy — throws in prod without override
@@ -195,7 +195,15 @@ async function connectToRouter(tenant_id, router_id) {
         timeout:  10000
     });
 
-    const session = await api.connect();
+    // Enforce a hard timeout on the connection attempt
+    const session = await Promise.race([
+        api.connect(),
+        new Promise((_, reject) => setTimeout(() => {
+            api.close().catch(() => {});
+            reject(new Error('Router Connection Timeout: The device did not respond within 10 seconds.'));
+        }, 10000))
+    ]);
+
     // Attach close method so callers can safely use client.menu() and client.close()
     session.close = () => api.close();
 
@@ -435,6 +443,122 @@ async function getUserLogs(tenant_id, router_id, username) {
 }
 
 // =============================================================================
+// DASHBOARD & MONITORING
+// =============================================================================
+
+/**
+ * Fetches comprehensive router status for the dashboard.
+ * Includes: identity, resources, health, and active session counts.
+ */
+async function getRouterDashboardData(tenant_id, router_id) {
+    const { client } = await withRetry(() => connectToRouter(tenant_id, router_id));
+    try {
+        const [identity, resources, health, pppActive, hotspotActive] = await Promise.all([
+            client.menu('/system/identity').get().catch(() => ([{ name: 'Unknown' }])),
+            client.menu('/system/resource').get().catch(() => ([{}])),
+            client.menu('/system/health').get().catch(() => ([])), // Some routers don't have health data
+            client.menu('/ppp/active').get().catch(() => ([])),
+            client.menu('/ip/hotspot/active').get().catch(() => ([]))
+        ]);
+
+        return {
+            identity: identity[0] || {},
+            resources: resources[0] || {},
+            health: health || [],
+            pppActiveCount: pppActive.length,
+            hotspotActiveCount: hotspotActive.length,
+            totalActive: pppActive.length + hotspotActive.length
+        };
+    } finally {
+        await client.close().catch(() => {});
+    }
+}
+
+/**
+ * Fetches all active sessions (PPPoE & Hotspot) with details.
+ */
+async function getDetailedActiveSessions(tenant_id, router_id) {
+    const { client } = await withRetry(() => connectToRouter(tenant_id, router_id));
+    try {
+        const [pppActive, hotspotActive] = await Promise.all([
+            client.menu('/ppp/active').get().catch(() => ([])),
+            client.menu('/ip/hotspot/active').get().catch(() => ([]))
+        ]);
+
+        const ppp = pppActive.map(s => ({
+            id: s['.id'],
+            username: s.name,
+            service: 'pppoe',
+            address: s.address,
+            uptime: s.uptime,
+            caller_id: s['caller-id'] || 'N/A',
+            limit_bytes_in: s['limit-bytes-in'],
+            limit_bytes_out: s['limit-bytes-out']
+        }));
+
+        const hotspot = hotspotActive.map(s => ({
+            id: s['.id'],
+            username: s.user,
+            service: 'hotspot',
+            address: s.address,
+            uptime: s.uptime,
+            mac: s['mac-address'],
+            bytes_in: s['bytes-in'],
+            bytes_out: s['bytes-out']
+        }));
+
+        return [...ppp, ...hotspot];
+    } finally {
+        await client.close().catch(() => {});
+    }
+}
+
+/**
+ * Fetches interface traffic stats.
+ */
+async function getInterfaceTraffic(tenant_id, router_id) {
+    const { client } = await withRetry(() => connectToRouter(tenant_id, router_id));
+    try {
+        // We use monitor-traffic with once=true for real-time rates
+        // Fallback to /interface print if monitor-traffic fails
+        let traffic = [];
+        try {
+            traffic = await client.menu('/interface/monitor-traffic').get({ interface: 'all', once: true });
+        } catch (e) {
+            console.warn('[MikroTik Service] monitor-traffic failed, falling back to interface print');
+            traffic = await client.menu('/interface').get();
+        }
+        
+        return traffic.map(i => ({
+            name: i.name,
+            rx_bits_per_second: i['rx-bits-per-second'] || 0,
+            tx_bits_per_second: i['tx-bits-per-second'] || 0,
+            rx_byte: i['rx-byte'] || 0,
+            tx_byte: i['tx-byte'] || 0,
+            running: i.running === 'true'
+        }));
+    } finally {
+        await client.close().catch(() => {});
+    }
+}
+
+// =============================================================================
+// HELPER: SMART PORT RESOLVER
+// =============================================================================
+/**
+ * Resolves the port to use for MikroTik API calls.
+ * If the router's api_port is set to 1812 (RADIUS), it automatically falls back
+ * to 8729 (API-SSL) for health checks and polling.
+ */
+function resolveEffectiveApiPort(router) {
+    const dbPort = Number(router.api_port);
+    if (dbPort === 1812 || dbPort === 1813) {
+        return 8729; // Fallback to secure API for health checks on RADIUS nodes
+    }
+    return dbPort || 8729;
+}
+
+// =============================================================================
 // EXPORTS
 // =============================================================================
 
@@ -446,5 +570,8 @@ module.exports = {
     logProvisioning,
     enforceApiSslPolicy,
     updateUserPassword,
-    getUserLogs
+    getUserLogs,
+    getRouterDashboardData,
+    getDetailedActiveSessions,
+    getInterfaceTraffic
 };

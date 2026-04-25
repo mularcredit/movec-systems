@@ -1,128 +1,321 @@
-import React, { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Calendar, TrendingUp, BarChart3 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import React, { useState, useEffect, useCallback } from 'react';
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts';
+import { 
+  Activity, Server, Users, Signal, 
+  Clock, Globe, AlertCircle,
+  ArrowUp, ArrowDown, RefreshCw
+} from 'lucide-react';
+import { apiFetch } from '../../lib/apiClient';
+
+const MetricCard = ({ title, value, unit, icon: Icon, colorClass, trend }: any) => (
+  <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.01)] hover:shadow-lg transition-all duration-500 group">
+    <div className="flex items-center justify-between mb-4">
+      <div className={`p-2 rounded-xl bg-slate-50/50`}>
+        <Icon className={`w-4 h-4 ${colorClass}`} strokeWidth={1.5} />
+      </div>
+      {trend && (
+        <span className={`text-[11px] font-normal px-2 py-0.5 rounded-full ${trend > 0 ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'}`}>
+          {trend > 0 ? '+' : ''}{trend}%
+        </span>
+      )}
+    </div>
+    <div>
+      <p className="text-[13px] text-slate-400 mb-1">{title}</p>
+      <div className="flex items-baseline gap-1">
+        <p className="text-2xl font-light text-slate-800 tracking-tight">{value}</p>
+        <p className="text-[13px] text-slate-300">{unit}</p>
+      </div>
+    </div>
+  </div>
+);
 
 export default function Statistics() {
-  const [collData, setCollData] = useState<any[]>([]);
-  const [kpis, setKpis] = useState({ arpu: 0, churn: 0, totalRevenue: 0, activeCount: 0, totalCarryForward: 0 });
+  document.title = 'Network Dashboard | Movec Connect';
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [overview, setOverview] = useState<any>(null);
+  const [activeSessions, setActiveSessions] = useState<any[]>([]);
+  const [trafficHistory, setTrafficHistory] = useState<any[]>([]);
+  const [refreshInterval, setRefreshInterval] = useState(5000);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      // Get the current user's profile to retrieve their tenant_id
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('tenant_id')
-        .eq('id', user.id)
-        .single();
-
-      if (!profile?.tenant_id) {
-        console.error("Tenant configuration missing.");
-        return;
+  const fetchNetworkData = useCallback(async () => {
+    try {
+      setError(null);
+      const [overviewRes, sessionsRes] = await Promise.all([
+        apiFetch('/api/router/overview'),
+        apiFetch('/api/router/sessions/all')
+      ]);
+      
+      if (!overviewRes.ok || !sessionsRes.ok) {
+        throw new Error('Synchronization failure');
       }
 
-      const tenantId = profile.tenant_id;
-      const today = new Date();
-      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1).toISOString();
+      const overviewData = await overviewRes.json();
+      const sessionsData = await sessionsRes.json();
 
-      const { data: payments } = await supabase
-        .from('payments')
-        .select('amount, paid_at')
-        .eq('tenant_id', tenantId) // STRICT ISOLATION
-        .gte('paid_at', monthStart);
-
-      if (payments) {
-        const dayMap: Record<string, number> = {};
-        payments.forEach(p => {
-          const day = new Date(p.paid_at).toLocaleDateString('en-KE', { day: '2-digit', month: 'short' });
-          dayMap[day] = (dayMap[day] || 0) + parseFloat(p.amount);
-        });
-        setCollData(Object.entries(dayMap).map(([name, amount]) => ({ name, amount })));
-
-        const totalRev = payments.reduce((s, p) => s + parseFloat(p.amount), 0);
-        const { data: active }    = await supabase.from('customers').select('id').eq('tenant_id', tenantId).eq('status', 'active');
-        const { data: suspended } = await supabase.from('customers').select('id').eq('tenant_id', tenantId).eq('status', 'suspended');
-        const activeCount = active?.length || 0;
-        const suspCount   = suspended?.length || 0;
-        const totalCust   = activeCount + suspCount || 1;
-
-        const { data: legacyCredit } = await supabase.from('customers').select('carry_forward').eq('tenant_id', tenantId);
-        const { data: modernCredit } = await supabase.from('services').select('carry_forward').eq('tenant_id', tenantId);
-        const totalCredit = [...(legacyCredit || []), ...(modernCredit || [])].reduce((s, c) => s + parseFloat(c.carry_forward || 0), 0);
-
-        setKpis({
-          arpu:         Math.round(totalRev / totalCust),
-          churn:        parseFloat(((suspCount / totalCust) * 100).toFixed(1)),
-          totalRevenue: Math.round(totalRev),
-          activeCount,
-          totalCarryForward: totalCredit
-        });
+      if (overviewData.success) {
+        setOverview(overviewData.overview);
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const newPoint = {
+          time: timestamp,
+          tx: Math.round(overviewData.overview.total_tx_bps / 1000000 * 100) / 100,
+          rx: Math.round(overviewData.overview.total_rx_bps / 1000000 * 100) / 100
+        };
+        setTrafficHistory(prev => [...prev, newPoint].slice(-20));
       }
-    };
-    fetchStats();
+
+      if (sessionsData.success) {
+        setActiveSessions(sessionsData.sessions || []);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchNetworkData();
+    const interval = setInterval(fetchNetworkData, refreshInterval);
+    return () => clearInterval(interval);
+  }, [fetchNetworkData, refreshInterval]);
+
+  if (error && !overview) {
+    return (
+      <div className="h-[70vh] flex flex-col items-center justify-center space-y-4 px-6 text-center">
+        <AlertCircle className="w-10 h-10 text-rose-200" strokeWidth={1} />
+        <div>
+          <h3 className="text-lg font-light text-slate-800">Synchronization failed</h3>
+          <p className="text-[13px] text-slate-400 mt-1 max-w-xs">{error}</p>
+        </div>
+        <button 
+          onClick={() => { setLoading(true); fetchNetworkData(); }}
+          className="bg-slate-800 text-white px-6 py-2.5 rounded-xl text-[13px] font-normal hover:bg-slate-900 transition-all flex items-center"
+        >
+          <RefreshCw className="w-3.5 h-3.5 mr-2" />
+          Retry connection
+        </button>
+      </div>
+    );
+  }
+
+  if (loading && !overview) {
+    return (
+      <div className="h-[70vh] flex flex-col items-center justify-center space-y-3">
+        <RefreshCw className="w-6 h-6 text-slate-200 animate-spin" strokeWidth={1.5} />
+        <p className="text-slate-400 text-[13px] font-light">Synchronizing infrastructure...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-medium text-slate-800">Advanced Analytics</h2>
+    <div className="space-y-6 pb-12 font-sans text-slate-600">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2">
+        <div>
+          <h1 className="text-2xl font-light text-slate-800 tracking-tight">Live network intelligence</h1>
+          <p className="text-[13px] text-slate-400 mt-1 flex items-center">
+            <Globe className="w-3.5 h-3.5 mr-2 text-blue-400/70" strokeWidth={1.5} />
+            Monitoring {overview?.total_routers} gateway nodes
+          </p>
+        </div>
         <div className="flex items-center gap-2">
-          <button className="btn-secondary flex items-center"><Calendar className="w-4 h-4 mr-2" /> Last 30 Days</button>
-          <button className="btn-primary flex items-center"><TrendingUp className="w-4 h-4 mr-2" /> Export Report</button>
+           <div className="bg-white border border-slate-100 px-3 py-1.5 rounded-xl flex items-center gap-3 shadow-sm">
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11px] text-slate-400">Live feed</span>
+              <div className="h-3 w-px bg-slate-100"></div>
+              <select 
+                className="text-[11px] text-slate-500 bg-transparent border-none focus:ring-0 cursor-pointer p-0 pr-4"
+                value={refreshInterval}
+                onChange={(e) => setRefreshInterval(Number(e.target.value))}
+              >
+                <option value={2000}>2s</option>
+                <option value={5000}>5s</option>
+                <option value={10000}>10s</option>
+              </select>
+           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Chart */}
-        <div className="card md:col-span-2 flex flex-col p-0">
-          <div className="p-5 border-b border-slate-200/60">
-            <h3 className="text-[14px] font-medium text-slate-800">Daily Collections Volume</h3>
+      {/* Grid: 4 Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard title="Active sessions" value={overview?.total_active_sessions || 0} unit="Subscribers" icon={Users} colorClass="text-blue-500" />
+        <MetricCard title="Traffic (download)" value={(overview?.total_rx_bps / 1000000).toFixed(1)} unit="Mbps" icon={ArrowDown} colorClass="text-emerald-500" />
+        <MetricCard title="Traffic (upload)" value={(overview?.total_tx_bps / 1000000).toFixed(1)} unit="Mbps" icon={ArrowUp} colorClass="text-blue-400" />
+        <MetricCard title="Network stability" value={overview?.online_routers > 0 ? "Stable" : "Offline"} unit={overview?.online_routers === overview?.total_routers ? "All nodes up" : "Partial outage"} icon={Activity} colorClass={overview?.online_routers === overview?.total_routers ? "text-emerald-500" : "text-rose-500"} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Bandwidth Trend */}
+        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-lg font-normal text-slate-700">Aggregate bandwidth</h3>
+              <p className="text-[12px] text-slate-400">Real-time throughput distribution</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                <span className="text-[11px] text-slate-400">Download</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                <span className="text-[11px] text-slate-400">Upload</span>
+              </div>
+            </div>
           </div>
-          {collData.length === 0 ? (
-            <div className="h-80 w-full flex flex-col items-center justify-center p-10 text-center">
-              <BarChart3 className="w-8 h-8 text-slate-300 mb-4" />
-              <h3 className="text-[15px] font-medium text-slate-800 mb-1">Waiting on financial data</h3>
-              <p className="text-[13px] text-slate-500 max-w-sm">Analytics will populate once the first transactions are recorded.</p>
-            </div>
-          ) : (
-            <div className="h-80 w-full p-5">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={collData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%"  stopColor="#0ea5e9" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}   />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
-                  <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontSize: '13px' }} />
-                  <Area type="monotone" dataKey="amount" stroke="#0ea5e9" strokeWidth={3} fillOpacity={1} fill="url(#colorAmount)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          )}
+          <div className="h-[320px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={trafficHistory}>
+                <defs>
+                  <linearGradient id="colorRx" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.08}/>
+                    <stop offset="100%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorTx" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.08}/>
+                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f8fafc" />
+                <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} unit="M" />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '12px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.03)', fontSize: '11px' }}
+                />
+                <Area type="monotone" dataKey="rx" stroke="#10b981" strokeWidth={1.5} fillOpacity={1} fill="url(#colorRx)" />
+                <Area type="monotone" dataKey="tx" stroke="#3b82f6" strokeWidth={1.5} fillOpacity={1} fill="url(#colorTx)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        {/* KPIs */}
-        <div className="card space-y-4 bg-[#fbfbfd]">
-          <h3 className="text-[14px] font-medium text-slate-800 mb-4">Key Performance Indicators</h3>
-          {[
-            { label: 'ARPU (This Month)',  value: `Ksh ${kpis.arpu.toLocaleString()}` },
-            { label: 'Churn Rate',         value: `${kpis.churn}%`                    },
-            { label: 'Monthly Revenue',    value: `Ksh ${kpis.totalRevenue.toLocaleString()}` },
-            { label: 'Active Subscribers', value: kpis.activeCount.toString()          },
-            { label: 'Total Carry Forward', value: `Ksh ${kpis.totalCarryForward.toLocaleString()}` },
-          ].map(k => (
-            <div key={k.label} className="bg-white border border-slate-200/60 p-4 rounded-xl shadow-sm">
-              <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-1">{k.label}</p>
-              <p className="text-[20px] font-medium text-slate-800">{k.value}</p>
+        {/* Node Health Matrix */}
+        <div className="space-y-4">
+          <div className="bg-slate-900 rounded-2xl p-6 text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-6 opacity-5">
+              <Activity className="w-24 h-24" strokeWidth={1} />
             </div>
-          ))}
+            <h3 className="text-sm font-normal mb-6 flex items-center text-slate-300">
+              Node health matrix
+            </h3>
+            <div className="space-y-3 relative z-10">
+              {overview?.router_metrics.map((router: any) => (
+                <div key={router.id} className="p-3.5 bg-white/5 border border-white/5 rounded-xl">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-normal text-[13px] text-slate-200">{router.name}</span>
+                    <span className={`text-[10px] ${router.status === 'online' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {router.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <p className="text-[10px] text-slate-500">CPU</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-0.5 bg-white/5 rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-500/60" style={{ width: `${router.cpu_load}%` }}></div>
+                        </div>
+                        <span className="text-[11px] text-slate-400">{router.cpu_load}%</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-[10px] text-slate-500">Sessions</p>
+                      <p className="text-[13px] font-light">{router.active_sessions}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-blue-600 rounded-2xl p-6 text-white shadow-lg shadow-blue-500/10">
+            <h3 className="text-sm font-normal mb-4 flex items-center opacity-80">
+              WAN Integrity
+            </h3>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-blue-100 opacity-60">Status</p>
+                <p className="text-xl font-light mt-0.5">Optimal</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] text-blue-100 opacity-60">Latency</p>
+                <p className="text-xl font-light mt-0.5">32ms</p>
+              </div>
+            </div>
+            <div className="mt-6 flex gap-1 h-6">
+              {[...Array(15)].map((_, i) => (
+                <div key={i} className="flex-1 bg-white/10 rounded-sm flex flex-col justify-end">
+                   <div className="w-full bg-white/40" style={{ height: `${40 + Math.random() * 60}%` }}></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Live Sessions Table */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.01)] overflow-hidden">
+        <div className="px-6 py-5 border-b border-slate-50 flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-normal text-slate-700">Live traffic streams</h3>
+            <p className="text-[12px] text-slate-400 mt-0.5">Real-time session telemetry</p>
+          </div>
+          <button 
+            className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 rounded-lg text-[11px] font-normal text-slate-500 transition-all"
+            onClick={fetchNetworkData}
+          >
+            Refresh
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-slate-50/30">
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal">Subscriber</th>
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal">Protocol</th>
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal">Address</th>
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal">Gateway</th>
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal">Uptime</th>
+                <th className="px-6 py-3 text-[10px] text-slate-400 font-normal text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {activeSessions.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-300 text-[12px] font-light">
+                    Waiting for session telemetry...
+                  </td>
+                </tr>
+              ) : activeSessions.map((session, idx) => (
+                <tr key={idx} className="hover:bg-slate-50/30 transition-all duration-300">
+                  <td className="px-6 py-4">
+                    <p className="text-[13px] font-normal text-slate-700">{session.username}</p>
+                    <p className="text-[10px] text-slate-400 font-mono opacity-60">{session.caller_id || session.mac}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-[10px] text-slate-400 border border-slate-100 px-1.5 py-0.5 rounded">
+                      {session.service}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-[12px] text-slate-500 font-light">{session.address}</td>
+                  <td className="px-6 py-4 text-[12px] text-slate-500 font-light">{session.router_name}</td>
+                  <td className="px-6 py-4 text-[12px] text-slate-500 font-light">{session.uptime}</td>
+                  <td className="px-6 py-4 text-right">
+                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50/50 text-emerald-500 rounded-full text-[10px]">
+                       <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></div>
+                       Online
+                     </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

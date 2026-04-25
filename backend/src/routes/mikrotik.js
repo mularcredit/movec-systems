@@ -9,6 +9,7 @@ router.use(requireAuth);
 // ── Static routes FIRST (must come before any :param routes) ─────────────────
 router.get('/',              controller.getAllRouters);
 router.get('/sessions/all', controller.getAllActiveSessions);
+router.get('/overview',     controller.getGlobalNetworkOverview);
 router.post('/test',        controller.testConnection);
 router.post('/connect',     controller.linkRouter);
 

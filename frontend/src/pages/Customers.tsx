@@ -1,76 +1,202 @@
-import React, { useState } from 'react';
-import { Search, Plus, MoreVertical } from 'lucide-react';
-import { SelectDropdown } from '../components/ui/SelectDropdown';
+import React, { useState, useEffect } from 'react';
+import { Search, Plus, MoreVertical, Wifi, WifiOff, Activity, ShieldCheck, MapPin } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { apiFetch } from '../lib/apiClient';
 
 export default function Customers() {
-  const [statusFilter, setStatusFilter] = useState('All Statuses');
-  const users = [
-    { id: '1', name: 'John Doe', email: 'john@example.com', package: 'Fiber 20Mbps', status: 'active', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-    { id: '2', name: 'Jane Smith', email: 'jane@example.com', package: 'Fiber 50Mbps', status: 'suspended', bg: 'bg-rose-100', text: 'text-rose-700' },
-    { id: '3', name: 'Alice Johnson', email: 'alice@example.com', package: 'Wireless 10Mbps', status: 'pending', bg: 'bg-amber-100', text: 'text-amber-700' },
-  ];
+  document.title = 'Customers | Movec Connect';
+  const [loading, setLoading] = useState(true);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [activeSessions, setActiveSessions] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // 1. Fetch Customers from DB
+      const { data: custData, error: custErr } = await supabase
+        .from('customers')
+        .select(`
+          *,
+          packages (display_name, speed_limit)
+        `)
+        .order('full_name', { ascending: true });
+
+      if (custErr) throw custErr;
+
+      // 2. Fetch Active Sessions from MikroTik API
+      const res = await apiFetch('/api/router/sessions/all');
+      const sessionData = await res.json();
+      
+      setCustomers(custData || []);
+      setActiveSessions(sessionData.sessions || []);
+    } catch (err) {
+      console.error('Failed to load customer data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredCustomers = customers.filter(c => {
+    const matchesSearch = 
+      c.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      c.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.account_number?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const isActiveSession = activeSessions.some(s => s.username === c.username);
+    const matchesStatus = 
+      statusFilter === 'All' || 
+      (statusFilter === 'Online' && isActiveSession) ||
+      (statusFilter === 'Offline' && !isActiveSession) ||
+      (statusFilter === 'Suspended' && c.status === 'suspended');
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const getSessionInfo = (username: string) => {
+    return activeSessions.find(s => s.username === username);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-slate-800">Customers</h2>
-        <button className="btn-primary flex items-center">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Customer
+        <div>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Subscriber Base</h2>
+          <p className="text-slate-500 mt-1">Manage and monitor live user connectivity</p>
+        </div>
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all flex items-center">
+          <Plus className="w-5 h-5 mr-2" />
+          Add Subscriber
         </button>
       </div>
 
-      <div className="card p-0 overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex items-center gap-4">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+      <div className="card bg-white border border-slate-200/60 rounded-3xl p-0 overflow-hidden shadow-sm">
+        <div className="p-5 border-b border-slate-100 bg-slate-50/30 flex flex-wrap items-center gap-4">
+          <div className="relative flex-1 min-w-[300px]">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input 
               type="text" 
-              placeholder="Search by name, email, or MAC address..." 
-              className="pl-9 input-field bg-slate-50"
+              placeholder="Search by name, username, or account #..." 
+              className="pl-12 w-full bg-white border border-slate-200 rounded-2xl py-3 text-[14px] focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <SelectDropdown
-            value={statusFilter}
-            onChange={setStatusFilter}
-            options={['All Statuses', 'Active', 'Suspended']}
-            className="max-w-xs"
-          />
+          <div className="flex bg-white border border-slate-200 rounded-2xl p-1 shadow-sm">
+            {['All', 'Online', 'Offline', 'Suspended'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setStatusFilter(tab)}
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${statusFilter === tab ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-800'}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
         </div>
         
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-slate-50 text-slate-500 text-sm font-medium border-b border-slate-200">
-              <th className="px-6 py-4">Customer</th>
-              <th className="px-6 py-4">Package</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-slate-50 transition-colors">
-                <td className="px-6 py-4">
-                  <p className="font-semibold text-slate-800">{user.name}</p>
-                  <p className="text-sm text-slate-500">{user.email}</p>
-                </td>
-                <td className="px-6 py-4 text-slate-600 font-medium">
-                  {user.package}
-                </td>
-                <td className="px-6 py-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${user.bg} ${user.text}`}>
-                    {user.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <button className="p-2 text-slate-400 hover:text-slate-700 transition">
-                    <MoreVertical className="w-5 h-5" />
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-slate-50/50 text-[11px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                <th className="px-6 py-5">Subscriber / Details</th>
+                <th className="px-6 py-5 text-center">Service Type</th>
+                <th className="px-6 py-5">Connection Details</th>
+                <th className="px-6 py-5">Billing Status</th>
+                <th className="px-6 py-5 text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-20 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <Activity className="w-8 h-8 text-blue-500 animate-pulse" />
+                      <p className="text-slate-500 font-medium italic">Scanning network for active sessions...</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : filteredCustomers.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-20 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <Search className="w-10 h-10 text-slate-200" />
+                      <p className="text-slate-400 font-medium">No subscribers found matching your filters.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : filteredCustomers.map((c) => {
+                const session = getSessionInfo(c.username);
+                const isOnline = !!session;
+
+                return (
+                  <tr key={c.id} className="group hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-3 rounded-2xl ${isOnline ? 'bg-emerald-50' : 'bg-slate-100'} group-hover:scale-105 transition-transform`}>
+                          {isOnline ? <Wifi className="w-5 h-5 text-emerald-600" /> : <WifiOff className="w-5 h-5 text-slate-400" />}
+                        </div>
+                        <div>
+                          <p className="font-bold text-slate-900 text-[15px]">{c.full_name}</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[12px] font-mono font-bold text-slate-400 px-1.5 py-0.5 bg-slate-100 rounded">@{c.username}</span>
+                            <span className="text-[11px] font-medium text-slate-400 flex items-center">
+                              <MapPin className="w-3 h-3 mr-1" />
+                              {c.address || 'No Location'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                       <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${c.service_type === 'PPPoE' ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'bg-purple-50 text-purple-600 border border-purple-100'}`}>
+                         {c.service_type}
+                       </span>
+                    </td>
+                    <td className="px-6 py-5">
+                      {isOnline ? (
+                        <div className="space-y-1">
+                          <p className="text-[13px] font-bold text-emerald-700 flex items-center">
+                            <Activity className="w-3 h-3 mr-1.5" />
+                            {session.address}
+                          </p>
+                          <p className="text-[11px] font-medium text-slate-500">Uptime: <span className="text-slate-700 font-bold">{session.uptime}</span></p>
+                        </div>
+                      ) : (
+                        <p className="text-[12px] font-medium text-slate-400 italic">Disconnected</p>
+                      )}
+                    </td>
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${c.status === 'active' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`}>
+                          {c.status}
+                        </span>
+                        {c.next_due_date && (
+                          <span className="text-[11px] font-medium text-slate-500">Due: {new Date(c.next_due_date).toLocaleDateString()}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                         <button className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all shadow-sm">
+                           <ShieldCheck className="w-4 h-4" />
+                         </button>
+                         <button className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all shadow-sm">
+                           <MoreVertical className="w-4 h-4" />
+                         </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
