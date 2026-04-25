@@ -16,6 +16,7 @@ export default function OnboardingWizard() {
   const [tunnelIp, setTunnelIp] = useState('10.0.0.3'); // Default suggested IP
   const [authUser, setAuthUser] = useState('');
   const [authPass, setAuthPass] = useState('');
+  const [radiusSecret, setRadiusSecret] = useState('Movec@HomeLab#2026!Ke');
 
   // Status
   const [isHandshaking, setIsHandshaking] = useState(false);
@@ -66,7 +67,7 @@ export default function OnboardingWizard() {
         password: authPass,
         vendor_config: { 
             nas_ip: tunnelIp, 
-            radius_secret: "Movec@HomeLab#2026!Ke" 
+            radius_secret: radiusSecret 
         }
       };
 
@@ -144,6 +145,10 @@ export default function OnboardingWizard() {
                 <label className="text-[11px] font-normal text-slate-400 uppercase tracking-widest">Admin Password</label>
                 <input type="password" value={authPass} onChange={(e) => setAuthPass(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-[13px] outline-none focus:border-emerald-500/30 transition-all" placeholder="••••••••" />
               </div>
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-normal text-slate-400 uppercase tracking-widest">RADIUS Shared Secret</label>
+                <input type="text" value={radiusSecret} onChange={(e) => setRadiusSecret(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-[13px] outline-none focus:border-emerald-500/30 transition-all font-mono" placeholder="Secret key" />
+              </div>
             </div>
             
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-3">
@@ -210,12 +215,12 @@ export default function OnboardingWizard() {
                 <div className="bg-slate-900 rounded-xl overflow-hidden shadow-inner">
                   <div className="px-4 py-2 bg-slate-950 border-b border-white/5 flex justify-between items-center">
                     <span className="text-[10px] text-slate-500 font-mono">1. Link RADIUS Client</span>
-                    <button onClick={() => copyToClipboard(`/radius add address=10.0.0.1 secret="Movec@HomeLab#2026!Ke" service=ppp src-address=${tunnelIp} timeout=3000ms\n/ppp aaa set use-radius=yes`, 'radius')} className="text-slate-500 hover:text-white transition">
+                    <button onClick={() => copyToClipboard(`/radius add address=10.0.0.1 secret="${radiusSecret}" service=ppp src-address=${tunnelIp} timeout=3000ms\n/ppp aaa set use-radius=yes`, 'radius')} className="text-slate-500 hover:text-white transition">
                        {copyStatus === 'radius' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                   <pre className="p-5 font-mono text-[11px] text-emerald-400/80">
-                    /radius add address=10.0.0.1 secret="Movec@HomeLab#2026!Ke" service=ppp src-address={tunnelIp} timeout=3000ms{'\n'}
+                    /radius add address=10.0.0.1 secret="{radiusSecret}" service=ppp src-address={tunnelIp} timeout=3000ms{'\n'}
                     /ppp aaa set use-radius=yes
                   </pre>
                 </div>
@@ -290,11 +295,18 @@ export default function OnboardingWizard() {
           </button>
           {step < 4 && (
             <div className="flex flex-col items-end gap-2">
-              {apiError && step === 1 && <span className="text-[11px] text-rose-500 font-normal mr-2">Please fill all fields to continue</span>}
+              {apiError && step === 1 && (
+                <span className="text-[11px] text-rose-500 font-normal mr-2">
+                  {!routerName ? 'Site Name is required' : 
+                   !tunnelIp ? 'Tunnel IP is required' :
+                   !authUser ? 'Admin Username is required' :
+                   !authPass ? 'Admin Password is required' : 'Please check all fields'}
+                </span>
+              )}
               <button 
                 onClick={() => {
                   if (step === 1 && (!routerName || !authUser || !authPass || !tunnelIp)) {
-                      setApiError('MISSING_FIELDS');
+                      setApiError('VALIDATION_ERROR');
                       return;
                   }
                   setApiError('');
