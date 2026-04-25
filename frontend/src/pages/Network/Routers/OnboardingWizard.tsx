@@ -109,7 +109,7 @@ export default function OnboardingWizard() {
                   <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] mr-2 ${step === s.num ? 'bg-emerald-50 border border-emerald-100' : 'bg-slate-50 border border-slate-100'}`}>
                     {step > s.num ? <CheckCircle2 className="w-3 h-3 text-emerald-500" /> : s.num}
                   </span>
-                  <span className={step === s.num ? 'font-normal' : 'font-light'}>{s.title}</span>
+                  <span className={step === s.num ? 'font-normal' : 'font-normal opacity-50'}>{s.title}</span>
                 </div>
                 {i < onboardingSteps.length - 1 && <div className="w-4 h-px bg-slate-100"></div>}
               </React.Fragment>
@@ -124,7 +124,7 @@ export default function OnboardingWizard() {
           <div className="p-8 space-y-8 animate-in fade-in duration-500">
             <div>
               <h3 className="text-[17px] font-normal text-slate-700">Router Identity</h3>
-              <p className="text-[12px] text-slate-400 mt-1">Provide the basic identifying information for this node.</p>
+              <p className="text-[12px] font-normal text-slate-400 mt-1">Provide the basic identifying information for this node.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -161,7 +161,7 @@ export default function OnboardingWizard() {
              <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-[17px] font-normal text-slate-700">Security Handshake (WireGuard)</h3>
-                  <p className="text-[12px] text-slate-400 mt-1">Establish a secure link between the hardware and our hub.</p>
+                  <p className="text-[12px] font-normal text-slate-400 mt-1">Establish a secure link between the hardware and our hub.</p>
                 </div>
                 <Shield className="w-8 h-8 text-emerald-500/30" strokeWidth={1.5} />
              </div>
@@ -201,7 +201,7 @@ export default function OnboardingWizard() {
              <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-[17px] font-normal text-slate-700">AAA & Service Config</h3>
-                  <p className="text-[12px] text-slate-400 mt-1">Configure RADIUS and the PPPoE server for subscriber access.</p>
+                  <p className="text-[12px] font-normal text-slate-400 mt-1">Configure RADIUS and the PPPoE server for subscriber access.</p>
                 </div>
                 <Radio className="w-8 h-8 text-blue-500/30" strokeWidth={1.5} />
              </div>
@@ -289,18 +289,22 @@ export default function OnboardingWizard() {
             {step === 1 ? 'Cancel' : 'Back'}
           </button>
           {step < 4 && (
-            <button 
-              onClick={() => {
-                if (step === 1 && !routerName) {
-                    alert('Please provide a Site Name before proceeding.');
-                    return;
-                }
-                setStep(step + 1);
-              }} 
-              className="bg-slate-900 text-white px-8 py-2.5 rounded-xl text-[12px] font-normal shadow-sm hover:bg-black transition-all flex items-center"
-            >
-              Next Step <ArrowRight className="w-3.5 h-3.5 ml-2" />
-            </button>
+            <div className="flex flex-col items-end gap-2">
+              {apiError && step === 1 && <span className="text-[11px] text-rose-500 font-normal mr-2">Please fill all fields to continue</span>}
+              <button 
+                onClick={() => {
+                  if (step === 1 && (!routerName || !authUser || !authPass || !tunnelIp)) {
+                      setApiError('MISSING_FIELDS');
+                      return;
+                  }
+                  setApiError('');
+                  setStep(step + 1);
+                }} 
+                className="bg-slate-900 text-white px-8 py-2.5 rounded-xl text-[12px] font-normal shadow-sm hover:bg-black transition-all flex items-center"
+              >
+                Next Step <ArrowRight className="w-3.5 h-3.5 ml-2" />
+              </button>
+            </div>
           )}
         </div>
       </div>
