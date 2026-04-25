@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Search, Plus, MoreVertical, ShieldAlert, UserX, UserCheck, Loader2, X, Eye, Trash2, AlertTriangle, User } from 'lucide-react';
+import { Search, Plus, MoreVertical, ShieldAlert, UserX, UserCheck, Loader2, X, Eye, Trash2, AlertTriangle, User, Wifi, WifiOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
@@ -32,6 +32,8 @@ export default function AllUsers() {
   const [deleteModal, setDeleteModal] = useState<{ customer: Customer | null, loading: boolean }>({ customer: null, loading: false });
   const [toast, setToast] = useState('');
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const [liveSessions, setLiveSessions] = useState<Set<string>>(new Set());
+  const [liveUptime, setLiveUptime] = useState<Map<string, string>>(new Map());
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -61,7 +63,7 @@ export default function AllUsers() {
         id, full_name, phone, email,
         services (
           id, account_number, status, balance, next_due_date,
-          router_id, username,
+          router_id, username, package_id,
           packages ( display_name )
         )
       `)
@@ -84,6 +86,7 @@ export default function AllUsers() {
             balance: 0,
             due_date: 'N/A',
             package: 'No Plan Linked',
+            package_id: null,
             router_id: null,
             username: null
           });
@@ -99,7 +102,7 @@ export default function AllUsers() {
               balance: s.balance,
               due_date: s.next_due_date || 'N/A',
               package: s.packages?.display_name || 'Unassigned',
-              package_id: s.package_id,
+              package_id: s.package_id || null,
               router_id: s.router_id,
               username: s.username
             });
@@ -129,6 +132,18 @@ export default function AllUsers() {
   useEffect(() => { 
     fetchCustomers(); 
     fetchFilters();
+    // Fetch live sessions silently — non-blocking
+    apiFetch('/api/sessions/live')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          const usernames = new Set<string>(data.sessions.map((s: any) => s.username));
+          const uptimes = new Map<string, string>(data.sessions.map((s: any) => [s.username, s.uptime]));
+          setLiveSessions(usernames);
+          setLiveUptime(uptimes);
+        }
+      })
+      .catch(() => {}); // Fail silently — does not affect rest of page
   }, []);
 
   const filtered = useMemo(() => {
@@ -382,6 +397,7 @@ export default function AllUsers() {
                 <th className="px-5 py-3.5">Contact</th>
                 <th className="px-5 py-3.5">Package</th>
                 <th className="px-5 py-3.5 text-center">Status</th>
+                <th className="px-5 py-3.5 text-center">Online</th>
                 <th className="px-5 py-3.5 text-right">Balance</th>
                 <th className="px-5 py-3.5">Next Bill</th>
                 <th className="px-5 py-3.5 text-right">Actions</th>
@@ -400,6 +416,22 @@ export default function AllUsers() {
                   </td>
                   <td className="px-5 py-3.5 text-center">
                     <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full capitalize ${statusBadge(u.status)}`}>{u.status}</span>
+                  </td>
+                  <td className="px-5 py-3.5 text-center">
+                    {u.username && liveSessions.has(u.username) ? (
+                      <div className="flex flex-col items-center gap-0.5">
+                        <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-normal">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                          Online
+                        </span>
+                        <span className="text-[9px] text-slate-400 font-mono">{liveUptime.get(u.username) || ''}</span>
+                      </div>
+                    ) : (
+                      <span className="flex items-center justify-center gap-1 text-[10px] text-slate-300 font-normal">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-200 inline-block" />
+                        Offline
+                      </span>
+                    )}
                   </td>
                   <td className="px-5 py-3.5 text-right font-medium text-[13px]">
                     {parseFloat(String(u.balance)) > 0

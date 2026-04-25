@@ -5,6 +5,9 @@ const radiusServer = require('../services/radiusServer');
 /**
  * GET /api/sessions/live
  * Aggregates live session data from RADIUS and all active MikroTik routers.
+ * Two independent paths:
+ *   Path A — MikroTik API (only routers with credentials)
+ *   Path B — RADIUS Memory (ALL routers, credential-independent, always runs)
  */
 exports.getLiveSessions = async (req, res) => {
     try {
@@ -74,18 +77,21 @@ exports.getLiveSessions = async (req, res) => {
             });
         });
 
-        // 4. Add any RADIUS sessions not caught by the API (e.g. non-MikroTik NAS or API down)
+        // PATH B: RADIUS memory sessions for ALL routers (credential-independent)
+        // This ensures RADIUS-only routers that have no API credentials still appear in the Live Hub
         tenantRadiusSessions.forEach(s => {
             if (!seenUsernames.has(s.username)) {
+                const router = routers.find(r => r.id === s.routerId);
                 liveData.push({
                     source: 'radius',
                     username: s.username,
                     ip: s.ip,
-                    mac: s.mac,
+                    mac: s.mac || 'N/A',
                     uptime: s.uptime,
                     download: (s.tx / (1024 * 1024)).toFixed(2) + ' MB',
                     upload: (s.rx / (1024 * 1024)).toFixed(2) + ' MB',
-                    router_name: 'RADIUS Node',
+                    router_name: router ? router.name : 'RADIUS Node',
+                    router_id: s.routerId || null,
                     status: 'active'
                 });
             }

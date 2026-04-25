@@ -412,46 +412,62 @@ exports.getAllActiveSessions = async (req, res) => {
     try {
         const { data: routers, error } = await supabase
             .from('routers')
-            .select('id, name, connection_status, vendor')
+            .select('id, name, connection_status, vendor, username_encrypted, password_encrypted')
             .eq('tenant_id', req.tenant_id);
         
         if (error) throw error;
 
         const allSessions = [];
-        
-        // 1. Fetch MikroTik API sessions
+        const seenIds = new Set();
+
+        // 1. Always include RADIUS in-memory sessions for ALL routers
+        const radiusSessions = radiusService.getActiveSessions();
+        radiusSessions.forEach(s => {
+            const r = routers.find(router => router.id === s.routerId);
+            if (r && !seenIds.has(s.sessionId)) {
+                seenIds.add(s.sessionId);
+                allSessions.push({
+                    id: s.sessionId,
+                    username: s.username,
+                    service: s.service || 'pppoe',
+                    ip: s.ip,
+                    mac: s.mac,
+                    uptime: s.uptime,
+                    download: (s.tx / (1024 * 1024)).toFixed(2) + ' MB',
+                    upload: (s.rx / (1024 * 1024)).toFixed(2) + ' MB',
+                    router_name: r.name,
+                    router_id: r.id,
+                    source: 'radius',
+                    status: 'online'
+                });
+            }
+        });
+
+        // 2. Fetch live API sessions for any router with credentials (enhancement)
         const mkPromises = routers
-            .filter(r => r.vendor === 'mikrotik' && r.connection_status === 'online')
+            .filter(r => r.username_encrypted && r.password_encrypted)
             .map(async (router) => {
                 try {
                     const data = await mikrotikService.getDetailedActiveSessions(req.tenant_id, router.id);
                     return data.map(s => ({ ...s, router_name: router.name, router_id: router.id }));
                 } catch (err) {
-                    console.error(`Failed to fetch sessions for ${router.name}:`, err.message);
+                    console.error(`[Active Sessions] API fetch failed for ${router.name}:`, err.message);
                     return [];
                 }
             });
 
         const mkResults = await Promise.all(mkPromises);
-        mkResults.forEach(batch => allSessions.push(...batch));
-
-        // 2. Fetch RADIUS in-memory sessions
-        const radiusSessions = radiusService.getActiveSessions();
-        radiusSessions.forEach(s => {
-            const r = routers.find(router => router.id === s.routerId);
-            if (r) {
-                allSessions.push({
-                    id: s.sessionId,
-                    subscriber: s.username,
-                    service: s.service,
-                    ip: s.ip,
-                    mac: s.mac,
-                    uptime: s.uptime,
-                    router_name: r.name,
-                    router_id: r.id,
-                    status: 'online'
-                });
-            }
+        mkResults.forEach(batch => {
+            batch.forEach(s => {
+                if (!seenIds.has(s.id)) {
+                    seenIds.add(s.id);
+                    allSessions.push({
+                        ...s,
+                        source: 'mikrotik',
+                        status: 'online'
+                    });
+                }
+            });
         });
 
         res.json({ success: true, count: allSessions.length, sessions: allSessions });
@@ -479,18 +495,15 @@ exports.getGlobalNetworkOverview = async (req, res) => {
 
         const promises = routers.map(async (router) => {
             let apiData = null;
-            let radiusSessions = [];
-            
-            // 1. Always check RADIUS in-memory sessions if it's a RADIUS vendor
-            if (router.vendor === 'radius') {
-                radiusSessions = radiusService.getActiveSessions().filter(s => s.routerId === router.id);
-            }
 
-            // 2. Attempt API Handshake if we have credentials (Hybrid Mode)
-            // Note: Even RADIUS vendors might have credentials for status polling
+            // 1. Always check RADIUS in-memory sessions for ALL routers
+            const radiusSessions = radiusService.getActiveSessions().filter(s => s.routerId === router.id);
+
+            // 2. Attempt live API handshake for ANY router with credentials
+            // This is how we determine the TRUE online/offline status — not the cached DB column
             const hasCredentials = router.username_encrypted && router.password_encrypted;
             
-            if (hasCredentials && (router.connection_status === 'online' || router.vendor === 'radius')) {
+            if (hasCredentials) {
                 try {
                     const [dash, traffic] = await Promise.all([
                         mikrotikService.getRouterDashboardData(req.tenant_id, router.id),

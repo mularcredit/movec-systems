@@ -29,6 +29,7 @@ import RouterDetail from './pages/Network/Routers/RouterDetail';
 import EditRouter from './pages/Network/Routers/EditRouter';
 import NetworkModuleRedirect from './pages/Network/NetworkModuleRedirect';
 import LiveSessions from './pages/Network/LiveSessions';
+import RouterStats from './pages/Network/RouterStats/RouterStats';
 
 import { apiFetch } from './lib/apiClient';
 
@@ -155,7 +156,7 @@ function App() {
           <Route path="/network/firewall"   element={<NetworkModuleRedirect tab="firewall" label="Firewall Rules" />} />
           <Route path="/network/interfaces" element={<NetworkModuleRedirect tab="interfaces" label="Interfaces Traffic" />} />
           <Route path="/network/wireless"   element={<NetworkModuleRedirect tab="wireless" label="Wireless Registrations" />} />
-          <Route path="/network/stats"      element={<NetworkModuleRedirect tab="stats" label="Router Telemetry" />} />
+          <Route path="/network/stats"      element={<RouterStats />} />
           
           <Route path="/network/scripts"    element={<NetworkModuleRedirect tab="scripts" label="Routing Scripts & Schedulers" />} />
           <Route path="/network/monitor"    element={<LiveSessions />} />
