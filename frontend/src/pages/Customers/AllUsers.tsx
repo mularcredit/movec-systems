@@ -9,7 +9,8 @@ const API = '/api/router';
 
 interface Customer {
   id: string; person_id?: string; account_id: string; name: string; phone: string;
-  status: string; balance: number; package: string; due_date: string;
+  status: string; balance: number; package: string; package_id: string | null;
+  due_date: string;
   router_id: string | null; username: string | null;
 }
 
@@ -23,6 +24,10 @@ export default function AllUsers() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
+  const [routerFilter, setRouterFilter] = useState('All Routers');
+  const [packageFilter, setPackageFilter] = useState('All Packages');
+  const [routers, setRouters] = useState<{ id: string, name: string }[]>([]);
+  const [packages, setPackages] = useState<{ id: string, name: string }[]>([]);
   const [modal, setModal] = useState<SuspendModal>({ open: false, customer: null, reason: '', loading: false });
   const [deleteModal, setDeleteModal] = useState<{ customer: Customer | null, loading: boolean }>({ customer: null, loading: false });
   const [toast, setToast] = useState('');
@@ -94,6 +99,7 @@ export default function AllUsers() {
               balance: s.balance,
               due_date: s.next_due_date || 'N/A',
               package: s.packages?.display_name || 'Unassigned',
+              package_id: s.package_id,
               router_id: s.router_id,
               username: s.username
             });
@@ -105,16 +111,38 @@ export default function AllUsers() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchCustomers(); }, []);
+  const fetchFilters = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: profile } = await supabase.from('profiles').select('tenant_id').eq('id', user.id).single();
+    if (!profile) return;
+
+    const [rRes, pRes] = await Promise.all([
+      supabase.from('routers').select('id, name').eq('tenant_id', profile.tenant_id).order('name'),
+      supabase.from('packages').select('id, display_name').eq('tenant_id', profile.tenant_id).order('display_name')
+    ]);
+
+    if (rRes.data) setRouters(rRes.data);
+    if (pRes.data) setPackages(pRes.data.map(p => ({ id: p.id, name: p.display_name })));
+  };
+
+  useEffect(() => { 
+    fetchCustomers(); 
+    fetchFilters();
+  }, []);
 
   const filtered = useMemo(() => {
     return customers.filter(u => {
       const matchStatus = statusFilter === 'All Statuses' || u.status === statusFilter.toLowerCase();
+      const matchRouter = routerFilter === 'All Routers' || u.router_id === routerFilter;
+      const matchPackage = packageFilter === 'All Packages' || u.package === packageFilter;
+      
       const q = search.toLowerCase();
       const matchSearch = !q || u.name.toLowerCase().includes(q) || u.account_id.toLowerCase().includes(q) || (u.phone && u.phone.includes(q));
-      return matchStatus && matchSearch;
+      
+      return matchStatus && matchRouter && matchPackage && matchSearch;
     });
-  }, [customers, search, statusFilter]);
+  }, [customers, search, statusFilter, routerFilter, packageFilter]);
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3500); };
 
@@ -314,7 +342,19 @@ export default function AllUsers() {
             value={statusFilter}
             onChange={setStatusFilter}
             options={['All Statuses', 'Active', 'Suspended', 'Pending', 'Expired']}
-            className="max-w-[180px]"
+            className="w-full sm:max-w-[140px]"
+          />
+          <SelectDropdown
+            value={routerFilter}
+            onChange={setRouterFilter}
+            options={['All Routers', ...routers.map(r => ({ label: r.name, value: r.id }))]}
+            className="w-full sm:max-w-[180px]"
+          />
+          <SelectDropdown
+            value={packageFilter}
+            onChange={setPackageFilter}
+            options={['All Packages', ...packages.map(p => p.name)]}
+            className="w-full sm:max-w-[180px]"
           />
         </div>
 
