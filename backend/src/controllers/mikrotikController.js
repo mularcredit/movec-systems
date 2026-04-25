@@ -536,6 +536,7 @@ exports.getGlobalNetworkOverview = async (req, res) => {
                     overview.total_active_sessions += dash.totalActive;
                 } catch (err) {
                     console.warn(`[Network Overview] API unreachable for ${router.name}:`, err.message);
+                    apiData = { status: 'error', error: err.message };
                 }
             }
 
@@ -564,7 +565,7 @@ exports.getGlobalNetworkOverview = async (req, res) => {
                     status: 'warning',
                     active_sessions: radiusSessions.length,
                     cpu_load: 0,
-                    uptime: 'API Unreachable',
+                    uptime: apiData?.error || 'API Unreachable',
                     tx_bps: 0, rx_bps: 0
                 };
             } else {

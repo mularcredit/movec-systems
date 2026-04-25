@@ -174,18 +174,19 @@ export default function RoutersList() {
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" /> Online
                         </span>
                       );
-                      if (status === 'warning') return (
-                        <span className="badge-warning">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5" /> RADIUS Only
+                      if (status === 'warning' || status === 'error') return (
+                        <span className="badge-warning bg-amber-50 text-amber-700 border-amber-200" title={live?.uptime || 'API Issue'}>
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5" /> 
+                          {status === 'error' ? 'API Error' : 'RADIUS Only'}
                         </span>
                       );
                       if (status === 'pending') return (
-                        <span className="inline-flex items-center text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
+                        <span className="inline-flex items-center text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full" title={live?.uptime || 'Awaiting connection'}>
                           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5" /> Awaiting Auth
                         </span>
                       );
                       return (
-                        <span className="badge-error bg-slate-50 text-slate-600 border-slate-200">
+                        <span className="badge-error bg-slate-50 text-slate-600 border-slate-200" title={live?.uptime || 'Disconnected'}>
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5" /> Offline
                         </span>
                       );
