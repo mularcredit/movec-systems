@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Activity, 
-  TrendingUp, 
-  AlertCircle, 
-  Clock, 
-  DollarSign, 
-  Search, 
-  Filter, 
-  ChevronRight, 
-  ArrowUpRight,
-  ArrowDownRight,
-  User,
-  Calendar,
-  CreditCard,
-  Download,
-  MoreHorizontal,
-  Plus
+  Activity, TrendingUp, AlertCircle, Clock, DollarSign, 
+  Search, Filter, ChevronRight, ArrowUpRight, ArrowDownRight,
+  User, Calendar, CreditCard, Download, MoreHorizontal, Plus, RefreshCw
 } from 'lucide-react';
 import { 
   PieChart, Pie, Cell, 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend,
-  LineChart, Line, AreaChart, Area
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
+  AreaChart, Area
 } from 'recharts';
 import { apiFetch } from '../../lib/apiClient';
 
@@ -115,29 +102,28 @@ export default function PaymentMonitor() {
   if (loading && !summary) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-500 text-[13px] font-medium animate-pulse">Analyzing financial data...</p>
+        <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin" />
+        <p className="text-slate-400 text-[13px] font-light">Analyzing financial data...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 pb-20">
+    <div className="space-y-8 pb-20 animate-in fade-in duration-700">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-[20px] font-semibold text-slate-800 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-emerald-500" />
+          <h2 className="text-2xl font-light text-slate-800 tracking-tight flex items-center gap-3">
             Payment Monitoring
           </h2>
-          <p className="text-[13px] text-slate-500 mt-1">Real-time financial standing and collection insights.</p>
+          <p className="text-[12px] text-slate-400 mt-1">Real-time financial standing and collection insights.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="btn-secondary py-2 flex items-center gap-2">
-            <Download className="w-4 h-4" />
-            Export CSV
+        <div className="flex items-center gap-3">
+          <button className="bg-white border border-slate-100 text-slate-600 px-4 py-2 rounded-xl text-[13px] font-normal hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+            <Download className="w-4 h-4 text-slate-400" />
+            Export Data
           </button>
-          <button className="btn-primary py-2 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+          <button className="btn-primary flex items-center gap-2">
             <Plus className="w-4 h-4" />
             New Payment
           </button>
@@ -145,12 +131,12 @@ export default function PaymentMonitor() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <SummaryCard 
           label="Total Collected" 
           value={`Ksh ${(summary?.total_collected ?? 0).toLocaleString()}`} 
           subValue="This month" 
-          icon={<DollarSign className="w-5 h-5" />} 
+          icon={<DollarSign className="w-4 h-4" />} 
           color="emerald"
           trend="+12.5%"
         />
@@ -158,61 +144,62 @@ export default function PaymentMonitor() {
           label="Overdue Balances" 
           value={`Ksh ${(summary?.overdue_amount ?? 0).toLocaleString()}`} 
           subValue={`${summary?.overdue_count} accounts`} 
-          icon={<AlertCircle className="w-5 h-5" />} 
+          icon={<AlertCircle className="w-4 h-4" />} 
           color="rose"
-          trend={`${Math.round((summary?.overdue_amount || 0) / (summary?.expected_total || 1) * 100)}% of expected`}
+          trend={`${Math.round((summary?.overdue_amount || 0) / (summary?.expected_total || 1) * 100)}%`}
         />
         <SummaryCard 
           label="Partial Pending" 
           value={`Ksh ${(summary?.partial_amount ?? 0).toLocaleString()}`}           subValue={`${summary?.partial_count} accounts`} 
-          icon={<Clock className="w-5 h-5" />} 
+          icon={<Clock className="w-4 h-4" />} 
           color="amber"
         />
         <SummaryCard 
           label="Expected Revenue" 
           value={`Ksh ${(summary?.expected_total ?? 0).toLocaleString()}`}           subValue="Projected this month" 
-          icon={<TrendingUp className="w-5 h-5" />} 
+          icon={<TrendingUp className="w-4 h-4" />} 
           color="indigo"
         />
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Pie Chart: Status Distribution */}
-        <div className="card p-6 border-slate-200/60 shadow-sm flex flex-col h-full">
-          <h3 className="text-[14px] font-semibold text-slate-800 mb-6 flex items-center gap-2">
-            Payment Status Distribution
+        <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm flex flex-col h-full">
+          <h3 className="text-[14px] font-normal text-slate-600 mb-6 flex items-center gap-2 tracking-tight">
+            Distribution
           </h3>
           <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="w-full h-[220px]">
+            <div className="w-full h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={distribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
+                    innerRadius={65}
+                    outerRadius={85}
+                    paddingAngle={8}
                     dataKey="value"
+                    stroke="none"
                   >
                     {distribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
+                      <Cell key={`cell-${index}`} fill={entry.color} opacity={0.8} />
                     ))}
                   </Pie>
                   <RechartsTooltip 
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', fontSize: '12px' }}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="grid grid-cols-2 gap-4 w-full mt-6">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 w-full mt-8">
               {distribution.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
                   <div>
-                    <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{item.name}</p>
-                    <p className="text-[14px] font-bold text-slate-700">{item.pct}%</p>
+                    <p className="text-[10px] font-normal text-slate-400 uppercase tracking-widest">{item.name}</p>
+                    <p className="text-[16px] font-light text-slate-700">{item.pct}%</p>
                   </div>
                 </div>
               ))}
@@ -221,17 +208,17 @@ export default function PaymentMonitor() {
         </div>
 
         {/* Bar Chart: Collections */}
-        <div className="card p-6 border-slate-200/60 shadow-sm lg:col-span-2 flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-[14px] font-semibold text-slate-800 flex items-center gap-2">
+        <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm lg:col-span-2 flex flex-col">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-[14px] font-normal text-slate-600 flex items-center gap-2 tracking-tight">
               Collections Analysis
             </h3>
-            <div className="flex p-1 bg-slate-100 rounded-lg">
+            <div className="flex p-1 bg-slate-50 border border-slate-100 rounded-xl">
               {['day', 'week', 'month'].map(p => (
                 <button 
                   key={p}
                   onClick={() => setPeriod(p)}
-                  className={`px-3 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider transition-all ${period === p ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`px-4 py-1 rounded-lg text-[11px] font-normal uppercase tracking-wider transition-all ${period === p ? 'bg-white text-emerald-600 shadow-sm border border-slate-100' : 'text-slate-400 hover:text-slate-600'}`}
                 >
                   {p}
                 </button>
@@ -241,29 +228,30 @@ export default function PaymentMonitor() {
           <div className="flex-1 min-h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={collections} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f8fafc" />
                 <XAxis 
                   dataKey="label" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fontSize: 11, fill: '#94a3b8' }} 
+                  tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 300 }} 
                   dy={10}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fontSize: 11, fill: '#94a3b8' }}
+                  tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 300 }}
                 />
                 <RechartsTooltip 
-                  cursor={{ fill: '#f8fafc' }}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  cursor={{ fill: '#fbfbfd' }}
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', fontSize: '12px' }}
                   formatter={(val: any) => [`Ksh ${Number(val || 0).toLocaleString()}`, 'Amount']}
                 />
                 <Bar 
                   dataKey="amount" 
                   fill="#10b981" 
+                  opacity={0.7}
                   radius={[4, 4, 0, 0]} 
-                  barSize={period === 'day' ? 12 : 32}
+                  barSize={period === 'day' ? 14 : 36}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -272,8 +260,8 @@ export default function PaymentMonitor() {
       </div>
 
       {/* Trend Line Chart */}
-      <div className="card p-6 border-slate-200/60 shadow-sm">
-        <h3 className="text-[14px] font-semibold text-slate-800 mb-6 flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+        <h3 className="text-[14px] font-normal text-slate-600 mb-8 flex items-center gap-2 tracking-tight">
           30-Day Payment Trend
         </h3>
         <div className="h-[250px] w-full">
@@ -281,32 +269,32 @@ export default function PaymentMonitor() {
             <AreaChart data={trends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.08}/>
                   <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f8fafc" />
               <XAxis 
                 dataKey="label" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 11, fill: '#94a3b8' }}
+                tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 300 }}
                 dy={10}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 11, fill: '#94a3b8' }}
+                tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 300 }}
               />
               <RechartsTooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', fontSize: '12px' }}
                 formatter={(val: any) => [`Ksh ${Number(val || 0).toLocaleString()}`, 'Collection']}
               />
               <Area 
                 type="monotone" 
                 dataKey="amount" 
                 stroke="#10b981" 
-                strokeWidth={3}
+                strokeWidth={1.5}
                 fillOpacity={1} 
                 fill="url(#colorTrend)" 
               />
@@ -316,31 +304,31 @@ export default function PaymentMonitor() {
       </div>
 
       {/* Accounts Table Section */}
-      <div className="card overflow-hidden border-slate-200/60 shadow-sm">
-        <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex flex-wrap items-center gap-3">
             <button 
               onClick={() => setFilter('all')}
-              className={`px-4 py-1.5 rounded-full text-[12px] font-medium transition-all ${filter === 'all' ? 'bg-emerald-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'all' ? 'bg-slate-900 text-white shadow-md' : 'bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-100'}`}
             >All Accounts</button>
             <button 
               onClick={() => setFilter('overdue')}
-              className={`px-4 py-1.5 rounded-full text-[12px] font-medium transition-all ${filter === 'overdue' ? 'bg-rose-500 text-white shadow-md' : 'bg-rose-50 text-rose-600 hover:bg-rose-100'}`}
+              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'overdue' ? 'bg-rose-500 text-white shadow-md' : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100'}`}
             >Overdue</button>
             <button 
               onClick={() => setFilter('partial')}
-              className={`px-4 py-1.5 rounded-full text-[12px] font-medium transition-all ${filter === 'partial' ? 'bg-amber-500 text-white shadow-md' : 'bg-amber-50 text-amber-600 hover:bg-amber-100'}`}
+              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'partial' ? 'bg-amber-500 text-white shadow-md' : 'bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-100'}`}
             >Partial</button>
           </div>
 
-          <form onSubmit={handleSearch} className="relative w-full md:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <form onSubmit={handleSearch} className="relative w-full md:w-80">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
             <input 
               type="text" 
-              placeholder="Search customer, account..." 
+              placeholder="Find transaction or customer..." 
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+              className="w-full pl-11 pr-4 py-2.5 bg-[#fbfbfd] border border-slate-100 rounded-2xl text-[13px] focus:outline-none focus:border-emerald-500/30 transition-all placeholder:text-slate-300"
             />
           </form>
         </div>
@@ -348,76 +336,64 @@ export default function PaymentMonitor() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50">
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Customer & Account</th>
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Plan & Category</th>
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Payment Details</th>
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Next Due</th>
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-slate-50/50 border-b border-slate-50">
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em]">Customer & Account</th>
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em]">Plan</th>
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em]">Ledger</th>
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em]">Due Date</th>
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em]">Status</th>
+                <th className="px-6 py-4 text-[10px] font-normal text-slate-400 uppercase tracking-[0.1em] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-50">
               {accounts.map((acc) => (
-                <tr key={acc.id} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="px-6 py-4">
+                <tr key={acc.id} className="hover:bg-slate-50/30 transition-colors group">
+                  <td className="px-6 py-5">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold text-[13px]">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 font-normal text-[11px]">
                         {acc.name.charAt(0)}
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-slate-700">{acc.name}</p>
-                        <p className="text-[11px] text-slate-400 font-mono mt-0.5">{acc.account}</p>
+                        <p className="text-[13px] font-normal text-slate-700">{acc.name}</p>
+                        <p className="text-[10px] text-slate-400 font-mono mt-0.5 tracking-tight">{acc.account}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <div>
-                      <p className="text-[13px] text-slate-600">{acc.package}</p>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-1 ${
-                        acc.payment_category === 'full' ? 'bg-emerald-100 text-emerald-700' :
-                        acc.payment_category === 'discounted' ? 'bg-purple-100 text-purple-700' :
-                        'bg-amber-100 text-amber-700'
+                      <p className="text-[12px] text-slate-500">{acc.package}</p>
+                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-normal uppercase mt-1 tracking-wider ${
+                        acc.payment_category === 'full' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                        acc.payment_category === 'discounted' ? 'bg-purple-50 text-purple-600 border border-purple-100' :
+                        'bg-amber-50 text-amber-600 border border-amber-100'
                       }`}>
                         {acc.payment_category}
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[12px] font-semibold text-emerald-600">Ksh {(acc.amount_paid ?? 0).toLocaleString()}</span>
-                        <span className="text-[10px] text-slate-400 tracking-tight">paid</span>
-                      </div>
+                      <p className="text-[13px] font-light text-slate-700">Ksh {(acc.amount_paid ?? 0).toLocaleString()}</p>
                       {acc.balance_due > 0 && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[12px] font-semibold text-rose-500">Ksh {(acc.balance_due ?? 0).toLocaleString()}</span>
-                          <span className="text-[10px] text-slate-400 tracking-tight">balance</span>
-                        </div>
+                        <p className="text-[10px] text-rose-400">Bal: Ksh {acc.balance_due.toLocaleString()}</p>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <div className="flex flex-col">
-                      <div className="flex items-center gap-1.5 text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Calendar className="w-3.5 h-3.5" />
-                        <span className="text-[12px] font-medium">{new Date(acc.next_due_date).toLocaleDateString('en-KE', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                        <span className="text-[12px] font-light">{new Date(acc.next_due_date).toLocaleDateString('en-KE', { day: '2-digit', month: 'short' })}</span>
                       </div>
-                      {acc.balance_due > 0 && acc.balance_due_date && (
-                        <div className="flex items-center gap-1.5 mt-1 text-rose-500">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span className="text-[10px] font-bold uppercase tracking-tight">Bal due: {new Date(acc.balance_due_date).toLocaleDateString('en-KE', { day: '2-digit', month: 'short' })}</span>
-                        </div>
-                      )}
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
-                      acc.pay_status === 'paid' ? 'bg-emerald-100 text-emerald-700' :
-                      acc.pay_status === 'overdue' ? 'bg-rose-100 text-rose-700' :
-                      'bg-amber-100 text-amber-700'
+                  <td className="px-6 py-5">
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-normal border ${
+                      acc.pay_status === 'paid' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                      acc.pay_status === 'overdue' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                      'bg-amber-50 text-amber-600 border-amber-100'
                     }`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${
+                      <div className={`w-1 h-1 rounded-full ${
                         acc.pay_status === 'paid' ? 'bg-emerald-500' :
                         acc.pay_status === 'overdue' ? 'bg-rose-500' :
                         'bg-amber-500'
@@ -425,34 +401,15 @@ export default function PaymentMonitor() {
                       {acc.pay_status.toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 group-hover:text-slate-600">
+                  <td className="px-6 py-5 text-right">
+                    <button className="p-2 text-slate-300 hover:text-slate-500 transition-colors">
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
               ))}
-              {accounts.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-6 py-20 text-center">
-                    <div className="flex flex-col items-center justify-center opacity-40">
-                      <Search className="w-10 h-10 mb-2" />
-                      <p className="text-[14px] font-medium">No accounts matched your criteria</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
-        </div>
-        
-        {/* Pagination Placeholder */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/30 flex items-center justify-between">
-          <p className="text-[12px] text-slate-500">Showing {accounts.length} results</p>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 rounded border border-slate-200 text-[12px] font-medium hover:bg-white transition" disabled>Previous</button>
-            <button className="px-3 py-1.5 rounded border border-slate-200 text-[12px] font-medium hover:bg-white transition" disabled>Next</button>
-          </div>
         </div>
       </div>
     </div>
@@ -461,31 +418,29 @@ export default function PaymentMonitor() {
 
 function SummaryCard({ label, value, subValue, icon, color, trend }: { label: string; value: string; subValue: string; icon: React.ReactNode; color: 'emerald' | 'rose' | 'amber' | 'indigo'; trend?: string }) {
   const colors = {
-    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-    rose: 'bg-rose-50 text-rose-600 border-rose-100',
-    amber: 'bg-amber-50 text-amber-600 border-amber-100',
-    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+    emerald: 'bg-emerald-50 text-emerald-500 border-emerald-100/50',
+    rose: 'bg-rose-50 text-rose-500 border-rose-100/50',
+    amber: 'bg-amber-50 text-amber-500 border-amber-100/50',
+    indigo: 'bg-indigo-50 text-indigo-500 border-indigo-100/50',
   };
 
   return (
-    <div className="card p-5 border-slate-200/60 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-500 group">
       <div className="flex items-start justify-between">
-        <div className={`p-2.5 rounded-xl border ${colors[color]}`}>
+        <div className={`p-2 rounded-xl border ${colors[color]} group-hover:scale-110 transition-transform duration-500`}>
           {icon}
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-500'}`}>
+          <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-500'}`}>
             {trend.startsWith('+') ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
             {trend}
           </div>
         )}
       </div>
-      <div className="mt-4">
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{label}</p>
-        <div className="flex items-baseline gap-2 mt-1">
-          <h4 className="text-[22px] font-bold text-slate-800">{value}</h4>
-        </div>
-        <p className="text-[12px] text-slate-500 mt-0.5">{subValue}</p>
+      <div className="mt-6">
+        <p className="text-[10px] font-normal text-slate-400 uppercase tracking-[0.15em]">{label}</p>
+        <h4 className="text-2xl font-light text-slate-800 mt-2 tracking-tight">{value}</h4>
+        <p className="text-[12px] text-slate-400 mt-1">{subValue}</p>
       </div>
     </div>
   );
