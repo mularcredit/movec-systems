@@ -44,8 +44,14 @@ export default function EditRouter() {
         setDirectIp(r.ip_address || '');
         setApiPort(r.api_port || '');
       } else {
-        setNasIp(r.vendor_config?.nas_ip || '');
+        // RADIUS router
+        setNasIp(r.vendor_config?.nas_ip || r.ip_address || '');
         setRadiusSecret(r.vendor_config?.radius_secret || '');
+        // Load existing API username hint (not password — it's encrypted)
+        setAuthUser(r.username_encrypted ? '(credentials stored)' : '');
+        // Also pre-fill the API port if it was set
+        if (r.api_port && r.api_port !== '1812') setApiPort(r.api_port);
+        if (r.ip_address && r.ip_address !== r.vendor_config?.nas_ip) setDirectIp(r.ip_address);
       }
     } catch (e: any) {
       setError('Failed to load router: ' + e.message);
@@ -74,12 +80,21 @@ export default function EditRouter() {
           body.password = authPass;
         }
       } else {
-        body.ip_address = nasIp;
         body.api_port = 1812;
         body.vendor_config = {
           nas_ip: nasIp,
           radius_secret: radiusSecret
         };
+        // NAS IP is the primary IP for RADIUS accounting
+        body.ip_address = nasIp;
+        // If API credentials were provided, also store them for enhanced monitoring
+        if (authUser && authUser !== '(credentials stored)' && authPass) {
+          body.username = authUser;
+          body.password = authPass;
+          // If a separate MikroTik API IP is set, use it
+          if (directIp && directIp !== nasIp) body.ip_address = directIp;
+          if (apiPort && apiPort !== '1812') body.api_port = apiPort;
+        }
       }
 
       const res = await apiFetch(`/api/router/${id}`, {
@@ -183,14 +198,62 @@ export default function EditRouter() {
               <div className="grid grid-cols-2 gap-5">
                  <div className="col-span-2">
                     <label className="block text-[13px] font-medium text-slate-700 mb-0.5">NAS IP Address</label>
-                    <p className="text-[11px] text-slate-400 mb-1.5 pb-1">The Public / WAN IP Address this router will use to communicate with the system.</p>
-                    <input type="text" value={nasIp} onChange={e => setNasIp(e.target.value)} className="auth-input font-mono max-w-sm" placeholder="Leave blank to accept from any IP" />
+                    <p className="text-[11px] text-amber-700 mb-1.5 bg-amber-50 border border-amber-100 px-3 py-2 rounded-lg">
+                      ⚠️ <strong>Critical:</strong> This must exactly match the source IP that this router sends accounting packets from (visible in server logs as "Incoming"). A mismatch causes sessions to appear on the wrong router or be dropped entirely.
+                    </p>
+                    <input type="text" value={nasIp} onChange={e => setNasIp(e.target.value)} className="auth-input font-mono max-w-sm" placeholder="e.g. 10.8.0.2 or leave blank for any" />
                  </div>
                  <div className="col-span-2">
                     <label className="block text-[13px] font-medium text-slate-700 mb-0.5">RADIUS Shared Secret</label>
-                    <p className="text-[11px] text-slate-400 mb-1.5 pb-1">Ensure this matches the secret configured on the NAS device.</p>
+                    <p className="text-[11px] text-slate-400 mb-1.5 pb-1">Must match exactly what is configured on the MikroTik RADIUS client.</p>
                     <input type="text" required value={radiusSecret} onChange={e => setRadiusSecret(e.target.value)} className="auth-input font-mono max-w-sm" />
                  </div>
+              </div>
+
+              {/* MikroTik API Enhancement */}
+              <div className="border-t border-slate-100 pt-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <Key className="w-4 h-4 text-emerald-500" />
+                  <h3 className="text-[14px] font-semibold text-slate-800">
+                    MikroTik API Access
+                    <span className="ml-2 text-[11px] font-normal text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Optional — unlocks CPU · Traffic · Kill-switch</span>
+                  </h3>
+                </div>
+                <p className="text-[12px] text-slate-500 mb-4">
+                  Provide your MikroTik Winbox credentials to enable live CPU monitoring, per-interface bandwidth, PPPoE session control, and the ability to suspend users directly from the dashboard.
+                  Connect via WireGuard tunnel IP or direct public IP on port <strong>8729</strong>.
+                </p>
+                <div className="grid grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API IP Address</label>
+                    <p className="text-[11px] text-slate-400 mb-1.5">WireGuard tunnel IP or router's public IP.</p>
+                    <input type="text" value={directIp} onChange={e => setDirectIp(e.target.value)} className="auth-input font-mono" placeholder="10.8.0.2 or router's public IP" />
+                  </div>
+                  <div>
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Port</label>
+                    <input type="number" value={apiPort === '1812' ? '8729' : apiPort} onChange={e => setApiPort(e.target.value)} className="auth-input font-mono" placeholder="8729" />
+                  </div>
+                  <div>
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Username</label>
+                    <input
+                      type="text"
+                      value={authUser === '(credentials stored)' ? '' : authUser}
+                      onChange={e => setAuthUser(e.target.value)}
+                      className="auth-input font-mono"
+                      placeholder={authUser === '(credentials stored)' ? '← Credentials already stored' : 'admin'}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Password</label>
+                    <input
+                      type="password"
+                      value={authPass}
+                      onChange={e => setAuthPass(e.target.value)}
+                      className="auth-input font-mono"
+                      placeholder={authUser === '(credentials stored)' ? 'Enter new password to update' : '••••••••'}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           )}

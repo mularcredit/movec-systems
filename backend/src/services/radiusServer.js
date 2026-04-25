@@ -60,23 +60,36 @@ async function resolveSecret(nasIp) {
             .eq('vendor', 'radius');
 
         if (routers) {
+            // PASS 1: Try exact NAS-IP match first (most specific wins)
             for (const r of routers) {
                 const config = r.vendor_config || {};
                 const configuredNasIp = config.nas_ip || null;
-                console.log(`[RADIUS] Checking router ${r.id} | Config NAS IP: ${configuredNasIp} vs Incoming: ${nasIp}`);
                 
-                if (configuredNasIp === nasIp || !configuredNasIp) {
-                    if (config.radius_secret) {
-                        console.log(`[RADIUS] Match found for ${nasIp} on router ${r.id}`);
-                        return { secret: config.radius_secret, router: r };
-                    }
+                if (configuredNasIp && configuredNasIp === nasIp && config.radius_secret) {
+                    console.log(`[RADIUS] Exact NAS-IP match: ${nasIp} → router ${r.id}`);
+                    return { secret: config.radius_secret, router: r };
+                }
+            }
+
+            // PASS 2: Fall back to wildcard entries (no nas_ip configured)
+            for (const r of routers) {
+                const config = r.vendor_config || {};
+                const configuredNasIp = config.nas_ip || null;
+
+                if (!configuredNasIp && config.radius_secret) {
+                    console.log(`[RADIUS] Wildcard match for ${nasIp} → router ${r.id}`);
+                    return { secret: config.radius_secret, router: r };
                 }
             }
         }
 
         const fallback = process.env.RADIUS_DEFAULT_SECRET;
-        if (fallback) return { secret: fallback, router: null };
+        if (fallback) {
+            console.log(`[RADIUS] Using env fallback secret for ${nasIp}`);
+            return { secret: fallback, router: null };
+        }
 
+        console.warn(`[RADIUS] No matching secret found for NAS ${nasIp} — packet DISCARDED`);
         return null;
     } catch (e) {
         console.error('[RADIUS] Secret resolution error:', e.message);
