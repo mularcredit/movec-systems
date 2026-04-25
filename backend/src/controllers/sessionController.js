@@ -22,8 +22,11 @@ exports.getLiveSessions = async (req, res) => {
         const liveData = [];
 
         // 2. Fetch RADIUS sessions (In-memory)
+        // PATH B: All RADIUS sessions (credential-independent)
+        // We include ALL sessions including those with routerId='unknown' (NAS-IP mismatch)
+        // so no authenticated subscriber is silently dropped from the dashboard
         const radiusSessions = radiusServer.getActiveSessions();
-        const tenantRadiusSessions = radiusSessions.filter(s => s.routerId !== 'unknown'); 
+        const tenantRadiusSessions = radiusSessions;
         
         const radiusSessionMap = new Map();
         tenantRadiusSessions.forEach(s => radiusSessionMap.set(s.username, s));

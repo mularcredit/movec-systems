@@ -52,13 +52,19 @@ export default function ActiveUsers() {
 
   const filtered = sessions.filter(s => {
     const q = search.toLowerCase();
-    return !q || (s.name || s.user || '').toLowerCase().includes(q)
-      || (s.address || '').includes(q)
+    const name = s.username || s.name || s.user || '';
+    return !q || name.toLowerCase().includes(q)
+      || (s.address || s.ip || '').includes(q)
       || (s.router_name || '').toLowerCase().includes(q);
   });
 
-  const pppoe   = filtered.filter(s => s.type === 'pppoe');
-  const hotspot = filtered.filter(s => s.type === 'hotspot');
+  const pppoe   = filtered.filter(s => (s.service || s.type || '').toLowerCase() === 'pppoe');
+  const hotspot = filtered.filter(s => (s.service || s.type || '').toLowerCase() === 'hotspot');
+  // Catch any sessions without a specific type (RADIUS sessions sometimes just say 'PPPoE' with capital)
+  const others  = filtered.filter(s => {
+    const svc = (s.service || s.type || '').toLowerCase();
+    return svc !== 'pppoe' && svc !== 'hotspot';
+  });
 
   return (
     <div className="space-y-6">
@@ -67,7 +73,7 @@ export default function ActiveUsers() {
         <div>
           <h2 className="text-[18px] font-medium text-slate-800">Active Sessions</h2>
           <p className="text-[13px] text-slate-500 mt-1">
-            {loading ? 'Polling RouterOS...' : `${sessions.length} connected — ${pppoe.length} PPPoE · ${hotspot.length} Hotspot`}
+            {loading ? 'Polling RouterOS...' : `${sessions.length} connected — ${pppoe.length} PPPoE · ${hotspot.length} Hotspot · ${others.length} Other`}
             {lastRefresh && !loading && <span className="ml-2 text-slate-400">· Refreshed {lastRefresh.toLocaleTimeString()}</span>}
           </p>
         </div>
@@ -122,24 +128,30 @@ export default function ActiveUsers() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {pppoe.map(s => (
-                      <tr key={`${s.router_id}-${s['.id']}`} className="hover:bg-slate-50/50 transition">
-                        <td className="px-5 py-3.5"><span className="font-mono text-[12px] bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">{s.name || '—'}</span></td>
-                        <td className="px-5 py-3.5 font-mono text-[12px] text-slate-700">{s.address || '—'}</td>
-                        <td className="px-5 py-3.5 font-mono text-[11px] text-slate-500">{s['caller-id'] || '—'}</td>
-                        <td className="px-5 py-3.5 text-[13px] text-emerald-600 font-medium">{s.uptime || '—'}</td>
-                        <td className="px-5 py-3.5 text-[12px] text-slate-500">{s.router_name}</td>
-                        <td className="px-5 py-3.5 text-right">
-                          <button
-                            onClick={() => killSession(s)}
-                            disabled={killLoading === s['.id']}
-                            className="text-[12px] font-medium text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-100 px-3 py-1 rounded transition"
-                          >
-                            {killLoading === s['.id'] ? '...' : 'Disconnect'}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {pppoe.map(s => {
+                      const sessionId = s.id || s['.id'] || s.session_id;
+                      const username = s.username || s.name || '—';
+                      const ip = s.address || s.ip || '—';
+                      const mac = s['caller-id'] || s.mac || '—';
+                      return (
+                        <tr key={`${s.router_id}-${sessionId}`} className="hover:bg-slate-50/50 transition">
+                          <td className="px-5 py-3.5"><span className="font-mono text-[12px] bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">{username}</span></td>
+                          <td className="px-5 py-3.5 font-mono text-[12px] text-slate-700">{ip}</td>
+                          <td className="px-5 py-3.5 font-mono text-[11px] text-slate-500">{mac}</td>
+                          <td className="px-5 py-3.5 text-[13px] text-emerald-600 font-medium">{s.uptime || '—'}</td>
+                          <td className="px-5 py-3.5 text-[12px] text-slate-500">{s.router_name}</td>
+                          <td className="px-5 py-3.5 text-right">
+                            <button
+                              onClick={() => killSession({...s, '.id': sessionId})}
+                              disabled={killLoading === sessionId}
+                              className="text-[12px] font-medium text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-100 px-3 py-1 rounded transition"
+                            >
+                              {killLoading === sessionId ? '...' : 'Disconnect'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

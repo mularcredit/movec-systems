@@ -421,10 +421,11 @@ exports.getAllActiveSessions = async (req, res) => {
         const seenIds = new Set();
 
         // 1. Always include RADIUS in-memory sessions for ALL routers
+        // Include routerId='unknown' sessions too — these are valid but NAS-IP not matched
         const radiusSessions = radiusService.getActiveSessions();
         radiusSessions.forEach(s => {
             const r = routers.find(router => router.id === s.routerId);
-            if (r && !seenIds.has(s.sessionId)) {
+            if (!seenIds.has(s.sessionId)) {
                 seenIds.add(s.sessionId);
                 allSessions.push({
                     id: s.sessionId,
@@ -435,8 +436,8 @@ exports.getAllActiveSessions = async (req, res) => {
                     uptime: s.uptime,
                     download: (s.tx / (1024 * 1024)).toFixed(2) + ' MB',
                     upload: (s.rx / (1024 * 1024)).toFixed(2) + ' MB',
-                    router_name: r.name,
-                    router_id: r.id,
+                    router_name: r ? r.name : 'RADIUS Node',
+                    router_id: r ? r.id : null,
                     source: 'radius',
                     status: 'online'
                 });

@@ -7,6 +7,7 @@ import ConfirmModal from '../../../components/ui/ConfirmModal';
 export default function RoutersList() {
   const navigate = useNavigate();
   const [routers, setRouters] = useState<any[]>([]);
+  const [liveStatus, setLiveStatus] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: '', name: '' });
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -18,10 +19,23 @@ export default function RoutersList() {
   const fetchRouters = async () => {
     setLoading(true);
     try {
-      const res = await apiFetch('/api/router');
+      // Fetch both the router list and the live overview status in parallel
+      const [res, overviewRes] = await Promise.all([
+        apiFetch('/api/router'),
+        apiFetch('/api/router/overview')
+      ]);
       const data = await res.json();
-      if (data.success) {
-        setRouters(data.routers);
+      const overviewData = await overviewRes.json();
+      
+      if (data.success) setRouters(data.routers);
+      
+      // Build a lookup map: router_id -> live metric data
+      if (overviewData.success && overviewData.overview?.router_metrics) {
+        const statusMap: Record<string, any> = {};
+        overviewData.overview.router_metrics.forEach((m: any) => {
+          statusMap[m.id] = m;
+        });
+        setLiveStatus(statusMap);
       }
     } catch (error) {
       console.error("Failed to load routers:", error);
@@ -148,25 +162,42 @@ export default function RoutersList() {
                     <p className="text-[11px] text-slate-400">Port {router.api_port}</p>
                   </td>
                   <td className="px-6 py-4">
-                    {router.connection_status === 'online' ? (
-                      <span className="badge-success">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5" /> Online
-                      </span>
-                    ) : router.connection_status === 'warning' ? (
-                      <span className="badge-warning">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5" /> Warning
-                      </span>
-                    ) : (
-                      <span className="badge-error bg-slate-50 text-slate-600 border-slate-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5" /> Offline
-                      </span>
-                    )}
+                    {(() => {
+                      const live = liveStatus[router.id];
+                      const status = live?.status || router.connection_status;
+                      if (status === 'online') return (
+                        <span className="badge-success">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" /> Online
+                        </span>
+                      );
+                      if (status === 'warning') return (
+                        <span className="badge-warning">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5" /> RADIUS Only
+                        </span>
+                      );
+                      if (status === 'pending') return (
+                        <span className="inline-flex items-center text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5" /> Awaiting Auth
+                        </span>
+                      );
+                      return (
+                        <span className="badge-error bg-slate-50 text-slate-600 border-slate-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5" /> Offline
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="text-[14px] font-medium text-slate-700">{router.total_users?.toLocaleString() || 0}</span>
+                    <span className="text-[14px] font-medium text-slate-700">
+                      {liveStatus[router.id]?.active_sessions ?? router.total_users ?? 0}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-[12px] font-medium text-slate-600">{router.router_os_version || 'Unknown'}</span>
+                    {router.vendor === 'radius' ? (
+                      <span className="text-[12px] font-medium text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded">RADIUS AAA</span>
+                    ) : (
+                      <span className="text-[12px] font-medium text-slate-600">{liveStatus[router.id]?.os_version || router.router_os_version || 'Polling...'}</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 text-right flex items-center justify-end gap-3">
                     <button 
