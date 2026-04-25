@@ -212,6 +212,86 @@ export default function OnboardingWizard() {
           </div>
         )}
 
+        {vendor === 'mikrotik' && step === 4 && (
+          <div className="p-8 space-y-6 animate-in fade-in">
+            <h3 className="text-[17px] font-normal text-slate-700">Router credentials</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">Router name</label>
+                <input type="text" value={routerName} onChange={(e) => setRouterName(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="e.g. Westlands Branch" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">API port (SSL)</label>
+                <input type="text" value={apiPort} onChange={(e) => setApiPort(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="8729" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">Username</label>
+                <input type="text" value={authUser} onChange={(e) => setAuthUser(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="movec-api" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">Password</label>
+                <input type="password" value={authPass} onChange={(e) => setAuthPass(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="••••••••" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {vendor === 'mikrotik' && step === 5 && (
+          <div className="p-8 flex flex-col items-center justify-center py-12 animate-in fade-in text-center">
+            <Activity className="w-12 h-12 text-emerald-500 mb-6" strokeWidth={1} />
+            <h3 className="text-xl font-light text-slate-800 mb-2">Validate connection</h3>
+            <p className="text-[13px] text-slate-400 max-w-xs mb-8">We will perform a handshake with {getTargetIp()} to verify credentials.</p>
+            
+            {apiError && (
+              <div className="bg-rose-50 text-rose-600 p-4 rounded-xl text-[12px] mb-6 border border-rose-100">
+                {apiError}
+              </div>
+            )}
+
+            <button 
+              onClick={executeHandshake} 
+              disabled={isHandshaking}
+              className="bg-slate-800 text-white px-10 py-3 rounded-xl text-[13px] font-normal hover:bg-slate-900 transition-all flex items-center shadow-lg"
+            >
+              {isHandshaking ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Activity className="w-4 h-4 mr-2" />}
+              {isHandshaking ? 'Verifying...' : 'Start handshake'}
+            </button>
+          </div>
+        )}
+
+        {vendor === 'radius' && step === 2 && (
+          <div className="p-8 space-y-6 animate-in fade-in">
+            <h3 className="text-[17px] font-normal text-slate-700">NAS configuration</h3>
+            <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-xl space-y-3">
+               <p className="text-[12px] text-blue-700 font-medium">Point your device to:</p>
+               <div className="grid grid-cols-2 gap-4 text-[11px] font-mono">
+                  <div className="text-slate-500">RADIUS Server: <span className="text-blue-600">213.188.220.233</span></div>
+                  <div className="text-slate-500">Auth Port: <span className="text-blue-600">1812</span></div>
+               </div>
+            </div>
+          </div>
+        )}
+
+        {vendor === 'radius' && step === 3 && (
+          <div className="p-8 space-y-6 animate-in fade-in">
+            <h3 className="text-[17px] font-normal text-slate-700">Identify node</h3>
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">Site name</label>
+                <input type="text" value={routerName} onChange={(e) => setRouterName(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="e.g. Tenda Gateway" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">NAS IP (Device IP)</label>
+                <input type="text" value={nasIp} onChange={(e) => setNasIp(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="192.168.1.1" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] text-slate-500">RADIUS shared secret</label>
+                <input type="text" value={radiusSecret} onChange={(e) => setRadiusSecret(e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-[13px] outline-none focus:border-emerald-500/50 transition-all" placeholder="Secret key" />
+              </div>
+            </div>
+          </div>
+        )}
+
         {step === (vendor === 'radius' ? 4 : 6) && (
           <div className="p-8 flex flex-col items-center justify-center py-16 animate-in zoom-in duration-700">
              <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center border border-emerald-100 mb-8">
@@ -233,18 +313,15 @@ export default function OnboardingWizard() {
           >
             {step === 1 ? 'Cancel' : 'Back'}
           </button>
-            <button
-              disabled={
-                step === 3 && (!routerName || !nasIp || radiusSecret.length < 8)
-              }
-              onClick={() => setStep(step + 1)}
-              className="auth-btn !w-auto !px-10 py-3 flex items-center shadow-lg disabled:grayscale"
+          {step < (vendor === 'radius' ? 4 : 6) && step !== 5 && (
+            <button 
+              onClick={() => setStep(step + 1)} 
+              className="bg-slate-800 text-white px-8 py-2.5 rounded-xl text-[12px] font-normal shadow-sm hover:bg-slate-800 transition-all flex items-center"
             >
-              {step === 1 ? 'Select & Continue' : 'Next Step'} <ArrowRight className="w-4 h-4 ml-2" />
+              Continue <ArrowRight className="w-3.5 h-3.5 ml-2" />
             </button>
           )}
         </div>
-
       </div>
     </div>
   );
