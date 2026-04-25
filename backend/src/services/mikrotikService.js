@@ -448,8 +448,58 @@ async function getUserLogs(tenant_id, router_id, username) {
 
 /**
  * Fetches comprehensive router status for the dashboard.
- * Includes: identity, resources, health, and active session counts.
+ * Optimized for speed: NO RETRIES. If the router is down, we skip it.
  */
+async function getRouterDashboardDataNoRetry(tenant_id, router_id) {
+    const { client } = await connectToRouter(tenant_id, router_id);
+    try {
+        const [identity, resources, health, pppActive, hotspotActive] = await Promise.all([
+            client.menu('/system/identity').get().catch(() => ([{ name: 'Unknown' }])),
+            client.menu('/system/resource').get().catch(() => ([{}])),
+            client.menu('/system/health').get().catch(() => ([])),
+            client.menu('/ppp/active').get().catch(() => ([])),
+            client.menu('/ip/hotspot/active').get().catch(() => ([]))
+        ]);
+
+        return {
+            identity: identity[0] || {},
+            resources: resources[0] || {},
+            health: health || [],
+            pppActiveCount: pppActive.length,
+            hotspotActiveCount: hotspotActive.length,
+            totalActive: pppActive.length + hotspotActive.length
+        };
+    } finally {
+        await client.close().catch(() => {});
+    }
+}
+
+/**
+ * Interface traffic without retries.
+ */
+async function getInterfaceTrafficNoRetry(tenant_id, router_id) {
+    const { client } = await connectToRouter(tenant_id, router_id);
+    try {
+        let traffic = [];
+        try {
+            traffic = await client.menu('/interface/monitor-traffic').get({ interface: 'all', once: true });
+        } catch (e) {
+            traffic = await client.menu('/interface').get();
+        }
+        
+        return traffic.map(i => ({
+            name: i.name,
+            rx_bits_per_second: i['rx-bits-per-second'] || 0,
+            tx_bits_per_second: i['tx-bits-per-second'] || 0,
+            rx_byte: i['rx-byte'] || 0,
+            tx_byte: i['tx-byte'] || 0,
+            running: i.running === 'true'
+        }));
+    } finally {
+        await client.close().catch(() => {});
+    }
+}
+
 async function getRouterDashboardData(tenant_id, router_id) {
     const { client } = await withRetry(() => connectToRouter(tenant_id, router_id));
     try {
@@ -572,6 +622,8 @@ module.exports = {
     updateUserPassword,
     getUserLogs,
     getRouterDashboardData,
+    getRouterDashboardDataNoRetry,
     getDetailedActiveSessions,
-    getInterfaceTraffic
+    getInterfaceTraffic,
+    getInterfaceTrafficNoRetry
 };

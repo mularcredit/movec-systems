@@ -479,7 +479,7 @@ exports.getGlobalNetworkOverview = async (req, res) => {
     try {
         const { data: routers, error } = await supabase
             .from('routers')
-            .select('id, name, connection_status, vendor')
+            .select('id, name, connection_status, vendor, ip_address, username_encrypted, password_encrypted')
             .eq('tenant_id', req.tenant_id);
         
         if (error) throw error;
@@ -497,8 +497,13 @@ exports.getGlobalNetworkOverview = async (req, res) => {
         const promises = routers.map(async (router) => {
             let apiData = null;
 
-            // 1. Always check RADIUS in-memory sessions for ALL routers
-            const radiusSessions = radiusService.getActiveSessions().filter(s => s.routerId === router.id);
+            // 1. Check RADIUS sessions for this router
+            // RESCUE LOGIC: If a session has routerId='unknown', we check if its IP matches this router's IP
+            const radiusSessions = radiusService.getActiveSessions().filter(s => {
+                if (s.routerId === router.id) return true;
+                if (s.routerId === 'unknown' && s.nasIp === router.ip_address) return true;
+                return false;
+            });
 
             // 2. Attempt live API handshake for ANY router with credentials
             // This is how we determine the TRUE online/offline status — not the cached DB column
@@ -507,8 +512,8 @@ exports.getGlobalNetworkOverview = async (req, res) => {
             if (hasCredentials) {
                 try {
                     const [dash, traffic] = await Promise.all([
-                        mikrotikService.getRouterDashboardData(req.tenant_id, router.id),
-                        mikrotikService.getInterfaceTraffic(req.tenant_id, router.id)
+                        mikrotikService.getRouterDashboardDataNoRetry(req.tenant_id, router.id),
+                        mikrotikService.getInterfaceTrafficNoRetry(req.tenant_id, router.id)
                     ]);
                     
                     const router_tx = traffic.reduce((s, i) => s + Number(i.tx_bits_per_second || 0), 0);
