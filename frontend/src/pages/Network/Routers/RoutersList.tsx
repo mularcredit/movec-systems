@@ -19,24 +19,28 @@ export default function RoutersList() {
   const fetchRouters = async () => {
     setLoading(true);
     try {
-      // Fetch both the router list and the live overview status in parallel
-      const [res, overviewRes] = await Promise.all([
-        apiFetch('/api/router'),
-        apiFetch('/api/router/overview')
-      ]);
+      // Step 1: Fetch the core router list first so we show SOMETHING immediately
+      const res = await apiFetch('/api/router');
       const data = await res.json();
-      const overviewData = await overviewRes.json();
-      
-      if (data.success) setRouters(data.routers);
-      
-      // Build a lookup map: router_id -> live metric data
-      if (overviewData.success && overviewData.overview?.router_metrics) {
-        const statusMap: Record<string, any> = {};
-        overviewData.overview.router_metrics.forEach((m: any) => {
-          statusMap[m.id] = m;
-        });
-        setLiveStatus(statusMap);
+      if (data.success) {
+        setRouters(data.routers);
       }
+
+      // Step 2: Fetch the live overview in the background
+      // This way, if it fails or hangs, the router list is already visible
+      apiFetch('/api/router/overview')
+        .then(res => res.json())
+        .then(overviewData => {
+          if (overviewData.success && overviewData.overview?.router_metrics) {
+            const statusMap: Record<string, any> = {};
+            overviewData.overview.router_metrics.forEach((m: any) => {
+              statusMap[m.id] = m;
+            });
+            setLiveStatus(statusMap);
+          }
+        })
+        .catch(err => console.warn("Live status sync delayed:", err));
+
     } catch (error) {
       console.error("Failed to load routers:", error);
     } finally {
