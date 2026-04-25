@@ -13,10 +13,10 @@ export default function OnboardingWizard() {
 
   // Basic Identity
   const [routerName, setRouterName] = useState('');
-  const [tunnelIp, setTunnelIp] = useState('10.0.0.3'); // Default suggested IP
+  const [tunnelIp, setTunnelIp] = useState('');
   const [authUser, setAuthUser] = useState('');
   const [authPass, setAuthPass] = useState('');
-  const [radiusSecret, setRadiusSecret] = useState('Movec@HomeLab#2026!Ke');
+  const [radiusSecret, setRadiusSecret] = useState('');
 
   // Status
   const [isHandshaking, setIsHandshaking] = useState(false);
@@ -289,7 +289,7 @@ export default function OnboardingWizard() {
           <button 
             type="button" 
             onClick={() => step > 1 ? setStep(step - 1) : navigate('/network/routers')}
-            className="text-slate-400 text-[12px] px-2 hover:text-slate-600 transition font-light"
+            className="text-slate-400 text-[12px] px-2 hover:text-slate-600 transition font-normal"
           >
             {step === 1 ? 'Cancel' : 'Back'}
           </button>
@@ -300,12 +300,13 @@ export default function OnboardingWizard() {
                   {!routerName ? 'Site Name is required' : 
                    !tunnelIp ? 'Tunnel IP is required' :
                    !authUser ? 'Admin Username is required' :
-                   !authPass ? 'Admin Password is required' : 'Please check all fields'}
+                   !authPass ? 'Admin Password is required' : 
+                   !radiusSecret ? 'RADIUS Secret is required' : 'Please check all fields'}
                 </span>
               )}
               <button 
                 onClick={() => {
-                  if (step === 1 && (!routerName || !authUser || !authPass || !tunnelIp)) {
+                  if (step === 1 && (!routerName || !authUser || !authPass || !tunnelIp || !radiusSecret)) {
                       setApiError('VALIDATION_ERROR');
                       return;
                   }
