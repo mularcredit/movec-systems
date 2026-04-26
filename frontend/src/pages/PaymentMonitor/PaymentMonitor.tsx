@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Activity, TrendingUp, AlertCircle, Clock, DollarSign, 
   Search, Filter, ChevronRight, ArrowUpRight, ArrowDownRight,
@@ -57,6 +58,7 @@ interface Account {
 }
 
 export default function PaymentMonitor() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [summary, setSummary] = useState<SummaryData | null>(null);
   const [distribution, setDistribution] = useState<DistributionItem[]>([]);
@@ -123,7 +125,10 @@ export default function PaymentMonitor() {
             <Download className="w-4 h-4 text-textSecondary" />
             Export Data
           </button>
-          <button className="btn-primary flex items-center gap-2">
+          <button 
+            onClick={() => navigate('/payments')}
+            className="btn-primary flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             New Payment
           </button>
