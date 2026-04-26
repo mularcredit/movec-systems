@@ -133,6 +133,34 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Visual Diagram */}
+      <div className="flex items-center justify-center py-8 px-4 gap-2 sm:gap-6 bg-[#0B0914]/50 border border-[rgba(167,139,250,0.1)] rounded-2xl mb-8 shadow-inner overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(167,139,250,0.03)] to-transparent pointer-events-none"></div>
+
+        <div className="flex flex-col items-center relative z-10">
+          <img src="/pngwing.com (2).png" alt="Movec Antenna" className="h-16 md:h-24 w-auto object-contain drop-shadow-[0_0_15px_rgba(167,139,250,0.4)]" />
+          <span className="text-[10px] text-textSecondary mt-3 uppercase tracking-widest font-medium">Movec Hub</span>
+        </div>
+        
+        <div className="flex-1 max-w-[60px] sm:max-w-[120px] h-[2px] bg-white/5 relative overflow-hidden rounded-full">
+          <div className="absolute top-0 left-0 h-full w-full animate-data-flow"></div>
+        </div>
+
+        <div className="flex flex-col items-center relative z-10">
+          <img src="/pngwing.com (1).png" alt="MikroTik Router" className="h-14 md:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(52,211,153,0.2)]" />
+          <span className="text-[10px] text-textSecondary mt-3 uppercase tracking-widest font-medium">MikroTik Gateway</span>
+        </div>
+
+        <div className="flex-1 max-w-[60px] sm:max-w-[120px] h-[2px] bg-white/5 relative overflow-hidden rounded-full">
+          <div className="absolute top-0 left-0 h-full w-full animate-data-flow" style={{ animationDelay: '0.5s' }}></div>
+        </div>
+
+        <div className="flex flex-col items-center relative z-10">
+          <img src="/pngwing.com.png" alt="PPPoE Client" className="h-12 md:h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(96,165,250,0.2)]" />
+          <span className="text-[10px] text-textSecondary mt-3 uppercase tracking-widest font-medium">PPPoE Client</span>
+        </div>
+      </div>
+
       {/* Grid: 4 Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Today collections" value={`Ksh ${stats.todayCollections.toLocaleString()}`} sub="Direct gateway" icon={Wallet} colorClass="text-emerald-500" loading={loading} trend={12} />

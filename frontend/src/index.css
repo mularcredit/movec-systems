@@ -132,12 +132,12 @@
   }
 }
 @keyframes dataFlow {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% { background-position: 0 0; }
+  100% { background-position: -20px 0; }
 }
 
 .animate-data-flow {
-  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(167,139,250,0.8) 50%, rgba(255,255,255,0.05) 100%);
-  background-size: 200% 100%;
-  animation: dataFlow 2s infinite linear;
+  background-image: linear-gradient(90deg, rgba(167,139,250,0.8) 50%, transparent 50%);
+  background-size: 10px 2px;
+  animation: dataFlow 0.8s infinite linear;
 }

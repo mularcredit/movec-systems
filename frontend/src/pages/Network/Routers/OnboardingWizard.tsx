@@ -130,7 +130,7 @@ export default function OnboardingWizard() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(167,139,250,0.03)] to-transparent pointer-events-none"></div>
 
               <div className="flex flex-col items-center relative z-10">
-                <img src="/pngwing.com (1).png" alt="Movec Antenna" className="h-16 md:h-24 w-auto object-contain drop-shadow-[0_0_15px_rgba(167,139,250,0.4)]" />
+                <img src="/pngwing.com (2).png" alt="Movec Antenna" className="h-16 md:h-24 w-auto object-contain drop-shadow-[0_0_15px_rgba(167,139,250,0.4)]" />
                 <span className="text-[10px] text-textSecondary mt-3 uppercase tracking-widest font-medium">Movec Hub</span>
               </div>
               
@@ -139,7 +139,7 @@ export default function OnboardingWizard() {
               </div>
 
               <div className="flex flex-col items-center relative z-10">
-                <img src="/pngwing.com (2).png" alt="MikroTik Router" className="h-14 md:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(52,211,153,0.2)]" />
+                <img src="/pngwing.com (1).png" alt="MikroTik Router" className="h-14 md:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(52,211,153,0.2)]" />
                 <span className="text-[10px] text-textSecondary mt-3 uppercase tracking-widest font-medium">MikroTik Gateway</span>
               </div>
 
