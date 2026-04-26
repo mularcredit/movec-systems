@@ -153,38 +153,42 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-[11px] text-black mb-1.5 tracking-wider font-medium">Full name</label>
+            <div>
+                <label className="block text-[11px] text-textSecondary mb-1.5 tracking-wider font-medium uppercase">Full name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   required
                   placeholder="Kevin Mwendwa"
-                  className="auth-input"
+                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
+                  onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
+                  onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
-            )}
 
             <div>
-              <label className="block text-[11px] text-black mb-1.5 tracking-wider font-medium">Email address</label>
+              <label className="block text-[11px] text-textSecondary mb-1.5 tracking-wider font-medium uppercase">Email address</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="you@company.co.ke"
-                className="auth-input"
+                className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
+                onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
+                onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
               />
             </div>
 
             {mode !== 'reset' && (
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-[11px] text-black tracking-wider font-medium">Password</label>
+                  <label className="text-[11px] text-textSecondary tracking-wider font-medium uppercase">Password</label>
                   {mode === 'login' && (
-                    <button type="button" onClick={() => { setMode('reset'); reset(); }} className="text-[11px] text-emerald-600 hover:text-emerald-700 transition font-medium">
+                    <button type="button" onClick={() => { setMode('reset'); reset(); }} className="text-[11px] text-emerald-400 hover:text-emerald-300 transition font-medium">
                       Forgot?
                     </button>
                   )}
@@ -195,7 +199,10 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                   onChange={e => setPassword(e.target.value)}
                   required
                   placeholder="••••••••••"
-                  className="auth-input"
+                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
+                  onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
+                  onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
             )}
@@ -227,28 +234,30 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
               </div>
             )}
 
-            {/* Confirm Password — signup only */}
             {mode === 'signup' && (
               <div>
-                <label className="block text-[11px] text-black mb-1.5 tracking-wider font-medium">Confirm password</label>
+                <label className="block text-[11px] text-textSecondary mb-1.5 tracking-wider font-medium uppercase">Confirm password</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={e => setConfirm(e.target.value)}
                   required
                   placeholder="••••••••••"
-                  className="auth-input"
+                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
+                  onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
+                  onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
             )}
 
             {error && (
-              <div className="py-2.5 px-4 bg-rose-50 border border-rose-100 rounded-full text-[11px] text-rose-600 animate-in fade-in slide-in-from-top-1">
+              <div className="py-2.5 px-4 bg-rose-500/15 border border-rose-500/20 rounded-xl text-[12px] text-rose-400 animate-in fade-in slide-in-from-top-1">
                 {error}
               </div>
             )}
             {message && (
-              <div className="py-2.5 px-4 bg-emerald-50 border border-emerald-100 rounded-full text-[11px] text-emerald-700 animate-in fade-in slide-in-from-top-1">
+              <div className="py-2.5 px-4 bg-emerald-500/15 border border-emerald-500/20 rounded-xl text-[12px] text-emerald-400 animate-in fade-in slide-in-from-top-1">
                 {message}
               </div>
             )}
@@ -256,7 +265,8 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
             <button
               type="submit"
               disabled={loading}
-              className="w-full auth-btn mt-2"
+              className="w-full mt-2 py-3.5 px-6 rounded-xl text-[14px] font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #059669 100%)' }}
             >
               {loading
                 ? <span className="flex items-center justify-center gap-2">
@@ -277,7 +287,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
             {mode === 'login' && (
               <p className="text-[12px] text-textSecondary">
                 Don't have an account?{' '}
-                <button onClick={() => { setMode('signup'); reset(); }} className="text-emerald-600 hover:text-emerald-700 transition font-semibold">
+                <button onClick={() => { setMode('signup'); reset(); }} className="text-emerald-400 hover:text-emerald-300 transition font-semibold">
                   Create one
                 </button>
               </p>
@@ -285,7 +295,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
             {mode === 'signup' && (
               <p className="text-[12px] text-textSecondary">
                 Already have an account?{' '}
-                <button onClick={() => { setMode('login'); reset(); }} className="text-emerald-600 hover:text-emerald-700 transition font-semibold">
+                <button onClick={() => { setMode('login'); reset(); }} className="text-emerald-400 hover:text-emerald-300 transition font-semibold">
                   Sign in
                 </button>
               </p>
