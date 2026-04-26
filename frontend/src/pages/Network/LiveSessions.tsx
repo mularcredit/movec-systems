@@ -177,12 +177,12 @@ export default function LiveSessions() {
                   <th className="px-6 py-4 text-[11px] font-normal text-textSecondary uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-white/5">
                 {filtered.map((s, i) => (
                   <tr key={`${s.username}-${i}`} className="hover:bg-white/5/30 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-[12px] font-medium border border-emerald-100/50">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-400 text-[12px] font-medium border border-emerald-500/20">
                           {s.username.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -194,11 +194,11 @@ export default function LiveSessions() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         {s.source === 'mikrotik' ? (
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-md text-[10px] font-medium">
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 rounded-md text-[10px] font-medium">
                             <Zap className="w-3 h-3" /> API
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-md text-[10px] font-medium">
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-500/15 text-blue-400 border border-blue-500/20 rounded-md text-[10px] font-medium">
                             <ShieldCheck className="w-3 h-3" /> RADIUS
                           </div>
                         )}
@@ -227,7 +227,7 @@ export default function LiveSessions() {
                          <button 
                            onClick={() => handleDisconnect(s)}
                            disabled={disconnecting === s.session_id}
-                           className="p-2 text-textSecondary hover:text-rose-500 transition-all rounded-lg hover:bg-rose-50"
+                           className="p-2 text-textSecondary hover:text-rose-400 transition-all rounded-lg hover:bg-rose-500/10"
                            title="Disconnect User"
                          >
                            {disconnecting === s.session_id ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
@@ -244,9 +244,9 @@ export default function LiveSessions() {
         )}
       </div>
 
-      <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-start gap-3">
-         <Globe className="w-4 h-4 text-blue-500 mt-0.5" />
-         <p className="text-[12px] text-blue-700 leading-relaxed">
+      <div className="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20 flex items-start gap-3">
+         <Globe className="w-4 h-4 text-blue-400 mt-0.5" />
+         <p className="text-[12px] text-blue-200/80 leading-relaxed">
            <strong>Smart Monitoring:</strong> We poll MikroTik API for precise real-time counters. RADIUS data is based on the last accounting interim update (usually every 5-10 mins). Live "Kill" commands are sent directly to the hardware gateway.
          </p>
       </div>
