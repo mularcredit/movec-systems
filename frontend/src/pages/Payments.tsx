@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, CreditCard, Download, X, Loader2, CheckCircle2, Smartphone, History, Receipt } from 'lucide-react';
+import CustomLoader from '../components/common/CustomLoader';
+
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
 import { SelectDropdown } from '../components/ui/SelectDropdown';
@@ -283,7 +285,7 @@ export default function Payments() {
                 <div className="flex gap-3 mt-6">
                   <button onClick={() => setM('open', false)} className="flex-1 btn-secondary text-[13px]">Cancel</button>
                   <button onClick={handleSubmit} disabled={modal.loading} className={`flex-1 btn-primary text-[13px] flex items-center justify-center gap-2 ${modal.mode === 'stk' ? 'bg-emerald-600 hover:bg-emerald-700' : ''}`}>
-                    {modal.loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : modal.mode === 'stk' ? 'Send STK Push' : 'Record Payment'}
+                    {modal.loading ? <><CustomLoader inline size="sm" /> Processing...</> : modal.mode === 'stk' ? 'Send STK Push' : 'Record Payment'}
                   </button>
                 </div>
               </div>
@@ -333,7 +335,7 @@ export default function Payments() {
 
         {loading ? (
           <div className="p-16 flex flex-col items-center justify-center">
-            <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
+            <CustomLoader />
             <p className="text-[13px] text-textSecondary">Loading payment ledger...</p>
           </div>
         ) : filtered.length === 0 ? (

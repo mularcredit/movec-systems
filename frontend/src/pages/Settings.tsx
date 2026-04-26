@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, Building, CreditCard, Bell, Shield, PaintBucket, Save, Info, User, Lock, CheckCircle2, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import CustomLoader from '../components/common/CustomLoader';
+
 import { apiFetch } from '../lib/apiClient';
 import { supabase } from '../lib/supabase';
 import { validatePhone, validateEmail } from '../lib/validation';
@@ -513,7 +515,7 @@ export default function Settings() {
                 </div>
                 <div className="flex justify-start">
                   <button type="submit" className="btn-primary flex items-center gap-2" disabled={savingProfile}>
-                    {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <User className="w-4 h-4" />}
+                    {savingProfile ? <CustomLoader inline size="sm" /> : <User className="w-4 h-4" />}
                     Save Identity
                   </button>
                 </div>
@@ -555,7 +557,7 @@ export default function Settings() {
                 </div>
                 <div className="flex justify-start">
                   <button type="submit" className="btn-primary flex items-center gap-2" disabled={savingPw || !pwForm.newPw}>
-                    {savingPw ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
+                    {savingPw ? <CustomLoader inline size="sm" /> : <Lock className="w-4 h-4" />}
                     Change Password
                   </button>
                 </div>

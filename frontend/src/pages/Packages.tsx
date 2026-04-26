@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Wifi, Shield, Globe, Edit2, Archive, AlertTriangle, X, Loader2 } from 'lucide-react';
+import CustomLoader from '../components/common/CustomLoader';
+
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -131,7 +133,7 @@ export default function Packages() {
 
         {loading ? (
           <div className="p-16 flex items-center justify-center">
-            <Loader2 className="w-6 h-6 text-emerald-500 animate-spin" />
+            <CustomLoader />
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
@@ -238,7 +240,7 @@ export default function Packages() {
                 disabled={archiving}
                 className="px-4 py-2 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/30 text-[13px] font-medium hover:bg-violet-500/30 transition flex items-center gap-2 disabled:opacity-70"
               >
-                {archiving ? <><Loader2 className="w-4 h-4 animate-spin" /> Archiving...</> : <><Archive className="w-4 h-4" /> Archive Package</>}
+                {archiving ? <><CustomLoader inline size="sm" /> Archiving...</> : <><Archive className="w-4 h-4" /> Archive Package</>}
               </button>
             </div>
           </div>

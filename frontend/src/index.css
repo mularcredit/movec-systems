@@ -141,3 +141,12 @@
   background-size: 10px 2px;
   animation: dataFlow 0.8s infinite linear;
 }
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}

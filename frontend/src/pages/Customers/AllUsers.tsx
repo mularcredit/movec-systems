@@ -283,7 +283,7 @@ export default function AllUsers() {
                 className={`flex-1 text-[13px] py-2 px-4 rounded-lg font-medium transition flex items-center justify-center gap-2 ${
                   modal.customer.status === 'active' ? 'bg-rose-500 hover:bg-rose-600 text-white' : 'bg-emerald-500 hover:bg-emerald-600 text-white'}`}
               >
-                {modal.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (modal.customer.status === 'active' ? 'Suspend' : 'Reconnect')}
+                {modal.loading ? <CustomLoader inline size="sm" /> : (modal.customer.status === 'active' ? 'Suspend' : 'Reconnect')}
               </button>
             </div>
           </div>
@@ -329,7 +329,7 @@ export default function AllUsers() {
                 disabled={deleteModal.loading}
                 className="flex-1 bg-rose-500 hover:bg-rose-600 text-white text-[13px] py-2 px-4 rounded-lg font-medium transition flex items-center justify-center gap-2 disabled:opacity-70"
               >
-                {deleteModal.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Delete Customer'}
+                {deleteModal.loading ? <CustomLoader inline size="sm" /> : 'Delete Customer'}
               </button>
             </div>
           </div>

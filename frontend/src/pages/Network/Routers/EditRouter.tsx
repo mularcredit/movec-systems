@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Activity, ArrowLeft, Loader2, Save, Cpu, Radio, ShieldAlert, Key, AlertTriangle } from 'lucide-react';
+import CustomLoader from '../../../components/common/CustomLoader';
+
 import { apiFetch } from '../../../lib/apiClient';
 
 export default function EditRouter() {
@@ -115,7 +117,7 @@ export default function EditRouter() {
 
   if (loading) return (
     <div className="flex items-center justify-center h-full min-h-[400px]">
-      <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+      <CustomLoader />
     </div>
   );
 
@@ -268,7 +270,7 @@ export default function EditRouter() {
           <div className="flex gap-3 justify-end pt-4 border-t border-white/5">
              <button type="button" onClick={() => navigate(-1)} className="btn-secondary">Cancel</button>
              <button type="submit" disabled={isSaving} className="btn-primary">
-                 {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                 {isSaving ? <CustomLoader inline size="sm" /> : <Save className="w-4 h-4 mr-2" />}
                  Save Changes
              </button>
           </div>

@@ -316,7 +316,7 @@ export default function AddPackage() {
                     className="px-4 py-2 rounded-xl border border-white/20 text-[13px] font-medium text-textPrimary bg-bgSecondary hover:bg-white/5 disabled:opacity-50 transition flex items-center gap-2 whitespace-nowrap"
                   >
                     {verifyStatus === 'loading'
-                      ? <><Loader2 className="w-4 h-4 animate-spin" /> Checking...</>
+                      ? <><CustomLoader inline size="sm" /> Checking...</>
                       : 'Verify Profile'}
                   </button>
                 </div>

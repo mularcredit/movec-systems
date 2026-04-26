@@ -117,7 +117,7 @@ export default function EditCustomer() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
+        <CustomLoader />
         <p className="text-textSecondary font-medium">Retrieving subscriber data...</p>
       </div>
     );
@@ -144,7 +144,7 @@ export default function EditCustomer() {
           disabled={saving}
           className="btn-primary flex items-center gap-2 shadow-lg shadow-emerald-500/20"
         >
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {saving ? <CustomLoader inline size="sm" /> : <Save className="w-4 h-4" />}
           {saving ? 'Saving Changes...' : 'Save Changes'}
         </button>
       </div>

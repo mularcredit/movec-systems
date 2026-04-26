@@ -305,7 +305,7 @@ export default function Communication() {
               className="w-full btn-primary flex items-center justify-center gap-2"
             >
               {sendLoading
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                ? <><CustomLoader inline size="sm" /> Sending...</>
                 : <><Send className="w-4 h-4" /> Send {channel === 'sms' ? 'SMS' : 'WhatsApp'}</>}
             </button>
           </div>
@@ -379,7 +379,7 @@ export default function Communication() {
               className="w-full btn-primary flex items-center justify-center gap-2"
             >
               {bLoading
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending to group...</>
+                ? <><CustomLoader inline size="sm" /> Sending to group...</>
                 : <><Zap className="w-4 h-4" /> Broadcast to {FILTERS.find(f => f.value === bFilter)?.label}</>}
             </button>
           </div>
@@ -417,7 +417,7 @@ export default function Communication() {
 
           <div className="card p-0 overflow-hidden">
             {logsLoading ? (
-              <div className="flex items-center justify-center h-32"><Loader2 className="w-5 h-5 text-emerald-500 animate-spin" /></div>
+              <div className="flex items-center justify-center h-32"><CustomLoader inline size="sm" /></div>
             ) : filteredLogs.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-40 text-center">
                 <BarChart3 className="w-6 h-6 text-textSecondary mb-2" />

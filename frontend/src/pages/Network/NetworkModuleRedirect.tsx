@@ -10,6 +10,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Server, Plus, Activity, ArrowRight } from 'lucide-react';
+import CustomLoader from '../../components/common/CustomLoader';
+
 import { apiFetch } from '../../lib/apiClient';
 
 interface Props {
@@ -46,7 +48,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
   if (status === 'loading') {
     return (
       <div className="flex flex-col items-center justify-center h-[calc(100vh-12rem)] animate-in fade-in">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
+        <CustomLoader />
         <p className="text-[14px] text-textSecondary font-medium tracking-wide">Locating active gateways...</p>
       </div>
     );

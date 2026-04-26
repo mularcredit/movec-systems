@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Wifi, RefreshCw, Loader2, XOctagon, Share2, Users } from 'lucide-react';
+import CustomLoader from '../../components/common/CustomLoader';
+
 import { apiFetch } from '../../lib/apiClient';
 
 const API = '/api/router';
@@ -97,7 +99,7 @@ export default function ActiveUsers() {
 
       {loading && !sessions.length ? (
         <div className="card flex flex-col items-center justify-center h-52">
-          <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
+          <CustomLoader />
           <p className="text-[13px] text-textSecondary">Connecting to all active routers...</p>
         </div>
       ) : !sessions.length && !error ? (

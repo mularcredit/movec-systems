@@ -3,9 +3,10 @@ import React from 'react';
 interface CustomLoaderProps {
   message?: string;
   size?: 'sm' | 'md' | 'lg';
+  inline?: boolean;
 }
 
-export default function CustomLoader({ message = 'Loading...', size = 'md' }: CustomLoaderProps) {
+export default function CustomLoader({ message = 'Loading...', size = 'md', inline = false }: CustomLoaderProps) {
   const sizeClasses = {
     sm: 'w-12 h-12',
     md: 'w-24 h-24',
@@ -13,10 +14,20 @@ export default function CustomLoader({ message = 'Loading...', size = 'md' }: Cu
   };
 
   const imgClasses = {
-    sm: 'w-6 h-6',
+    sm: 'w-5 h-5',
     md: 'w-12 h-12',
     lg: 'w-16 h-16'
   };
+
+  if (inline) {
+    return (
+      <img 
+        src="/modem.png" 
+        alt="Loading..." 
+        className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_5px_rgba(167,139,250,0.5)] inline-block`} 
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-8 space-y-6">
@@ -31,7 +42,7 @@ export default function CustomLoader({ message = 'Loading...', size = 'md' }: Cu
         <img 
           src="/modem.png" 
           alt="Loading..." 
-          className={`${imgClasses[size]} object-contain animate-pulse drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] z-10`} 
+          className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] z-10`} 
         />
       </div>
       

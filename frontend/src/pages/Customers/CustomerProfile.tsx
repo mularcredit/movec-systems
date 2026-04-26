@@ -131,7 +131,7 @@ export default function CustomerProfile() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-32">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
+        <CustomLoader />
         <p className="text-sm font-medium text-textSecondary">Loading profile data...</p>
       </div>
     );
@@ -368,7 +368,7 @@ export default function CustomerProfile() {
 
         {loadingLogs ? (
           <div className="flex flex-col items-center justify-center p-10">
-            <Loader2 className="w-6 h-6 text-textSecondary animate-spin mb-3" />
+            <CustomLoader />
             <p className="text-[12px] text-textSecondary">Querying RouterOS Buffer...</p>
           </div>
         ) : !logs.length ? (

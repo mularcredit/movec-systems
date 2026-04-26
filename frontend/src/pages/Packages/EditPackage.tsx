@@ -191,7 +191,7 @@ export default function EditPackage() {
   if (pageLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-6 h-6 text-emerald-500 animate-spin" />
+        <CustomLoader />
       </div>
     );
   }
@@ -316,7 +316,7 @@ export default function EditPackage() {
                     className="px-4 py-2 rounded-xl border border-white/20 text-[13px] font-medium text-textPrimary bg-bgSecondary hover:bg-white/5 disabled:opacity-50 transition flex items-center gap-2 whitespace-nowrap"
                   >
                     {verifyStatus === 'loading'
-                      ? <><Loader2 className="w-4 h-4 animate-spin" /> Checking...</>
+                      ? <><CustomLoader inline size="sm" /> Checking...</>
                       : 'Verify Profile'}
                   </button>
                 </div>
@@ -439,7 +439,7 @@ export default function EditPackage() {
             Cancel
           </button>
           <button onClick={handleSave} disabled={loading} className="btn-primary flex items-center gap-2">
-            {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</> : <><Save className="w-4 h-4" /> Save Changes</>}
+            {loading ? <><CustomLoader inline size="sm" /> Saving...</> : <><Save className="w-4 h-4" /> Save Changes</>}
           </button>
         </div>
       </div>

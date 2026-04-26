@@ -41,7 +41,7 @@ const LiveTrafficPoller = ({ routerId }: { routerId: string }) => {
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center min-h-[350px]">
-      <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
+      <CustomLoader />
       <p className="text-[13px] text-textSecondary">Initializing Live Torch Monitoring...</p>
     </div>
   );
@@ -125,7 +125,7 @@ const Badge = ({ online }: { online: boolean }) => (
 const TabPanel = ({ loading, children }: { loading: boolean; children: React.ReactNode }) => {
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-64">
-      <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
+      <CustomLoader />
       <p className="text-[13px] text-textSecondary">Polling RouterOS API...</p>
     </div>
   );
@@ -254,7 +254,7 @@ export default function RouterDetail() {
 
   if (routerLoading) return (
     <div className="flex items-center justify-center h-64">
-      <Loader2 className="w-6 h-6 text-emerald-500 animate-spin" />
+      <CustomLoader />
     </div>
   );
 
@@ -301,7 +301,7 @@ export default function RouterDetail() {
             disabled={isDeleting}
             className="flex items-center px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all gap-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 shadow-sm"
           >
-            {isDeleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+            {isDeleting ? <CustomLoader inline size="sm" /> : <Trash2 className="w-3.5 h-3.5" />}
             Decommission
           </button>
           <button className="btn-primary text-[13px]">Force Config Push</button>
