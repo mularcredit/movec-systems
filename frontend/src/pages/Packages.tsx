@@ -98,8 +98,8 @@ export default function Packages() {
   };
 
   const TypeBadge = ({ type }: { type: string }) => {
-    if (type === 'PPPoE')   return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full"><Shield className="w-3 h-3"/>PPPoE</span>;
-    if (type === 'Hotspot') return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-full"><Wifi className="w-3 h-3"/>Hotspot</span>;
+    if (type === 'PPPoE')   return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full"><Shield className="w-3 h-3"/>PPPoE</span>;
+    if (type === 'Hotspot') return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full"><Wifi className="w-3 h-3"/>Hotspot</span>;
     return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-white/10 text-textSecondary border border-white/10 px-2 py-0.5 rounded-full"><Globe className="w-3 h-3"/>Static</span>;
   };
 
@@ -170,17 +170,17 @@ export default function Packages() {
                     </span>
                   </td>
                   <td className="px-5 py-3.5">
-                    {pkg.type === 'PPPoE'   && <span className="font-mono text-[11px] bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{pkg.ppp_profile}</span>}
-                    {pkg.type === 'Hotspot' && <span className="font-mono text-[11px] bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded">{pkg.hs_profile}</span>}
+                    {pkg.type === 'PPPoE'   && <span className="font-mono text-[11px] bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">{pkg.ppp_profile}</span>}
+                    {pkg.type === 'Hotspot' && <span className="font-mono text-[11px] bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded">{pkg.hs_profile}</span>}
                     {pkg.type === 'Static'  && <span className="text-[11px] text-textSecondary">N/A</span>}
                   </td>
-                  <td className="px-5 py-3.5 font-medium text-[13px] text-emerald-600">Ksh {pkg.price.toLocaleString()}</td>
+                  <td className="px-5 py-3.5 font-medium text-[13px] text-emerald-400">Ksh {pkg.price.toLocaleString()}</td>
                   <td className="px-5 py-3.5 text-[13px] text-textSecondary">{pkg.cycle}</td>
                   <td className="px-5 py-3.5 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => navigate(`/packages/edit/${pkg.id}`)}
-                        className="text-[13px] font-medium text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition"
+                        className="btn-table"
                       >
                         <Edit2 className="w-3.5 h-3.5" /> Edit
                       </button>
@@ -195,7 +195,7 @@ export default function Packages() {
                           <div className="absolute right-0 top-8 z-20 bg-bgSecondary rounded-xl shadow-xl border border-white/10 min-w-[160px] p-1">
                             <button
                               onClick={() => { setArchiveTarget(pkg); setMenuOpenId(null); }}
-                              className="w-full text-left px-3 py-2 rounded-lg text-[13px] text-rose-600 hover:bg-rose-50 flex items-center gap-2 transition"
+                              className="w-full text-left px-3 py-2 rounded-lg text-[13px] text-rose-600 hover:bg-rose-500/10 flex items-center gap-2 transition"
                             >
                               <Archive className="w-3.5 h-3.5" /> Archive Package
                             </button>
@@ -213,11 +213,11 @@ export default function Packages() {
 
       {/* Archive Confirmation Modal */}
       {archiveTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
           <div className="bg-bgSecondary rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5 text-amber-500" />
+              <div className="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-amber-400" />
               </div>
               <div>
                 <h3 className="text-[15px] font-semibold text-textPrimary">Archive Package?</h3>
@@ -227,16 +227,16 @@ export default function Packages() {
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">
-              <button
+                <button
                 onClick={() => setArchiveTarget(null)}
-                className="px-4 py-2 rounded-xl border border-white/10 text-[13px] font-medium text-textSecondary hover:bg-white/5 transition"
+                className="btn-secondary text-[13px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleArchive}
                 disabled={archiving}
-                className="px-4 py-2 rounded-xl bg-amber-500 text-white text-[13px] font-medium hover:bg-amber-600 transition flex items-center gap-2 disabled:opacity-70"
+                className="px-4 py-2 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/30 text-[13px] font-medium hover:bg-violet-500/30 transition flex items-center gap-2 disabled:opacity-70"
               >
                 {archiving ? <><Loader2 className="w-4 h-4 animate-spin" /> Archiving...</> : <><Archive className="w-4 h-4" /> Archive Package</>}
               </button>

@@ -228,7 +228,7 @@ export default function PaymentMonitor() {
           <div className="flex-1 min-h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={collections} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f8fafc" />
+                <CartesianGrid strokeDasharray="0" vertical={false} stroke="rgba(167,139,250,0.08)" />
                 <XAxis 
                   dataKey="label" 
                   axisLine={false} 
@@ -273,7 +273,7 @@ export default function PaymentMonitor() {
                   <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f8fafc" />
+              <CartesianGrid strokeDasharray="0" vertical={false} stroke="rgba(167,139,250,0.08)" />
               <XAxis 
                 dataKey="label" 
                 axisLine={false} 

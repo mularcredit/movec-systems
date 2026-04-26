@@ -87,7 +87,7 @@ export default function DashboardLayout() {
           isSub ? "ml-6" : "",
           isActive 
             ? "bg-accentPrimary/20 text-accentPrimary shadow-sm" 
-            : "text-textSecondary hover:bg-bgSecondary/5 hover:text-textPrimary"
+            : "text-[#DDD6FE]/70 hover:text-[#DDD6FE] hover:bg-white/5"
         )}
       >
         {isActive && !isSub && <div className="absolute left-[-16px] w-1 h-5 bg-emerald-500 rounded-full" />}

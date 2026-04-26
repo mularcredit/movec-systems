@@ -237,11 +237,11 @@ export default function AllUsers() {
 
       {/* Suspend / Reconnect Confirmation Modal */}
       {modal.open && modal.customer && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${modal.customer.status === 'active' ? 'bg-rose-50' : 'bg-emerald-50'}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${modal.customer.status === 'active' ? 'bg-rose-500/15' : 'bg-emerald-500/15'}`}>
                   {modal.customer.status === 'active' ? <UserX className="w-5 h-5 text-rose-600" /> : <UserCheck className="w-5 h-5 text-emerald-600" />}
                 </div>
                 <div>
@@ -291,7 +291,7 @@ export default function AllUsers() {
 
       {/* Delete Confirmation Modal */}
       {deleteModal.customer && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">

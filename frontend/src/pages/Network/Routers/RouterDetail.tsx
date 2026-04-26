@@ -407,7 +407,7 @@ export default function RouterDetail() {
                       <Td mono>{s.address || '—'}</Td>
                       <Td mono>{s['caller-id'] || '—'}</Td>
                       <Td><span className="text-emerald-600">{s.uptime || '—'}</span></Td>
-                      <Td><span className="text-[11px] bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{s.service || 'pppoe'}</span></Td>
+                      <Td><span className="text-[11px] bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">{s.service || 'pppoe'}</span></Td>
                       <Td right>
                         <button
                           onClick={() => killSession(s['.id'], 'pppoe')}

@@ -182,11 +182,11 @@ export default function Statistics() {
                     <stop offset="100%" stopColor="#3b82f6" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f8fafc" />
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(167,139,250,0.08)" />
                 <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} unit="M" />
                 <Tooltip 
-                  contentStyle={{ borderRadius: '12px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.03)', fontSize: '11px' }}
+                  contentStyle={{ borderRadius: '12px', border: '1px solid rgba(167,139,250,0.2)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)', fontSize: '11px' }}
                 />
                 <Area type="monotone" dataKey="rx" stroke="#10b981" strokeWidth={1.5} fillOpacity={1} fill="url(#colorRx)" />
                 <Area type="monotone" dataKey="tx" stroke="#3b82f6" strokeWidth={1.5} fillOpacity={1} fill="url(#colorTx)" />
