@@ -266,7 +266,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
               type="submit"
               disabled={loading}
               className="w-full mt-2 py-3.5 px-6 rounded-xl text-[14px] font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #059669 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #4c1d95 0%, #a78bfa 100%)' }}
             >
               {loading
                 ? <span className="flex items-center justify-center gap-2">
