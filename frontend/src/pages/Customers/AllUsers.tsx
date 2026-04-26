@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Search, Plus, MoreVertical, ShieldAlert, UserX, UserCheck, Loader2, X, Eye, Trash2, AlertTriangle, User, Wifi, WifiOff } from 'lucide-react';
+import CustomLoader from '../../components/common/CustomLoader';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
@@ -375,8 +376,7 @@ export default function AllUsers() {
 
         {loading ? (
           <div className="p-16 flex flex-col items-center justify-center">
-            <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
-            <p className="text-[13px] text-textSecondary">Loading subscriber database...</p>
+            <CustomLoader message="Loading subscriber database..." />
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
