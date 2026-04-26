@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IconCpu, IconRam, IconActivity, IconWifi, IconRefresh, IconAlertTriangle, IconCircleCheck, IconCircleX, IconArrowUpRight, IconArrowDownLeft, IconRouter, IconServerRack, IconClock } from '@tabler/icons-react';
+import { IconCpu, IconDeviceSdCard, IconActivity, IconWifi, IconRefresh, IconAlertTriangle, IconCircleCheck, IconCircleX, IconArrowUpRight, IconArrowDownLeft, IconRouter, IconServer, IconClock } from '@tabler/icons-react';
 import { apiFetch } from '../../../lib/apiClient';
 import CustomLoader from '../../../components/common/CustomLoader';
 
@@ -113,10 +113,10 @@ export default function RouterStats() {
       {overview && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Total Routers', value: overview.total_routers, icon: Server, color: 'text-textSecondary' },
-            { label: 'Online', value: overview.online_routers, icon: CheckCircle, color: 'text-emerald-600' },
-            { label: 'Active Sessions', value: overview.total_active_sessions, icon: Activity, color: 'text-blue-600' },
-            { label: 'Total Upload', value: formatBps(overview.total_tx_bps), icon: ArrowUpRight, color: 'text-purple-600' },
+            { label: 'Total Routers', value: overview.total_routers, icon: IconServer, color: 'text-textSecondary' },
+            { label: 'Online', value: overview.online_routers, icon: IconCircleCheck, color: 'text-emerald-600' },
+            { label: 'Active Sessions', value: overview.total_active_sessions, icon: IconActivity, color: 'text-blue-600' },
+            { label: 'Total Upload', value: formatBps(overview.total_tx_bps), icon: IconArrowUpRight, color: 'text-purple-600' },
           ].map((stat, i) => (
             <div key={i} className="bg-bgSecondary border border-white/5 rounded-2xl p-5 shadow-sm">
               <div className="flex items-center justify-between mb-3">

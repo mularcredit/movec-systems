@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { IconUsers, IconUserX, IconAlertTriangle, IconClock, IconServerRack, IconCircleCheck, IconCreditCard, IconWallet, IconActivity, IconBolt, IconArrowUpRight, IconAntenna } from '@tabler/icons-react';
+import { IconUsers, IconUserX, IconAlertTriangle, IconClock, IconServer, IconCircleCheck, IconCreditCard, IconWallet, IconActivity, IconBolt, IconArrowUpRight, IconAntenna } from '@tabler/icons-react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
 import CustomLoader from '../components/common/CustomLoader';
@@ -169,10 +169,10 @@ export default function Dashboard() {
 
       {/* Grid: 4 Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Today collections" value={`Ksh ${stats.todayCollections.toLocaleString()}`} sub="Direct gateway" icon={Wallet} colorClass="text-emerald-500" loading={loading} trend={12} />
-        <StatCard title="Active subscribers" value={stats.activeSubscribers} sub="Authenticated" icon={CheckCircle2} colorClass="text-blue-500" loading={loading} trend={5} />
-        <StatCard title="Total bandwidth" value={`${stats.globalTraffic} Mbps`} sub="Real-time flow" icon={Activity} colorClass="text-purple-500" loading={loading} />
-        <StatCard title="Network nodes" value={`${stats.onlineNodes}/${stats.totalNodes}`} sub="Gateways active" icon={Server} colorClass={stats.onlineNodes === stats.totalNodes ? "text-emerald-500" : "text-rose-500"} loading={loading} />
+        <StatCard title="Today collections" value={`Ksh ${stats.todayCollections.toLocaleString()}`} sub="Direct gateway" icon={IconWallet} colorClass="text-emerald-500" loading={loading} trend={12} />
+        <StatCard title="Active subscribers" value={stats.activeSubscribers} sub="Authenticated" icon={IconCircleCheck} colorClass="text-blue-500" loading={loading} trend={5} />
+        <StatCard title="Total bandwidth" value={`${stats.globalTraffic} Mbps`} sub="Real-time flow" icon={IconActivity} colorClass="text-purple-500" loading={loading} />
+        <StatCard title="Network nodes" value={`${stats.onlineNodes}/${stats.totalNodes}`} sub="Gateways active" icon={IconServer} colorClass={stats.onlineNodes === stats.totalNodes ? "text-emerald-500" : "text-rose-500"} loading={loading} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
