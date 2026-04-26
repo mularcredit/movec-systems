@@ -21,17 +21,25 @@ export default function CustomLoader({ message = 'Loading...', size = 'md', inli
 
   if (inline) {
     return (
-      <img 
-        src="/modem.png" 
-        alt="Loading..." 
-        className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_5px_rgba(167,139,250,0.5)] inline-block`} 
-      />
+      <div className="relative inline-flex items-center justify-center">
+        {/* Radial glow background */}
+        <div className="absolute inset-0 bg-purple-500/30 blur-md rounded-full z-0 animate-pulse"></div>
+        
+        <img 
+          src="/modem.png" 
+          alt="Loading..." 
+          className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_8px_rgba(167,139,250,0.8)] relative z-10`} 
+        />
+      </div>
     );
   }
 
   return (
     <div className="flex flex-col items-center justify-center p-8 space-y-6">
       <div className={`relative flex items-center justify-center ${sizeClasses[size]}`}>
+        {/* Deep radial glow behind the image */}
+        <div className="absolute inset-2 bg-purple-500/20 blur-xl rounded-full z-0 animate-pulse"></div>
+
         {/* Rotating border circle (solid arcs) */}
         <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-emerald-500 border-b-emerald-500 animate-spin" style={{ animationDuration: '2s' }}></div>
         
@@ -42,7 +50,7 @@ export default function CustomLoader({ message = 'Loading...', size = 'md', inli
         <img 
           src="/modem.png" 
           alt="Loading..." 
-          className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] z-10`} 
+          className={`${imgClasses[size]} object-contain animate-heartbeat drop-shadow-[0_0_15px_rgba(167,139,250,0.8)] relative z-10`} 
         />
       </div>
       
