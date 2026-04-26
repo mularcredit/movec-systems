@@ -8,6 +8,7 @@ import {
   ArrowUp, ArrowDown, RefreshCw
 } from 'lucide-react';
 import { apiFetch } from '../../lib/apiClient';
+import CustomLoader from '../../components/common/CustomLoader';
 
 const MetricCard = ({ title, value, unit, icon: Icon, colorClass, trend }: any) => (
   <div className="bg-bgSecondary border border-white/5 p-5 rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.01)] hover:shadow-lg transition-all duration-500 group">
@@ -104,8 +105,7 @@ export default function Statistics() {
   if (loading && !overview) {
     return (
       <div className="h-[70vh] flex flex-col items-center justify-center space-y-3">
-        <RefreshCw className="w-6 h-6 text-white/30 animate-spin" strokeWidth={1.5} />
-        <p className="text-textSecondary text-[13px] font-light">Synchronizing infrastructure...</p>
+        <CustomLoader message="Synchronizing infrastructure..." />
       </div>
     );
   }

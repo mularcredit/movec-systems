@@ -10,6 +10,7 @@ import {
   AreaChart, Area
 } from 'recharts';
 import { apiFetch } from '../../lib/apiClient';
+import CustomLoader from '../../components/common/CustomLoader';
 
 interface SummaryData {
   total_collected: number;
@@ -102,8 +103,7 @@ export default function PaymentMonitor() {
   if (loading && !summary) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin" />
-        <p className="text-textSecondary text-[13px] font-light">Analyzing financial data...</p>
+        <CustomLoader message="Analyzing financial data..." />
       </div>
     );
   }
