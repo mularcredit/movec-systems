@@ -173,7 +173,7 @@ export default function Subscription() {
         const target = PLANS.find(p => p.id === upgradeTarget)!;
         return (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200">
+            <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
               <div className="w-12 h-12 bg-emerald-500/15 rounded-xl flex items-center justify-center mb-5">
                 <ArrowUpRight className="w-6 h-6 text-emerald-400" />
               </div>

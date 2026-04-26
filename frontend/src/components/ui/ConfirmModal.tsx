@@ -53,7 +53,7 @@ export default function ConfirmModal({
         className="fixed inset-0 bg-bgPrimary/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200" 
         onClick={() => !isLoading && onCancel()}
       />
-      <div className="relative bg-bgSecondary rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-bgSecondary rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
         <div className="flex flex-col items-center text-center">
           <div className={clsx(
             "w-12 h-12 rounded-full flex items-center justify-center mb-4",

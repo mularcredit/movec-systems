@@ -178,7 +178,7 @@ export default function CustomerProfile() {
       {/* Change Password Modal */}
       {showPasswordModal && (
         <div className="fixed inset-0 z-50 bg-bgPrimary/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-bgSecondary rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex justify-between items-center mb-5">
               <h3 className="text-[16px] font-semibold text-textPrimary">Change Authentication Password</h3>
               <button disabled={savingPassword} onClick={() => setShowPasswordModal(false)} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5"/></button>

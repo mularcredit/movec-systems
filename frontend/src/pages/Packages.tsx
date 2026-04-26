@@ -214,7 +214,7 @@ export default function Packages() {
       {/* Archive Confirmation Modal */}
       {archiveTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-bgSecondary rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-amber-400" />

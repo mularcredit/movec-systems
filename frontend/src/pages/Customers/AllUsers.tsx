@@ -238,7 +238,7 @@ export default function AllUsers() {
       {/* Suspend / Reconnect Confirmation Modal */}
       {modal.open && modal.customer && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${modal.customer.status === 'active' ? 'bg-rose-500/15' : 'bg-emerald-500/15'}`}>
@@ -292,7 +292,7 @@ export default function AllUsers() {
       {/* Delete Confirmation Modal */}
       {deleteModal.customer && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center">
