@@ -163,10 +163,10 @@ export default function Dashboard() {
                     <stop offset="100%" stopColor="#10b981" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f8fafc" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#cbd5e1', fontSize: 10}} tickFormatter={(v) => `${v/1000}k`} />
-                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.03)', fontSize: '12px' }} />
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(167,139,250,0.08)" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#C4B5FD', fontSize: 10}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#C4B5FD', fontSize: 10}} tickFormatter={(v) => `${v/1000}k`} />
+                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid rgba(167,139,250,0.2)', background: '#332650', color: '#F3F0FF', fontSize: '12px' }} />
                 <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={1.5} fillOpacity={1} fill="url(#colorRev)" />
               </AreaChart>
             </ResponsiveContainer>
@@ -192,7 +192,7 @@ export default function Dashboard() {
                 </div>
                 <div className="pt-2 flex items-center justify-between text-[10px] text-textSecondary">
                    <div className="flex -space-x-1.5">
-                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-slate-900 bg-bgSecondary flex items-center justify-center text-[8px]">U{i}</div>)}
+                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-white/10 bg-bgSecondary flex items-center justify-center text-[8px]" key={i}>U{i}</div>)}
                    </div>
                    <span className="text-emerald-500/60">+12% vs last month</span>
                 </div>
@@ -225,33 +225,33 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Alerts: Minimalist bars */}
+      {/* Alerts: Dark-tinted themed bars */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-         <div className="bg-rose-50/50 border border-rose-100/50 rounded-xl p-4 flex items-center gap-3">
-            <div className="p-2.5 bg-rose-500/10 rounded-lg">
-               <UserX className="w-4 h-4 text-rose-500" strokeWidth={1.5} />
+         <div className="bg-rose-500/10 border border-rose-500/20 rounded-xl p-4 flex items-center gap-3">
+            <div className="p-2.5 bg-rose-500/15 rounded-lg">
+               <UserX className="w-4 h-4 text-rose-400" strokeWidth={1.5} />
             </div>
             <div>
-               <p className="text-[13px] font-normal text-rose-800">{stats.suspendedAccounts} Suspended accounts</p>
-               <p className="text-[11px] text-rose-500/70">Action required</p>
+               <p className="text-[13px] font-normal text-rose-300">{stats.suspendedAccounts} Suspended accounts</p>
+               <p className="text-[11px] text-rose-400/60">Action required</p>
             </div>
          </div>
-         <div className="bg-amber-50/50 border border-amber-100/50 rounded-xl p-4 flex items-center gap-3">
-            <div className="p-2.5 bg-amber-500/10 rounded-lg">
-               <AlertTriangle className="w-4 h-4 text-amber-500" strokeWidth={1.5} />
+         <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-center gap-3">
+            <div className="p-2.5 bg-amber-500/15 rounded-lg">
+               <AlertTriangle className="w-4 h-4 text-amber-400" strokeWidth={1.5} />
             </div>
             <div>
-               <p className="text-[13px] font-normal text-amber-800">{stats.overduePayments} Overdue invoices</p>
-               <p className="text-[11px] text-amber-500/70">Auto-cycle active</p>
+               <p className="text-[13px] font-normal text-amber-300">{stats.overduePayments} Overdue invoices</p>
+               <p className="text-[11px] text-amber-400/60">Auto-cycle active</p>
             </div>
          </div>
-         <div className="bg-blue-50/50 border border-blue-100/50 rounded-xl p-4 flex items-center gap-3">
-            <div className="p-2.5 bg-blue-500/10 rounded-lg">
-               <Signal className="w-4 h-4 text-blue-500" strokeWidth={1.5} />
+         <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-3">
+            <div className="p-2.5 bg-blue-500/15 rounded-lg">
+               <Signal className="w-4 h-4 text-blue-400" strokeWidth={1.5} />
             </div>
             <div>
-               <p className="text-[13px] font-normal text-blue-800">Starlink stability</p>
-               <p className="text-[11px] text-blue-500/70">99.9% WAN uptime</p>
+               <p className="text-[13px] font-normal text-blue-300">Starlink stability</p>
+               <p className="text-[11px] text-blue-400/60">99.9% WAN uptime</p>
             </div>
          </div>
       </div>

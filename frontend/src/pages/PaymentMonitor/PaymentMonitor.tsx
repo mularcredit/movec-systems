@@ -313,11 +313,11 @@ export default function PaymentMonitor() {
             >All Accounts</button>
             <button 
               onClick={() => setFilter('overdue')}
-              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'overdue' ? 'bg-rose-500 text-white shadow-md' : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100'}`}
+              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'overdue' ? 'bg-rose-500 text-white shadow-md' : 'bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20'}`}
             >Overdue</button>
             <button 
               onClick={() => setFilter('partial')}
-              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'partial' ? 'bg-amber-500 text-white shadow-md' : 'bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-100'}`}
+              className={`px-5 py-1.5 rounded-xl text-[12px] font-normal transition-all ${filter === 'partial' ? 'bg-amber-500 text-white shadow-md' : 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/20'}`}
             >Partial</button>
           </div>
 
@@ -345,7 +345,7 @@ export default function PaymentMonitor() {
                 <th className="px-6 py-4 text-[10px] font-normal text-textSecondary uppercase tracking-[0.1em] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-white/5">
               {accounts.map((acc) => (
                 <tr key={acc.id} className="hover:bg-white/5/30 transition-colors group">
                   <td className="px-6 py-5">
@@ -363,9 +363,9 @@ export default function PaymentMonitor() {
                     <div>
                       <p className="text-[12px] text-textSecondary">{acc.package}</p>
                       <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-normal uppercase mt-1 tracking-wider ${
-                        acc.payment_category === 'full' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
-                        acc.payment_category === 'discounted' ? 'bg-purple-50 text-purple-600 border border-purple-100' :
-                        'bg-amber-50 text-amber-600 border border-amber-100'
+                        acc.payment_category === 'full' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' :
+                        acc.payment_category === 'discounted' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/20' :
+                        'bg-amber-500/15 text-amber-400 border border-amber-500/20'
                       }`}>
                         {acc.payment_category}
                       </span>
@@ -389,9 +389,9 @@ export default function PaymentMonitor() {
                   </td>
                   <td className="px-6 py-5">
                     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-normal border ${
-                      acc.pay_status === 'paid' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                      acc.pay_status === 'overdue' ? 'bg-rose-50 text-rose-600 border-rose-100' :
-                      'bg-amber-50 text-amber-600 border-amber-100'
+                      acc.pay_status === 'paid' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' :
+                      acc.pay_status === 'overdue' ? 'bg-rose-500/15 text-rose-400 border-rose-500/20' :
+                      'bg-amber-500/15 text-amber-400 border-amber-500/20'
                     }`}>
                       <div className={`w-1 h-1 rounded-full ${
                         acc.pay_status === 'paid' ? 'bg-emerald-500' :
@@ -418,10 +418,10 @@ export default function PaymentMonitor() {
 
 function SummaryCard({ label, value, subValue, icon, color, trend }: { label: string; value: string; subValue: string; icon: React.ReactNode; color: 'emerald' | 'rose' | 'amber' | 'indigo'; trend?: string }) {
   const colors = {
-    emerald: 'bg-emerald-50 text-emerald-500 border-emerald-100/50',
-    rose: 'bg-rose-50 text-rose-500 border-rose-100/50',
-    amber: 'bg-amber-50 text-amber-500 border-amber-100/50',
-    indigo: 'bg-indigo-50 text-indigo-500 border-indigo-100/50',
+    emerald: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+    rose: 'bg-rose-500/15 text-rose-400 border-rose-500/20',
+    amber: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
+    indigo: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/20',
   };
 
   return (
@@ -431,7 +431,7 @@ function SummaryCard({ label, value, subValue, icon, color, trend }: { label: st
           {icon}
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-white/5 text-textSecondary'}`}>
+          <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-textSecondary'}`}>
             {trend.startsWith('+') ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
             {trend}
           </div>

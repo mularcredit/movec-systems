@@ -443,18 +443,26 @@ export default function AllUsers() {
                   <td className="px-5 py-3.5 text-[13px] text-textSecondary font-medium">{u.due_date}</td>
                   <td className="px-5 py-3.5 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      {/* Suspend/Reconnect toggle switch */}
                       <button
                         onClick={() => openSuspend(u)}
-                        className={`text-[12px] font-medium px-3 py-1.5 rounded transition ${
-                          u.status === 'active'
-                            ? 'text-rose-600 bg-rose-50 hover:bg-rose-100'
-                            : u.status === 'suspended'
-                              ? 'text-emerald-600 bg-emerald-50 hover:bg-emerald-100'
-                              : 'text-textSecondary bg-white/5 cursor-default'
-                        }`}
                         disabled={u.status !== 'active' && u.status !== 'suspended'}
+                        title={u.status === 'active' ? 'Click to suspend' : u.status === 'suspended' ? 'Click to reconnect' : ''}
+                        className={`relative inline-flex items-center rounded-full transition-all duration-300 focus:outline-none ${
+                          u.status !== 'active' && u.status !== 'suspended'
+                            ? 'cursor-default opacity-30'
+                            : 'cursor-pointer'
+                        }`}
+                        style={{ width: '36px', height: '20px' }}
                       >
-                        {u.status === 'active' ? 'Suspend' : u.status === 'suspended' ? 'Reconnect' : '—'}
+                        <span className={`absolute inset-0 rounded-full transition-colors duration-300 ${
+                          u.status === 'active' ? 'bg-emerald-500' : 'bg-white/15'
+                        }`} />
+                        <span className={`absolute left-0.5 top-0.5 w-4 h-4 rounded-full shadow-sm transition-transform duration-300 ${
+                          u.status === 'active'
+                            ? 'translate-x-4 bg-white'
+                            : 'translate-x-0 bg-white/40'
+                        }`} />
                       </button>
 
                       {/* Three-dot context menu */}

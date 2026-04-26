@@ -174,8 +174,8 @@ export default function Subscription() {
         return (
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200">
-              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
-                <ArrowUpRight className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 bg-emerald-500/15 rounded-xl flex items-center justify-center mb-5">
+                <ArrowUpRight className="w-6 h-6 text-emerald-400" />
               </div>
               <h3 className="text-[18px] font-medium text-textPrimary mb-2">Upgrade to {target.name}?</h3>
               <p className="text-[13px] text-textSecondary mb-6 leading-relaxed">
@@ -230,8 +230,8 @@ export default function Subscription() {
                     {plan.id === 'standard' && <Star className="w-4 h-4 text-emerald-500" />}
                     {plan.id === 'premium' && <Crown className="w-4 h-4 text-violet-500" />}
                     <span className={`text-[13px] font-medium ${
-                      plan.id === 'premium' ? 'text-violet-600' :
-                      plan.id === 'standard' ? 'text-emerald-600' : 'text-textSecondary'
+                      plan.id === 'premium' ? 'text-violet-400' :
+                      plan.id === 'standard' ? 'text-emerald-400' : 'text-textSecondary'
                     }`}>{plan.name}</span>
                   </div>
                   <div className="flex items-baseline gap-1 mb-1">
