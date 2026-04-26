@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CustomLoader from '../../components/common/CustomLoader';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { 
