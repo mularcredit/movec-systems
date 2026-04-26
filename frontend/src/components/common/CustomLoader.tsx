@@ -29,8 +29,8 @@ export default function CustomLoader({ message = 'Loading...', size = 'md' }: Cu
 
         {/* Pulsing router image */}
         <img 
-          src="/custom-loader.png" 
-          alt="Loading router" 
+          src="/modem.png" 
+          alt="Loading..." 
           className={`${imgClasses[size]} object-contain animate-pulse drop-shadow-[0_0_10px_rgba(167,139,250,0.5)] z-10`} 
         />
       </div>

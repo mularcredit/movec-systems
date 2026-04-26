@@ -32,6 +32,7 @@ import LiveSessions from './pages/Network/LiveSessions';
 import RouterStats from './pages/Network/RouterStats/RouterStats';
 
 import { apiFetch } from './lib/apiClient';
+import CustomLoader from './components/common/CustomLoader';
 
 // Minimal Placeholder UI
 const Placeholder = ({ title }: { title: string }) => (
@@ -63,7 +64,7 @@ const RequireRouter = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (hasRouter === null && !hasError) {
-    return <div className="h-full flex items-center justify-center"><Loader2 className="w-6 h-6 text-emerald-500 animate-spin" /></div>;
+    return <div className="h-full flex items-center justify-center"><CustomLoader message="Checking node status..." /></div>;
   }
   
   if (hasError) {
@@ -98,7 +99,7 @@ function App() {
   if (session === undefined) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-bgSecondary">
-        <Loader2 className="w-6 h-6 text-emerald-500 animate-spin" />
+        <CustomLoader message="Authenticating..." />
       </div>
     );
   }
