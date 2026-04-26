@@ -131,3 +131,13 @@
     @apply w-full rounded-full bg-black hover:bg-slate-800 active:bg-slate-900 text-white text-[13px] font-medium py-4 px-6 transition-all shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed;
   }
 }
+@keyframes dataFlow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.animate-data-flow {
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(167,139,250,0.8) 50%, rgba(255,255,255,0.05) 100%);
+  background-size: 200% 100%;
+  animation: dataFlow 2s infinite linear;
+}
