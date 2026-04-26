@@ -152,7 +152,8 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+            {mode === 'signup' && (
+              <div>
                 <label className="block text-[11px] text-textSecondary mb-1.5 tracking-wider font-medium uppercase">Full name</label>
                 <input
                   type="text"
@@ -166,6 +167,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                   onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
+            )}
 
             <div>
               <label className="block text-[11px] text-textSecondary mb-1.5 tracking-wider font-medium uppercase">Email address</label>
