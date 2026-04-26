@@ -192,7 +192,7 @@ export default function Dashboard() {
                 </div>
                 <div className="pt-2 flex items-center justify-between text-[10px] text-textSecondary">
                    <div className="flex -space-x-1.5">
-                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-white/10 bg-bgSecondary flex items-center justify-center text-[8px]" key={i}>U{i}</div>)}
+                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-white/10 bg-bgSecondary flex items-center justify-center text-[8px]">U{i}</div>)}
                    </div>
                    <span className="text-emerald-500/60">+12% vs last month</span>
                 </div>
