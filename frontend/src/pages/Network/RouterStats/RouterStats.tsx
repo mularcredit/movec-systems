@@ -5,6 +5,7 @@ import {
   ArrowDownLeft, Radio, Server, Clock
 } from 'lucide-react';
 import { apiFetch } from '../../../lib/apiClient';
+import CustomLoader from '../../../components/common/CustomLoader';
 
 interface RouterMetric {
   id: string;
@@ -146,8 +147,7 @@ export default function RouterStats() {
       {/* Loading State */}
       {loading && !overview && (
         <div className="bg-bgSecondary border border-white/5 rounded-2xl h-64 flex flex-col items-center justify-center shadow-sm">
-          <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-          <p className="text-[13px] text-textSecondary">Polling router nodes...</p>
+          <CustomLoader message="Polling router nodes..." />
         </div>
       )}
 
