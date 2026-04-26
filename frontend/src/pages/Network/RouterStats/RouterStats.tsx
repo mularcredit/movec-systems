@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Cpu, MemoryStick, Activity, Wifi, RefreshCw, 
-  AlertTriangle, CheckCircle, XCircle, ArrowUpRight,
-  ArrowDownLeft, Radio, Server, Clock
-} from 'lucide-react';
+import { IconCpu, IconRam, IconActivity, IconWifi, IconRefresh, IconAlertTriangle, IconCircleCheck, IconCircleX, IconArrowUpRight, IconArrowDownLeft, IconRouter, IconServerRack, IconClock } from '@tabler/icons-react';
 import { apiFetch } from '../../../lib/apiClient';
 import CustomLoader from '../../../components/common/CustomLoader';
 
@@ -41,22 +37,22 @@ function formatBps(bps: number): string {
 function StatusBadge({ status }: { status: string }) {
   if (status === 'online') return (
     <span className="flex items-center gap-1.5 text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded-full font-normal">
-      <CheckCircle className="w-3 h-3" /> Online
+      <IconCircleCheck className="w-3 h-3" /> Online
     </span>
   );
   if (status === 'warning') return (
     <span className="flex items-center gap-1.5 text-[11px] text-amber-700 bg-amber-50 border border-amber-100 px-2.5 py-0.5 rounded-full font-normal">
-      <AlertTriangle className="w-3 h-3" /> RADIUS Only
+      <IconAlertTriangle className="w-3 h-3" /> RADIUS Only
     </span>
   );
   if (status === 'pending') return (
     <span className="flex items-center gap-1.5 text-[11px] text-blue-700 bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-full font-normal">
-      <Radio className="w-3 h-3" /> Pending
+      <IconRouter className="w-3 h-3" /> Pending
     </span>
   );
   return (
     <span className="flex items-center gap-1.5 text-[11px] text-textSecondary bg-white/5 border border-white/5 px-2.5 py-0.5 rounded-full font-normal">
-      <XCircle className="w-3 h-3" /> Offline
+      <IconCircleX className="w-3 h-3" /> Offline
     </span>
   );
 }
@@ -108,7 +104,7 @@ export default function RouterStats() {
             disabled={loading}
             className="p-2.5 bg-bgSecondary border border-white/5 rounded-xl text-textSecondary hover:text-emerald-600 transition-all shadow-sm"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <IconRefresh className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
@@ -136,7 +132,7 @@ export default function RouterStats() {
       {/* Error State */}
       {error && (
         <div className="bg-red-50 border border-red-100 rounded-2xl p-6 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+          <IconAlertTriangle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
           <div>
             <p className="text-[13px] font-normal text-red-700">Failed to load router stats</p>
             <p className="text-[12px] text-red-500 mt-1">{error}</p>
@@ -171,7 +167,7 @@ export default function RouterStats() {
                 
                 <div className="bg-bgSecondary p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <Cpu className="w-3.5 h-3.5 text-textSecondary" />
+                    <IconCpu className="w-3.5 h-3.5 text-textSecondary" />
                     <p className="text-[10px] text-textSecondary uppercase tracking-wider font-normal">CPU Load</p>
                   </div>
                   {router.status === 'online' ? (
@@ -191,7 +187,7 @@ export default function RouterStats() {
 
                 <div className="bg-bgSecondary p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <Activity className="w-3.5 h-3.5 text-textSecondary" />
+                    <IconActivity className="w-3.5 h-3.5 text-textSecondary" />
                     <p className="text-[10px] text-textSecondary uppercase tracking-wider font-normal">Active Sessions</p>
                   </div>
                   <p className="text-xl font-light text-blue-600">{router.active_sessions ?? 0}</p>
@@ -199,7 +195,7 @@ export default function RouterStats() {
 
                 <div className="bg-bgSecondary p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <ArrowDownLeft className="w-3.5 h-3.5 text-emerald-400" />
+                    <IconArrowDownLeft className="w-3.5 h-3.5 text-emerald-400" />
                     <p className="text-[10px] text-textSecondary uppercase tracking-wider font-normal">Download</p>
                   </div>
                   <p className="text-xl font-light text-textPrimary">{formatBps(router.rx_bps || 0)}</p>
@@ -207,7 +203,7 @@ export default function RouterStats() {
 
                 <div className="bg-bgSecondary p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <ArrowUpRight className="w-3.5 h-3.5 text-blue-400" />
+                    <IconArrowUpRight className="w-3.5 h-3.5 text-blue-400" />
                     <p className="text-[10px] text-textSecondary uppercase tracking-wider font-normal">Upload</p>
                   </div>
                   <p className="text-xl font-light text-textPrimary">{formatBps(router.tx_bps || 0)}</p>
@@ -216,7 +212,7 @@ export default function RouterStats() {
 
               {/* Uptime Footer */}
               <div className="px-6 py-3 border-t border-white/5 flex items-center gap-2">
-                <Clock className="w-3 h-3 text-textSecondary" />
+                <IconClock className="w-3 h-3 text-textSecondary" />
                 <p className="text-[11px] text-textSecondary font-normal">
                   {router.uptime || (router.status === 'offline' ? 'Unreachable' : 'Polling...')}
                 </p>
@@ -232,7 +228,7 @@ export default function RouterStats() {
       {/* Empty State */}
       {!loading && !error && overview && overview.router_metrics.length === 0 && (
         <div className="bg-bgSecondary border border-white/5 rounded-2xl h-64 flex flex-col items-center justify-center shadow-sm">
-          <Wifi className="w-10 h-10 text-white/30 mb-4" />
+          <IconWifi className="w-10 h-10 text-white/30 mb-4" />
           <p className="text-[14px] font-normal text-textSecondary">No routers found</p>
           <p className="text-[12px] text-textSecondary mt-1">Use the Onboarding Wizard to add your first router</p>
         </div>

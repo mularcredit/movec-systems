@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { 
-  Users, UserX, AlertTriangle, Clock, Server, CheckCircle2, 
-  CreditCard, Wallet, Activity, Zap, ArrowUpRight, Signal
-} from 'lucide-react';
+import { IconUsers, IconUserX, IconAlertTriangle, IconClock, IconServerRack, IconCircleCheck, IconCreditCard, IconWallet, IconActivity, IconBolt, IconArrowUpRight, IconAntenna } from '@tabler/icons-react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
 import CustomLoader from '../components/common/CustomLoader';
@@ -18,7 +15,7 @@ const StatCard = ({ title, value, sub, icon: Icon, colorClass, loading, trend }:
       </div>
       {trend && (
         <div className={`flex items-center gap-1 text-[11px] font-normal ${trend > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
-          <ArrowUpRight className={`w-3 h-3 ${trend < 0 ? 'rotate-90' : ''}`} strokeWidth={2} />
+          <IconArrowUpRight className={`w-3 h-3 ${trend < 0 ? 'rotate-90' : ''}`} strokeWidth={2} />
           {Math.abs(trend)}%
         </div>
       )}
@@ -127,16 +124,16 @@ export default function Dashboard() {
         <div>
           <h1 className="text-2xl font-light text-textPrimary tracking-tight">Command center</h1>
           <p className="text-[13px] text-textSecondary mt-1 flex items-center">
-            <Activity className="w-3.5 h-3.5 mr-2 text-emerald-400" strokeWidth={1.5} />
+            <IconActivity className="w-3.5 h-3.5 mr-2 text-emerald-400" strokeWidth={1.5} />
             System status: <span className="text-emerald-500/80 ml-1">Optimal performance</span>
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={fetchDashboardData} className="p-2.5 bg-bgSecondary border border-white/5 rounded-xl hover:bg-white/5 transition-all shadow-sm">
-            <Clock className="w-4 h-4 text-textSecondary" strokeWidth={1.5} />
+            <IconClock className="w-4 h-4 text-textSecondary" strokeWidth={1.5} />
           </button>
           <button className="bg-bgSecondary text-white px-5 py-2.5 rounded-xl text-[13px] font-normal shadow-sm hover:bg-bgPrimary transition-all flex items-center">
-            <Zap className="w-3.5 h-3.5 mr-2 text-amber-400" strokeWidth={1.5} />
+            <IconBolt className="w-3.5 h-3.5 mr-2 text-amber-400" strokeWidth={1.5} />
             Actions
           </button>
         </div>
@@ -214,7 +211,7 @@ export default function Dashboard() {
         <div className="space-y-4">
           <div className="bg-bgPrimary rounded-2xl p-6 text-white relative overflow-hidden group">
              <div className="absolute -bottom-6 -right-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                <CreditCard className="w-32 h-32" strokeWidth={1} />
+                <IconCreditCard className="w-32 h-32" strokeWidth={1} />
              </div>
              <p className="text-textSecondary text-[11px] mb-1">Monthly revenue</p>
              <h3 className="text-3xl font-light text-emerald-400">Ksh {stats.monthlyRevenue.toLocaleString()}</h3>
@@ -239,7 +236,7 @@ export default function Dashboard() {
           <div className="bg-bgSecondary rounded-2xl p-6 border border-white/5 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
              <div className="flex items-center justify-between mb-5">
                 <h3 className="text-sm font-normal text-textPrimary">Node status</h3>
-                <Signal className="w-3.5 h-3.5 text-blue-400" strokeWidth={1.5} />
+                <IconAntenna className="w-3.5 h-3.5 text-blue-400" strokeWidth={1.5} />
              </div>
              <div className="space-y-4">
                 {routers.slice(0, 3).map((r: any) => (
@@ -266,7 +263,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
          <div className="bg-rose-500/10 border border-rose-500/20 rounded-xl p-4 flex items-center gap-3">
             <div className="p-2.5 bg-rose-500/15 rounded-lg">
-               <UserX className="w-4 h-4 text-rose-400" strokeWidth={1.5} />
+               <IconUserX className="w-4 h-4 text-rose-400" strokeWidth={1.5} />
             </div>
             <div>
                <p className="text-[13px] font-normal text-rose-300">{stats.suspendedAccounts} Suspended accounts</p>
@@ -275,7 +272,7 @@ export default function Dashboard() {
          </div>
          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-center gap-3">
             <div className="p-2.5 bg-amber-500/15 rounded-lg">
-               <AlertTriangle className="w-4 h-4 text-amber-400" strokeWidth={1.5} />
+               <IconAlertTriangle className="w-4 h-4 text-amber-400" strokeWidth={1.5} />
             </div>
             <div>
                <p className="text-[13px] font-normal text-amber-300">{stats.overduePayments} Overdue invoices</p>
@@ -284,7 +281,7 @@ export default function Dashboard() {
          </div>
          <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-3">
             <div className="p-2.5 bg-blue-500/15 rounded-lg">
-               <Signal className="w-4 h-4 text-blue-400" strokeWidth={1.5} />
+               <IconAntenna className="w-4 h-4 text-blue-400" strokeWidth={1.5} />
             </div>
             <div>
                <p className="text-[13px] font-normal text-blue-300">Starlink stability</p>
