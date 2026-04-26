@@ -177,7 +177,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                 onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="you@company.co.ke"
-                className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                className="w-full rounded-[25px] px-4 py-3 text-[14px] font-normal transition-all outline-none"
                 style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
                 onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
                 onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
