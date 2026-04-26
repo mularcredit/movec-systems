@@ -285,7 +285,7 @@ export default function Statistics() {
                 <th className="px-6 py-3 text-[10px] text-textSecondary font-normal text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-white/5">
               {activeSessions.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-textSecondary text-[12px] font-light">
@@ -307,7 +307,7 @@ export default function Statistics() {
                   <td className="px-6 py-4 text-[12px] text-textSecondary font-light">{session.router_name}</td>
                   <td className="px-6 py-4 text-[12px] text-textSecondary font-light">{session.uptime}</td>
                   <td className="px-6 py-4 text-right">
-                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50/50 text-emerald-500 rounded-full text-[10px]">
+                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 rounded-full text-[10px]">
                        <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></div>
                        Online
                      </span>
