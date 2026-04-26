@@ -132,7 +132,7 @@ export default function CustomerProfile() {
     return (
       <div className="flex flex-col items-center justify-center p-32">
         <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-        <p className="text-sm font-medium text-slate-500">Loading profile data...</p>
+        <p className="text-sm font-medium text-textSecondary">Loading profile data...</p>
       </div>
     );
   }
@@ -140,9 +140,9 @@ export default function CustomerProfile() {
   if (!customer) {
     return (
       <div className="flex flex-col items-center justify-center p-32 text-center">
-        <User className="w-12 h-12 text-slate-300 mb-4" />
-        <h2 className="text-lg font-medium text-slate-800">Customer Not Found</h2>
-        <p className="text-sm text-slate-500 max-w-sm mt-2 mb-6">The requested subscriber profile does not exist or has been deleted.</p>
+        <User className="w-12 h-12 text-textSecondary mb-4" />
+        <h2 className="text-lg font-medium text-textPrimary">Customer Not Found</h2>
+        <p className="text-sm text-textSecondary max-w-sm mt-2 mb-6">The requested subscriber profile does not exist or has been deleted.</p>
         <button onClick={() => navigate('/customers/all')} className="btn-secondary">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
         </button>
@@ -155,7 +155,7 @@ export default function CustomerProfile() {
       case 'active': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'suspended': return 'bg-rose-50 text-rose-700 border-rose-200';
       case 'pending': return 'bg-amber-50 text-amber-700 border-amber-200';
-      default: return 'bg-slate-100 text-slate-600 border-slate-200';
+      default: return 'bg-white/10 text-textSecondary border-white/10';
     }
   };
 
@@ -177,15 +177,15 @@ export default function CustomerProfile() {
 
       {/* Change Password Modal */}
       {showPasswordModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-bgPrimary/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-bgSecondary rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-5">
-              <h3 className="text-[16px] font-semibold text-slate-800">Change Authentication Password</h3>
-              <button disabled={savingPassword} onClick={() => setShowPasswordModal(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5"/></button>
+              <h3 className="text-[16px] font-semibold text-textPrimary">Change Authentication Password</h3>
+              <button disabled={savingPassword} onClick={() => setShowPasswordModal(false)} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5"/></button>
             </div>
             <form onSubmit={handleChangePassword}>
               <div className="mb-6">
-                <label className="block text-[12px] font-medium text-slate-700 mb-1.5">New PPPoE / Hotspot Password</label>
+                <label className="block text-[12px] font-medium text-textPrimary mb-1.5">New PPPoE / Hotspot Password</label>
                 <input 
                   type="text" 
                   value={newPassword}
@@ -195,7 +195,7 @@ export default function CustomerProfile() {
                   autoFocus
                   required
                 />
-                <p className="text-[11px] text-slate-500 mt-2">
+                <p className="text-[11px] text-textSecondary mt-2">
                   This will instantly override the customer's secret profile on the MikroTik router. They may be temporarily disconnected during the sync.
                 </p>
               </div>
@@ -212,17 +212,17 @@ export default function CustomerProfile() {
 
       {/* Header */}
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/customers/all')} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-200 hover:bg-slate-50 text-slate-500 transition">
+        <button onClick={() => navigate('/customers/all')} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bgSecondary shadow-sm border border-white/10 hover:bg-white/5 text-textSecondary transition">
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold text-slate-900">{customer.full_name}</h1>
+            <h1 className="text-2xl font-semibold text-textPrimary">{customer.full_name}</h1>
             <span className={`text-[12px] font-medium px-2.5 py-1 rounded-full border capitalize ${statusBadge(customer.status)}`}>
               {customer.status}
             </span>
           </div>
-          <p className="text-sm text-slate-500 font-mono mt-1">ACC: {customer.account_number}</p>
+          <p className="text-sm text-textSecondary font-mono mt-1">ACC: {customer.account_number}</p>
         </div>
         <div className="ml-auto flex gap-3">
           <button 
@@ -238,31 +238,31 @@ export default function CustomerProfile() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Contact info */}
         <div className="card">
-          <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
+          <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
             <User className="w-3.5 h-3.5" /> Identity & Contact
           </h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Phone className="w-4 h-4 text-slate-400 mt-0.5" />
+              <Phone className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Phone Number</p>
-                <p className="text-sm font-medium text-slate-800">{customer.phone}</p>
+                <p className="text-xs text-textSecondary mb-0.5">Phone Number</p>
+                <p className="text-sm font-medium text-textPrimary">{customer.phone}</p>
               </div>
             </div>
             {customer.email && (
               <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-slate-400 mt-0.5" />
+                <Mail className="w-4 h-4 text-textSecondary mt-0.5" />
                 <div>
-                  <p className="text-xs text-slate-500 mb-0.5">Email Address</p>
-                  <p className="text-sm font-medium text-slate-800">{customer.email}</p>
+                  <p className="text-xs text-textSecondary mb-0.5">Email Address</p>
+                  <p className="text-sm font-medium text-textPrimary">{customer.email}</p>
                 </div>
               </div>
             )}
             <div className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
+              <MapPin className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Installation Location</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-xs text-textSecondary mb-0.5">Installation Location</p>
+                <p className="text-sm font-medium text-textPrimary">
                   {customer.installation_address || 'Address not stored on customer record'}
                 </p>
               </div>
@@ -272,24 +272,24 @@ export default function CustomerProfile() {
 
         {/* Financial */}
         <div className="card">
-          <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
+          <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
             <CreditCard className="w-3.5 h-3.5" /> Financial Standing
           </h3>
           <div className="space-y-5">
             <div>
-              <p className="text-xs text-slate-500 mb-1">Current Balance</p>
-              <p className={`text-2xl font-bold flex items-baseline gap-1 ${isPositiveBalance ? 'text-rose-600' : isNegativeBalance ? 'text-emerald-600' : 'text-slate-800'}`}>
-                <span className="text-sm font-medium text-slate-400">Ksh</span> 
+              <p className="text-xs text-textSecondary mb-1">Current Balance</p>
+              <p className={`text-2xl font-bold flex items-baseline gap-1 ${isPositiveBalance ? 'text-rose-600' : isNegativeBalance ? 'text-emerald-600' : 'text-textPrimary'}`}>
+                <span className="text-sm font-medium text-textSecondary">Ksh</span> 
                 {Math.abs(parseFloat(customer.balance)).toLocaleString('en-KE', { minimumFractionDigits: 2 })}
                 {isNegativeBalance && <span className="text-xs font-semibold px-2 ml-2 bg-emerald-100 text-emerald-700 rounded-full py-0.5 align-middle">CR</span>}
               </p>
             </div>
             
-            <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
+            <div className="bg-white/5 rounded-xl p-3 border border-white/5">
               <div className="flex items-start gap-3">
                 <CalendarClock className="w-4 h-4 text-emerald-500 mt-0.5" />
                 <div>
-                  <p className="text-xs font-semibold text-slate-700">Next Renewal Date</p>
+                  <p className="text-xs font-semibold text-textPrimary">Next Renewal Date</p>
                   <p className="text-sm font-medium text-emerald-700 mt-0.5">
                     {new Date(customer.next_due_date).toLocaleDateString('en-KE', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' })}
                   </p>
@@ -301,30 +301,30 @@ export default function CustomerProfile() {
 
         {/* Technical */}
         <div className="card">
-          <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
+          <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
             <Activity className="w-3.5 h-3.5" /> Provisioning
           </h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Wifi className="w-4 h-4 text-slate-400 mt-0.5" />
+              <Wifi className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Active Package</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-xs text-textSecondary mb-0.5">Active Package</p>
+                <p className="text-sm font-medium text-textPrimary">
                   {customer.packages ? customer.packages.display_name : 'No Package Assigned'}
                 </p>
                 {customer.packages && (
-                  <p className="text-[11px] font-mono text-slate-500 mt-1">
+                  <p className="text-[11px] font-mono text-textSecondary mt-1">
                     {customer.packages.speed_down_mbps}Mbps ↓ / {customer.packages.speed_up_mbps}Mbps ↑
                   </p>
                 )}
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Shield className="w-4 h-4 text-slate-400 mt-0.5" />
+              <Shield className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Authentication ({customer.service_type || 'PPPoE'})</p>
+                <p className="text-xs text-textSecondary mb-0.5">Authentication ({customer.service_type || 'PPPoE'})</p>
                 <div className="flex items-center justify-between group">
-                  <p className="text-sm font-medium text-slate-800 font-mono">
+                  <p className="text-sm font-medium text-textPrimary font-mono">
                     {customer.username || 'No credentials'}
                   </p>
                   <button onClick={() => setShowPasswordModal(true)} className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 flex items-center gap-1 hover:bg-emerald-100">
@@ -332,19 +332,19 @@ export default function CustomerProfile() {
                   </button>
                 </div>
                 {customer.ip_address && (
-                  <p className="text-[11px] font-mono text-slate-500 mt-1">IP: {customer.ip_address}</p>
+                  <p className="text-[11px] font-mono text-textSecondary mt-1">IP: {customer.ip_address}</p>
                 )}
               </div>
             </div>
             {customer.routers && (
               <div className="flex items-start gap-3">
-                <Server className="w-4 h-4 text-slate-400 mt-0.5" />
+                <Server className="w-4 h-4 text-textSecondary mt-0.5" />
                 <div>
-                  <p className="text-xs text-slate-500 mb-0.5">Provisioned Router</p>
-                  <p className="text-sm font-medium text-slate-800">
+                  <p className="text-xs text-textSecondary mb-0.5">Provisioned Router</p>
+                  <p className="text-sm font-medium text-textPrimary">
                     {customer.routers.name}
                   </p>
-                  <p className="text-[11px] font-mono text-slate-500 mt-1">{customer.routers.ip_address}</p>
+                  <p className="text-[11px] font-mono text-textSecondary mt-1">{customer.routers.ip_address}</p>
                 </div>
               </div>
             )}
@@ -354,43 +354,43 @@ export default function CustomerProfile() {
 
       {/* Activity Logs (Full Width) */}
       <div className="card mt-6">
-        <div className="flex items-center justify-between mb-5 border-b border-slate-100 pb-4">
+        <div className="flex items-center justify-between mb-5 border-b border-white/5 pb-4">
           <div>
-            <h3 className="text-[14px] font-semibold text-slate-800 flex items-center gap-2">
+            <h3 className="text-[14px] font-semibold text-textPrimary flex items-center gap-2">
               <History className="w-4 h-4 text-emerald-500" /> Live Router Activity Logs
             </h3>
-            <p className="text-[12px] text-slate-500 mt-0.5">Direct telemetry matching '{customer.username}' from the MikroTik buffer.</p>
+            <p className="text-[12px] text-textSecondary mt-0.5">Direct telemetry matching '{customer.username}' from the MikroTik buffer.</p>
           </div>
-          <button onClick={() => fetchLogs(id!)} className="btn-secondary text-[11px] px-3 py-1 flex flex-row gap-1 border border-slate-200">
+          <button onClick={() => fetchLogs(id!)} className="btn-secondary text-[11px] px-3 py-1 flex flex-row gap-1 border border-white/10">
             <Activity className="w-3.5 h-3.5" /> Refresh Cache
           </button>
         </div>
 
         {loadingLogs ? (
           <div className="flex flex-col items-center justify-center p-10">
-            <Loader2 className="w-6 h-6 text-slate-300 animate-spin mb-3" />
-            <p className="text-[12px] text-slate-500">Querying RouterOS Buffer...</p>
+            <Loader2 className="w-6 h-6 text-textSecondary animate-spin mb-3" />
+            <p className="text-[12px] text-textSecondary">Querying RouterOS Buffer...</p>
           </div>
         ) : !logs.length ? (
-          <div className="text-center p-10 bg-slate-50/50 rounded-xl border border-slate-100 border-dashed">
-            <p className="text-[13px] text-slate-500">No recent activity detected in the router's current boot log buffer.</p>
+          <div className="text-center p-10 bg-white/5 rounded-xl border border-white/5 border-dashed">
+            <p className="text-[13px] text-textSecondary">No recent activity detected in the router's current boot log buffer.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-slate-100">
-                  <th className="pb-3 text-[11px] font-semibold text-slate-400 tracking-wider">Timestamp</th>
-                  <th className="pb-3 text-[11px] font-semibold text-slate-400 tracking-wider">Log Topics</th>
-                  <th className="pb-3 text-[11px] font-semibold text-slate-400 tracking-wider">Message Telemetry</th>
+                <tr className="border-b border-white/5">
+                  <th className="pb-3 text-[11px] font-semibold text-textSecondary tracking-wider">Timestamp</th>
+                  <th className="pb-3 text-[11px] font-semibold text-textSecondary tracking-wider">Log Topics</th>
+                  <th className="pb-3 text-[11px] font-semibold text-textSecondary tracking-wider">Message Telemetry</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {logs.map((log, idx) => (
-                  <tr key={log['.id'] || idx} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="py-2.5 text-[12px] text-slate-600 font-mono w-40">{log.time || '—'}</td>
-                    <td className="py-2.5 text-[11px] text-slate-400 uppercase tracking-widest w-48">{log.topics || 'SYSTEM'}</td>
-                    <td className="py-2.5 text-[13px] text-slate-800 font-mono">
+                  <tr key={log['.id'] || idx} className="hover:bg-white/5 transition-colors">
+                    <td className="py-2.5 text-[12px] text-textSecondary font-mono w-40">{log.time || '—'}</td>
+                    <td className="py-2.5 text-[11px] text-textSecondary uppercase tracking-widest w-48">{log.topics || 'SYSTEM'}</td>
+                    <td className="py-2.5 text-[13px] text-textPrimary font-mono">
                       {log.message}
                     </td>
                   </tr>

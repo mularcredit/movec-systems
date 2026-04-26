@@ -19,7 +19,7 @@ const TEMPLATES = [
 ];
 
 const FILTERS = [
-  { value: 'all',       label: 'All Customers',       icon: Users,         color: 'text-slate-600' },
+  { value: 'all',       label: 'All Customers',       icon: Users,         color: 'text-textSecondary' },
   { value: 'active',    label: 'Active Subscribers',  icon: CheckCircle2,  color: 'text-emerald-600' },
   { value: 'suspended', label: 'Suspended Accounts',  icon: XCircle,       color: 'text-rose-600' },
   { value: 'expiring',  label: 'Expiring in 3 Days',  icon: Clock,         color: 'text-amber-600' },
@@ -153,12 +153,12 @@ export default function Communication() {
   );
 
   const ChannelToggle = ({ value, onChange }: { value: Channel; onChange: (c: Channel) => void }) => (
-    <div className="flex bg-slate-100 rounded-xl p-1 gap-1">
+    <div className="flex bg-white/10 rounded-xl p-1 gap-1">
       {(['sms', 'whatsapp'] as Channel[]).map(ch => (
         <button
           key={ch}
           onClick={() => onChange(ch)}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-[13px] font-medium transition-all ${value === ch ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-[13px] font-medium transition-all ${value === ch ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
         >
           {ch === 'sms'
             ? <><Smartphone className="w-4 h-4" /> SMS (Celcom)</>
@@ -173,12 +173,12 @@ export default function Communication() {
     <div className="space-y-6 max-w-5xl">
       {/* Header */}
       <div>
-        <h2 className="text-[20px] font-medium text-slate-800">Communication Centre</h2>
-        <p className="text-[13px] text-slate-500 mt-1">Send SMS via Celcom or WhatsApp Business messages to your subscribers.</p>
+        <h2 className="text-[20px] font-medium text-textPrimary">Communication Centre</h2>
+        <p className="text-[13px] text-textSecondary mt-1">Send SMS via Celcom or WhatsApp Business messages to your subscribers.</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-slate-100 rounded-xl w-fit">
+      <div className="flex gap-1 p-1 bg-white/10 rounded-xl w-fit">
         {([
           { id: 'compose',   label: 'Compose',  icon: MessageSquare },
           { id: 'broadcast', label: 'Broadcast', icon: Zap           },
@@ -187,7 +187,7 @@ export default function Communication() {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-medium transition-all ${tab === t.id ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-medium transition-all ${tab === t.id ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
           >
             <t.icon className="w-4 h-4" /> {t.label}
           </button>
@@ -199,19 +199,19 @@ export default function Communication() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left — Templates */}
           <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-[13px] font-medium text-slate-700">Quick Templates</h3>
+            <h3 className="text-[13px] font-medium text-textPrimary">Quick Templates</h3>
             <div className="space-y-2">
               {TEMPLATES.map(t => (
                 <button
                   key={t.label}
                   onClick={() => applyTemplate(t)}
-                  className="w-full text-left p-3.5 bg-white border border-slate-200/60 rounded-xl hover:border-emerald-500/40 hover:bg-emerald-50/30 transition-all group"
+                  className="w-full text-left p-3.5 bg-bgSecondary border border-white/10 rounded-xl hover:border-emerald-500/40 hover:bg-emerald-50/30 transition-all group"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-base">{t.icon}</span>
-                    <span className="text-[12px] font-medium text-slate-700 group-hover:text-emerald-700">{t.label}</span>
+                    <span className="text-[12px] font-medium text-textPrimary group-hover:text-emerald-700">{t.label}</span>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed truncate">{t.body.slice(0, 60)}...</p>
+                  <p className="text-[11px] text-textSecondary leading-relaxed truncate">{t.body.slice(0, 60)}...</p>
                 </button>
               ))}
             </div>
@@ -223,40 +223,40 @@ export default function Communication() {
 
             {/* Customer selector */}
             <div className="relative">
-              <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Send To</label>
+              <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Send To</label>
               <div
                 className="input-field cursor-pointer flex items-center justify-between"
                 onClick={() => setShowCustDropdown(!showCustDropdown)}
               >
                 {selectedCustomer
-                  ? <span className="font-medium text-slate-800">{selectedCustomer.full_name} — {selectedCustomer.phone}</span>
-                  : <span className="text-slate-400">Search customer...</span>}
-                <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                  ? <span className="font-medium text-textPrimary">{selectedCustomer.full_name} — {selectedCustomer.phone}</span>
+                  : <span className="text-textSecondary">Search customer...</span>}
+                <ChevronDown className="w-4 h-4 text-textSecondary shrink-0" />
               </div>
               {showCustDropdown && (
-                <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg z-20 overflow-hidden">
-                  <div className="p-2 border-b border-slate-100">
+                <div className="absolute top-full mt-1 left-0 right-0 bg-bgSecondary border border-white/10 rounded-xl shadow-lg z-20 overflow-hidden">
+                  <div className="p-2 border-b border-white/5">
                     <input
                       autoFocus
                       type="text"
                       value={custSearch}
                       onChange={e => setCustSearch(e.target.value)}
                       placeholder="Search by name, phone..."
-                      className="w-full px-3 py-2 text-[13px] bg-slate-50 rounded-lg border border-slate-200 outline-none"
+                      className="w-full px-3 py-2 text-[13px] bg-white/5 rounded-lg border border-white/10 outline-none"
                     />
                   </div>
                   <div className="max-h-56 overflow-y-auto">
                     {custDropdownFiltered.length === 0
-                      ? <p className="text-[12px] text-slate-400 p-4 text-center">No customers found</p>
+                      ? <p className="text-[12px] text-textSecondary p-4 text-center">No customers found</p>
                       : custDropdownFiltered.map(c => (
                           <button
                             key={c.id}
-                            className="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition flex items-center justify-between"
+                            className="w-full text-left px-4 py-2.5 hover:bg-white/5 transition flex items-center justify-between"
                             onClick={() => { setSelectedCustomer(c); setShowCustDropdown(false); setCustSearch(''); }}
                           >
                             <div>
-                              <p className="text-[13px] font-medium text-slate-800">{c.full_name}</p>
-                              <p className="text-[11px] text-slate-400 font-mono">{c.phone}</p>
+                              <p className="text-[13px] font-medium text-textPrimary">{c.full_name}</p>
+                              <p className="text-[11px] text-textSecondary font-mono">{c.phone}</p>
                             </div>
                             <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${c.status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>{c.status}</span>
                           </button>
@@ -266,7 +266,7 @@ export default function Communication() {
                 </div>
               )}
               {selectedCustomer && (
-                <button onClick={() => setSelectedCustomer(null)} className="absolute right-10 top-9 text-slate-300 hover:text-slate-500">
+                <button onClick={() => setSelectedCustomer(null)} className="absolute right-10 top-9 text-textSecondary hover:text-textSecondary">
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
@@ -274,7 +274,7 @@ export default function Communication() {
 
             {/* Message */}
             <div>
-              <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Message</label>
+              <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Message</label>
               <textarea
                 value={message}
                 onChange={e => setMessage(e.target.value)}
@@ -284,8 +284,8 @@ export default function Communication() {
               />
               {channel === 'sms' && (
                 <div className="flex items-center justify-between mt-1.5">
-                  <p className="text-[11px] text-slate-400">Variables: {'{name}'} {'{account}'} {'{due_date}'}</p>
-                  <p className={`text-[11px] font-medium ${smsChars > 160 ? 'text-amber-600' : 'text-slate-400'}`}>
+                  <p className="text-[11px] text-textSecondary">Variables: {'{name}'} {'{account}'} {'{due_date}'}</p>
+                  <p className={`text-[11px] font-medium ${smsChars > 160 ? 'text-amber-600' : 'text-textSecondary'}`}>
                     {smsChars} chars · {smsParts} SMS part{smsParts > 1 ? 's' : ''}
                   </p>
                 </div>
@@ -317,15 +317,15 @@ export default function Communication() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Audience Selector */}
           <div className="lg:col-span-1 space-y-3">
-            <h3 className="text-[13px] font-medium text-slate-700">Target Audience</h3>
+            <h3 className="text-[13px] font-medium text-textPrimary">Target Audience</h3>
             {FILTERS.map(f => (
               <button
                 key={f.value}
                 onClick={() => setBFilter(f.value)}
-                className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all text-left ${bFilter === f.value ? 'border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500/20' : 'border-slate-200 bg-white hover:border-slate-300'}`}
+                className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all text-left ${bFilter === f.value ? 'border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500/20' : 'border-white/10 bg-bgSecondary hover:border-white/20'}`}
               >
                 <f.icon className={`w-4 h-4 shrink-0 ${bFilter === f.value ? 'text-emerald-500' : f.color}`} />
-                <span className={`text-[13px] font-medium ${bFilter === f.value ? 'text-emerald-700' : 'text-slate-700'}`}>{f.label}</span>
+                <span className={`text-[13px] font-medium ${bFilter === f.value ? 'text-emerald-700' : 'text-textPrimary'}`}>{f.label}</span>
               </button>
             ))}
           </div>
@@ -342,7 +342,7 @@ export default function Communication() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Broadcast Message</label>
+              <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Broadcast Message</label>
               <textarea
                 value={bMessage}
                 onChange={e => setBMessage(e.target.value)}
@@ -350,15 +350,15 @@ export default function Communication() {
                 className="input-field resize-none"
                 placeholder="Dear {name}, your account {account} expires on {due_date}..."
               />
-              <p className="text-[11px] text-slate-400 mt-1.5">Variables: {'{name}'} {'{full_name}'} {'{account}'} {'{due_date}'}</p>
+              <p className="text-[11px] text-textSecondary mt-1.5">Variables: {'{name}'} {'{full_name}'} {'{account}'} {'{due_date}'}</p>
             </div>
 
             {/* Quick template buttons */}
             <div>
-              <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Quick Insert Template</label>
+              <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Quick Insert Template</label>
               <div className="flex flex-wrap gap-2">
                 {TEMPLATES.map(t => (
-                  <button key={t.label} onClick={() => setBMessage(t.body)} className="text-[11px] font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition">
+                  <button key={t.label} onClick={() => setBMessage(t.body)} className="text-[11px] font-medium bg-white/10 text-textSecondary hover:bg-white/10 px-3 py-1.5 rounded-lg transition">
                     {t.icon} {t.label}
                   </button>
                 ))}
@@ -392,14 +392,14 @@ export default function Communication() {
           {/* Stats row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Total Sent', value: stats.total, color: 'text-slate-800' },
+              { label: 'Total Sent', value: stats.total, color: 'text-textPrimary' },
               { label: 'SMS',        value: stats.sms,   color: 'text-blue-600'  },
               { label: 'WhatsApp',   value: stats.whatsapp, color: 'text-green-600' },
               { label: 'Failed',     value: stats.failed, color: 'text-rose-600'  },
             ].map(s => (
               <div key={s.label} className="card py-4 text-center">
                 <p className={`text-[24px] font-medium ${s.color}`}>{s.value}</p>
-                <p className="text-[11px] text-slate-500 mt-1">{s.label}</p>
+                <p className="text-[11px] text-textSecondary mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -407,7 +407,7 @@ export default function Communication() {
           {/* Search + Refresh */}
           <div className="flex gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
               <input type="text" value={logSearch} onChange={e => setLogSearch(e.target.value)} placeholder="Search logs..." className="pl-10 input-field" />
             </div>
             <button onClick={fetchLogs} className="btn-secondary flex items-center gap-2 text-[13px]">
@@ -420,13 +420,13 @@ export default function Communication() {
               <div className="flex items-center justify-center h-32"><Loader2 className="w-5 h-5 text-emerald-500 animate-spin" /></div>
             ) : filteredLogs.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-40 text-center">
-                <BarChart3 className="w-6 h-6 text-slate-300 mb-2" />
-                <p className="text-[13px] text-slate-500">No message history yet.</p>
+                <BarChart3 className="w-6 h-6 text-textSecondary mb-2" />
+                <p className="text-[13px] text-textSecondary">No message history yet.</p>
               </div>
             ) : (
               <table className="w-full text-left whitespace-nowrap">
                 <thead>
-                  <tr className="bg-[#fbfbfd] text-slate-500 text-[11px] font-medium uppercase tracking-wider border-b border-slate-200/60">
+                  <tr className="bg-bgSecondary text-textSecondary text-[11px] font-medium uppercase tracking-wider border-b border-white/10">
                     <th className="px-5 py-3.5">Channel</th>
                     <th className="px-5 py-3.5">Customer</th>
                     <th className="px-5 py-3.5">Recipient</th>
@@ -435,25 +435,25 @@ export default function Communication() {
                     <th className="px-5 py-3.5">Time</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-white/5">
                   {filteredLogs.map(log => (
-                    <tr key={log.id} className="hover:bg-slate-50/50">
+                    <tr key={log.id} className="hover:bg-white/5">
                       <td className="px-5 py-3.5">
                         {log.channel === 'sms'
                           ? <span className="flex items-center gap-1.5 text-[12px] font-medium text-blue-600"><Smartphone className="w-3.5 h-3.5" /> SMS</span>
                           : <span className="flex items-center gap-1.5 text-[12px] font-medium text-green-600"><MessageCircle className="w-3.5 h-3.5" /> WhatsApp</span>}
                       </td>
-                      <td className="px-5 py-3.5 text-[13px] font-medium text-slate-800">{log.customers?.full_name || '—'}</td>
-                      <td className="px-5 py-3.5 font-mono text-[12px] text-slate-600">{log.recipient}</td>
+                      <td className="px-5 py-3.5 text-[13px] font-medium text-textPrimary">{log.customers?.full_name || '—'}</td>
+                      <td className="px-5 py-3.5 font-mono text-[12px] text-textSecondary">{log.recipient}</td>
                       <td className="px-5 py-3.5 max-w-[240px]">
-                        <p className="text-[12px] text-slate-600 truncate">{log.message}</p>
+                        <p className="text-[12px] text-textSecondary truncate">{log.message}</p>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${log.status === 'sent' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'}`}>
                           {log.status}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 text-[12px] text-slate-500">
+                      <td className="px-5 py-3.5 text-[12px] text-textSecondary">
                         {log.created_at ? new Date(log.created_at).toLocaleString() : '—'}
                       </td>
                     </tr>

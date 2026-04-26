@@ -44,7 +44,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
   return (
     <div className="relative" ref={wrapperRef}>
       <div className="relative">
-        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary">
           {icon || <MapPin className="w-4 h-4" />}
         </div>
         
@@ -57,21 +57,21 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
             // Allow raw typing to immediately reflect in state if they don't pick a list item
             onChange(e.target.value); 
           }}
-          className="pl-10 input-field cursor-text bg-white w-full pr-10"
+          className="pl-10 input-field cursor-text bg-bgSecondary w-full pr-10"
           placeholder={placeholder}
           autoComplete="off"
         />
-        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-textSecondary">
           <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
         </div>
       </div>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1.5 bg-white rounded-xl shadow-xl shadow-slate-200/50 border border-slate-200/60 max-h-60 overflow-y-auto overflow-x-hidden p-1.5 backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute z-50 w-full mt-1.5 bg-bgSecondary rounded-xl shadow-xl shadow-slate-200/50 border border-white/10 max-h-60 overflow-y-auto overflow-x-hidden p-1.5 backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-200">
           {filteredOptions.length === 0 ? (
-            <div className="px-3 py-4 text-[12px] text-slate-500 text-center flex flex-col items-center gap-1.5">
-               <span className="font-medium text-slate-700">No matching places found.</span>
-               <span className="text-slate-400">"{query}" will be used as a custom value.</span>
+            <div className="px-3 py-4 text-[12px] text-textSecondary text-center flex flex-col items-center gap-1.5">
+               <span className="font-medium text-textPrimary">No matching places found.</span>
+               <span className="text-textSecondary">"{query}" will be used as a custom value.</span>
                <button 
                   onClick={() => setIsOpen(false)}
                   className="mt-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-md font-medium flex items-center hover:bg-emerald-100 transition"
@@ -92,7 +92,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-[13px] transition-all flex items-center justify-between group ${
                     isSelected 
                       ? 'bg-emerald-50 text-emerald-700 font-medium' 
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      : 'text-textSecondary hover:bg-white/5 hover:text-textPrimary'
                   }`}
                 >
                   <span className="truncate pr-4">{option.label}</span>

@@ -100,15 +100,15 @@ export default function Packages() {
   const TypeBadge = ({ type }: { type: string }) => {
     if (type === 'PPPoE')   return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full"><Shield className="w-3 h-3"/>PPPoE</span>;
     if (type === 'Hotspot') return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-full"><Wifi className="w-3 h-3"/>Hotspot</span>;
-    return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-full"><Globe className="w-3 h-3"/>Static</span>;
+    return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-white/10 text-textSecondary border border-white/10 px-2 py-0.5 rounded-full"><Globe className="w-3 h-3"/>Static</span>;
   };
 
   return (
     <div className="space-y-6" onClick={() => setMenuOpenId(null)}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-[18px] font-medium text-slate-800">Internet Packages</h2>
-          <p className="text-[13px] text-slate-500 mt-1">Manage bandwidth limits, service types, and RouterOS profile bindings.</p>
+          <h2 className="text-[18px] font-medium text-textPrimary">Internet Packages</h2>
+          <p className="text-[13px] text-textSecondary mt-1">Manage bandwidth limits, service types, and RouterOS profile bindings.</p>
         </div>
         <button onClick={() => navigate('/packages/add')} className="btn-primary flex items-center">
           <Plus className="w-4 h-4 mr-2" /> Create Package
@@ -116,9 +116,9 @@ export default function Packages() {
       </div>
 
       <div className="card p-0 flex flex-col">
-        <div className="p-4 border-b border-slate-200/60 flex justify-between bg-white rounded-t-xl">
+        <div className="p-4 border-b border-white/10 flex justify-between bg-bgSecondary rounded-t-xl">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
             <input
               type="text"
               value={search}
@@ -135,9 +135,9 @@ export default function Packages() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <Wifi className="w-8 h-8 text-slate-300 mb-4" />
-            <h3 className="text-[15px] font-medium text-slate-800 mb-1">No Packages Found</h3>
-            <p className="text-[13px] text-slate-500 max-w-sm mb-6">
+            <Wifi className="w-8 h-8 text-textSecondary mb-4" />
+            <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Packages Found</h3>
+            <p className="text-[13px] text-textSecondary max-w-sm mb-6">
               {search ? `No packages match "${search}".` : 'Create your first internet package to begin billing customers.'}
             </p>
             {!search && (
@@ -149,7 +149,7 @@ export default function Packages() {
         ) : (
           <table className="w-full text-left whitespace-nowrap">
             <thead>
-              <tr className="bg-[#fbfbfd] text-slate-500 text-[11px] font-medium uppercase tracking-wider border-b border-slate-200/60">
+              <tr className="bg-bgSecondary text-textSecondary text-[11px] font-medium uppercase tracking-wider border-b border-white/10">
                 <th className="px-5 py-3.5">Display Name</th>
                 <th className="px-5 py-3.5 text-center">Type</th>
                 <th className="px-5 py-3.5 text-center">Speed (D↓ / U↑)</th>
@@ -159,23 +159,23 @@ export default function Packages() {
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5">
               {filtered.map((pkg) => (
-                <tr key={pkg.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-3.5 font-medium text-[13px] text-slate-800">{pkg.name}</td>
+                <tr key={pkg.id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-3.5 font-medium text-[13px] text-textPrimary">{pkg.name}</td>
                   <td className="px-5 py-3.5 text-center"><TypeBadge type={pkg.type} /></td>
                   <td className="px-5 py-3.5 text-center">
-                    <span className="font-mono text-[12px] font-medium text-slate-700 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-md">
+                    <span className="font-mono text-[12px] font-medium text-textPrimary bg-white/5 border border-white/10 px-2.5 py-1 rounded-md">
                       {pkg.down}M / {pkg.up}M
                     </span>
                   </td>
                   <td className="px-5 py-3.5">
                     {pkg.type === 'PPPoE'   && <span className="font-mono text-[11px] bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{pkg.ppp_profile}</span>}
                     {pkg.type === 'Hotspot' && <span className="font-mono text-[11px] bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded">{pkg.hs_profile}</span>}
-                    {pkg.type === 'Static'  && <span className="text-[11px] text-slate-400">N/A</span>}
+                    {pkg.type === 'Static'  && <span className="text-[11px] text-textSecondary">N/A</span>}
                   </td>
                   <td className="px-5 py-3.5 font-medium text-[13px] text-emerald-600">Ksh {pkg.price.toLocaleString()}</td>
-                  <td className="px-5 py-3.5 text-[13px] text-slate-600">{pkg.cycle}</td>
+                  <td className="px-5 py-3.5 text-[13px] text-textSecondary">{pkg.cycle}</td>
                   <td className="px-5 py-3.5 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
@@ -187,12 +187,12 @@ export default function Packages() {
                       <div className="relative" onClick={e => e.stopPropagation()}>
                         <button
                           onClick={() => setMenuOpenId(menuOpenId === pkg.id ? null : pkg.id)}
-                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition"
+                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 text-textSecondary hover:text-textPrimary transition"
                         >
                           <Archive className="w-3.5 h-3.5" />
                         </button>
                         {menuOpenId === pkg.id && (
-                          <div className="absolute right-0 top-8 z-20 bg-white rounded-xl shadow-xl border border-slate-200/60 min-w-[160px] p-1">
+                          <div className="absolute right-0 top-8 z-20 bg-bgSecondary rounded-xl shadow-xl border border-white/10 min-w-[160px] p-1">
                             <button
                               onClick={() => { setArchiveTarget(pkg); setMenuOpenId(null); }}
                               className="w-full text-left px-3 py-2 rounded-lg text-[13px] text-rose-600 hover:bg-rose-50 flex items-center gap-2 transition"
@@ -214,22 +214,22 @@ export default function Packages() {
       {/* Archive Confirmation Modal */}
       {archiveTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-amber-500" />
               </div>
               <div>
-                <h3 className="text-[15px] font-semibold text-slate-800">Archive Package?</h3>
-                <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">
-                  <span className="font-medium text-slate-700">"{archiveTarget.name}"</span> will be hidden from the UI and no new customers can be assigned to it. Existing subscriptions and billing records will remain intact.
+                <h3 className="text-[15px] font-semibold text-textPrimary">Archive Package?</h3>
+                <p className="text-[13px] text-textSecondary mt-1 leading-relaxed">
+                  <span className="font-medium text-textPrimary">"{archiveTarget.name}"</span> will be hidden from the UI and no new customers can be assigned to it. Existing subscriptions and billing records will remain intact.
                 </p>
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 onClick={() => setArchiveTarget(null)}
-                className="px-4 py-2 rounded-xl border border-slate-200 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition"
+                className="px-4 py-2 rounded-xl border border-white/10 text-[13px] font-medium text-textSecondary hover:bg-white/5 transition"
               >
                 Cancel
               </button>

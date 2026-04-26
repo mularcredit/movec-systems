@@ -90,8 +90,8 @@ export default function Subscription() {
 
       {/* Page Header */}
       <div>
-        <h2 className="text-[20px] font-medium text-slate-800">Platform Subscription</h2>
-        <p className="text-[13px] text-slate-500 mt-1">Manage your ISP platform plan, usage limits, and billing cycle.</p>
+        <h2 className="text-[20px] font-medium text-textPrimary">Platform Subscription</h2>
+        <p className="text-[13px] text-textSecondary mt-1">Manage your ISP platform plan, usage limits, and billing cycle.</p>
       </div>
 
       {/* Current Plan Card */}
@@ -108,40 +108,40 @@ export default function Subscription() {
                   {CURRENT.status}
                 </span>
               </div>
-              <p className="text-slate-400 text-[13px]">KES {CURRENT.price.toLocaleString()}/month · Up to {CURRENT.routerLimit} router(s)</p>
+              <p className="text-textSecondary text-[13px]">KES {CURRENT.price.toLocaleString()}/month · Up to {CURRENT.routerLimit} router(s)</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-[11px] text-slate-400 uppercase tracking-wide mb-0.5">Subscription Period</p>
-              <p className="text-[13px] text-slate-200 font-medium">{formatDate(CURRENT.startDate)} — {formatDate(CURRENT.endDate)}</p>
+              <p className="text-[11px] text-textSecondary uppercase tracking-wide mb-0.5">Subscription Period</p>
+              <p className="text-[13px] text-white/30 font-medium">{formatDate(CURRENT.startDate)} — {formatDate(CURRENT.endDate)}</p>
             </div>
-            <div className="w-px h-10 bg-white/10"></div>
+            <div className="w-px h-10 bg-bgSecondary/10"></div>
             <div className="text-right">
-              <p className="text-[11px] text-slate-400 uppercase tracking-wide mb-0.5">Remaining</p>
+              <p className="text-[11px] text-textSecondary uppercase tracking-wide mb-0.5">Remaining</p>
               <p className={`text-[16px] font-medium ${days <= 7 ? 'text-amber-400' : 'text-emerald-400'}`}>{days} days</p>
             </div>
           </div>
         </div>
 
         {/* Usage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200/60">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10/60">
           {/* Router Usage */}
           <div className="p-6">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Server className="w-4 h-4 text-slate-400" />
-                <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wide">Router Usage</span>
+                <Server className="w-4 h-4 text-textSecondary" />
+                <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Router Usage</span>
               </div>
-              <span className="text-[12px] font-medium text-slate-700">{CURRENT.routersUsed}/{CURRENT.routerLimit}</span>
+              <span className="text-[12px] font-medium text-textPrimary">{CURRENT.routersUsed}/{CURRENT.routerLimit}</span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mb-2">
+            <div className="w-full bg-white/10 rounded-full h-1.5 mb-2">
               <div
                 className={`h-1.5 rounded-full transition-all ${usagePercent >= 90 ? 'bg-rose-500' : 'bg-emerald-500'}`}
                 style={{ width: `${Math.min(usagePercent, 100)}%` }}
               />
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-textSecondary">
               {usagePercent === 0 ? 'No routers linked yet' : `${usagePercent.toFixed(0)}% capacity used`}
             </p>
           </div>
@@ -149,21 +149,21 @@ export default function Subscription() {
           {/* Customers */}
           <div className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Users className="w-4 h-4 text-slate-400" />
-              <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wide">Customers</span>
+              <Users className="w-4 h-4 text-textSecondary" />
+              <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Customers</span>
             </div>
-            <p className="text-[28px] font-medium text-slate-800 leading-none">{CURRENT.customersCount}</p>
-            <p className="text-[11px] text-slate-400 mt-1">Unlimited on all plans</p>
+            <p className="text-[28px] font-medium text-textPrimary leading-none">{CURRENT.customersCount}</p>
+            <p className="text-[11px] text-textSecondary mt-1">Unlimited on all plans</p>
           </div>
 
           {/* Plan Limit */}
           <div className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Wifi className="w-4 h-4 text-slate-400" />
-              <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wide">Plan Limit</span>
+              <Wifi className="w-4 h-4 text-textSecondary" />
+              <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Plan Limit</span>
             </div>
-            <p className="text-[28px] font-medium text-slate-800 leading-none">{CURRENT.routerLimit}</p>
-            <p className="text-[11px] text-slate-400 mt-1">MikroTik router{CURRENT.routerLimit > 1 ? 's' : ''} allowed</p>
+            <p className="text-[28px] font-medium text-textPrimary leading-none">{CURRENT.routerLimit}</p>
+            <p className="text-[11px] text-textSecondary mt-1">MikroTik router{CURRENT.routerLimit > 1 ? 's' : ''} allowed</p>
           </div>
         </div>
       </div>
@@ -173,13 +173,13 @@ export default function Subscription() {
         const target = PLANS.find(p => p.id === upgradeTarget)!;
         return (
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200">
+            <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200">
               <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
                 <ArrowUpRight className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-[18px] font-medium text-slate-800 mb-2">Upgrade to {target.name}?</h3>
-              <p className="text-[13px] text-slate-500 mb-6 leading-relaxed">
-                You will be billed <strong className="text-slate-800">KES {target.price.toLocaleString()}/month</strong> starting your next billing cycle. Your current plan features continue until {formatDate(CURRENT.endDate)}.
+              <h3 className="text-[18px] font-medium text-textPrimary mb-2">Upgrade to {target.name}?</h3>
+              <p className="text-[13px] text-textSecondary mb-6 leading-relaxed">
+                You will be billed <strong className="text-textPrimary">KES {target.price.toLocaleString()}/month</strong> starting your next billing cycle. Your current plan features continue until {formatDate(CURRENT.endDate)}.
               </p>
               <div className="flex gap-3">
                 <button onClick={() => setConfirming(false)} className="flex-1 btn-secondary text-[13px]">
@@ -202,7 +202,7 @@ export default function Subscription() {
 
       {/* Plans Grid */}
       <div>
-        <h3 className="text-[15px] font-medium text-slate-800 mb-5">Available Plans</h3>
+        <h3 className="text-[15px] font-medium text-textPrimary mb-5">Available Plans</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {PLANS.map(plan => {
             const isCurrent = plan.id === CURRENT.plan;
@@ -214,7 +214,7 @@ export default function Subscription() {
                   isRecommended
                     ? 'border-emerald-500/40 shadow-[0_0_0_1px_rgba(16,185,129,0.3),0_8px_24px_rgba(16,185,129,0.08)]'
                     : 'hover:shadow-[0_8px_24px_rgb(0,0,0,0.06)]'
-                } ${isCurrent ? 'bg-slate-50/50' : 'bg-white'}`}
+                } ${isCurrent ? 'bg-white/5' : 'bg-bgSecondary'}`}
               >
                 {isRecommended && (
                   <div className="absolute top-0 right-0">
@@ -226,18 +226,18 @@ export default function Subscription() {
 
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    {plan.id === 'basic' && <Zap className="w-4 h-4 text-slate-400" />}
+                    {plan.id === 'basic' && <Zap className="w-4 h-4 text-textSecondary" />}
                     {plan.id === 'standard' && <Star className="w-4 h-4 text-emerald-500" />}
                     {plan.id === 'premium' && <Crown className="w-4 h-4 text-violet-500" />}
                     <span className={`text-[13px] font-medium ${
                       plan.id === 'premium' ? 'text-violet-600' :
-                      plan.id === 'standard' ? 'text-emerald-600' : 'text-slate-600'
+                      plan.id === 'standard' ? 'text-emerald-600' : 'text-textSecondary'
                     }`}>{plan.name}</span>
                   </div>
                   <div className="flex items-baseline gap-1 mb-1">
-                    <span className="text-[11px] text-slate-500 font-medium">KES</span>
-                    <span className="text-[32px] font-medium text-slate-800 leading-none">{plan.price.toLocaleString()}</span>
-                    <span className="text-[13px] text-slate-400">/month</span>
+                    <span className="text-[11px] text-textSecondary font-medium">KES</span>
+                    <span className="text-[32px] font-medium text-textPrimary leading-none">{plan.price.toLocaleString()}</span>
+                    <span className="text-[13px] text-textSecondary">/month</span>
                   </div>
                 </div>
 
@@ -246,9 +246,9 @@ export default function Subscription() {
                     <li key={f} className="flex items-start gap-2.5">
                       <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${
                         plan.id === 'premium' ? 'text-violet-500' :
-                        plan.id === 'standard' ? 'text-emerald-500' : 'text-slate-400'
+                        plan.id === 'standard' ? 'text-emerald-500' : 'text-textSecondary'
                       }`} />
-                      <span className="text-[13px] text-slate-600">{f}</span>
+                      <span className="text-[13px] text-textSecondary">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -258,7 +258,7 @@ export default function Subscription() {
                   disabled={isCurrent}
                   className={`w-full py-2.5 rounded-lg text-[13px] font-medium transition-all flex items-center justify-center gap-2 ${
                     isCurrent
-                      ? 'bg-slate-100 text-slate-400 cursor-default'
+                      ? 'bg-white/10 text-textSecondary cursor-default'
                       : plan.id === 'premium'
                         ? 'bg-violet-500 hover:bg-violet-600 text-white shadow-sm hover:shadow-[0_4px_12px_rgba(139,92,246,0.3)]'
                         : 'btn-primary'
@@ -277,13 +277,13 @@ export default function Subscription() {
       </div>
 
       {/* Help footer */}
-      <div className="flex items-center gap-4 p-5 bg-slate-50/50 border border-slate-200/60 rounded-xl">
-        <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
-          <HelpCircle className="w-5 h-5 text-slate-400" />
+      <div className="flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl">
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+          <HelpCircle className="w-5 h-5 text-textSecondary" />
         </div>
         <div className="flex-1">
-          <p className="text-[14px] font-medium text-slate-700">Need a custom enterprise plan?</p>
-          <p className="text-[12px] text-slate-500 mt-0.5">Contact us for plans with more than 50 routers, white-labeling, or on-premise deployment.</p>
+          <p className="text-[14px] font-medium text-textPrimary">Need a custom enterprise plan?</p>
+          <p className="text-[12px] text-textSecondary mt-0.5">Contact us for plans with more than 50 routers, white-labeling, or on-premise deployment.</p>
         </div>
         <a href="mailto:support@enterprise.edge" className="btn-secondary flex items-center gap-2 text-[13px] shrink-0">
           <Mail className="w-4 h-4" /> Contact Sales

@@ -66,8 +66,8 @@ export default function Customers() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Subscriber Base</h2>
-          <p className="text-slate-500 mt-1">Manage and monitor live user connectivity</p>
+          <h2 className="text-3xl font-bold text-textPrimary tracking-tight">Subscriber Base</h2>
+          <p className="text-textSecondary mt-1">Manage and monitor live user connectivity</p>
         </div>
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all flex items-center">
           <Plus className="w-5 h-5 mr-2" />
@@ -75,24 +75,24 @@ export default function Customers() {
         </button>
       </div>
 
-      <div className="card bg-white border border-slate-200/60 rounded-3xl p-0 overflow-hidden shadow-sm">
-        <div className="p-5 border-b border-slate-100 bg-slate-50/30 flex flex-wrap items-center gap-4">
+      <div className="card bg-bgSecondary border border-white/10 rounded-3xl p-0 overflow-hidden shadow-sm">
+        <div className="p-5 border-b border-white/5 bg-white/5/30 flex flex-wrap items-center gap-4">
           <div className="relative flex-1 min-w-[300px]">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-textSecondary w-5 h-5" />
             <input 
               type="text" 
               placeholder="Search by name, username, or account #..." 
-              className="pl-12 w-full bg-white border border-slate-200 rounded-2xl py-3 text-[14px] focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm"
+              className="pl-12 w-full bg-bgSecondary border border-white/10 rounded-2xl py-3 text-[14px] focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex bg-white border border-slate-200 rounded-2xl p-1 shadow-sm">
+          <div className="flex bg-bgSecondary border border-white/10 rounded-2xl p-1 shadow-sm">
             {['All', 'Online', 'Offline', 'Suspended'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setStatusFilter(tab)}
-                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${statusFilter === tab ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-800'}`}
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${statusFilter === tab ? 'bg-bgPrimary text-white shadow-md' : 'text-textSecondary hover:text-textPrimary'}`}
               >
                 {tab}
               </button>
@@ -103,7 +103,7 @@ export default function Customers() {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-slate-50/50 text-[11px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+              <tr className="bg-white/5 text-[11px] font-black text-textSecondary uppercase tracking-widest border-b border-white/5">
                 <th className="px-6 py-5">Subscriber / Details</th>
                 <th className="px-6 py-5 text-center">Service Type</th>
                 <th className="px-6 py-5">Connection Details</th>
@@ -111,13 +111,13 @@ export default function Customers() {
                 <th className="px-6 py-5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5">
               {loading ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-20 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <Activity className="w-8 h-8 text-blue-500 animate-pulse" />
-                      <p className="text-slate-500 font-medium italic">Scanning network for active sessions...</p>
+                      <p className="text-textSecondary font-medium italic">Scanning network for active sessions...</p>
                     </div>
                   </td>
                 </tr>
@@ -125,8 +125,8 @@ export default function Customers() {
                 <tr>
                   <td colSpan={5} className="px-6 py-20 text-center">
                     <div className="flex flex-col items-center gap-2">
-                      <Search className="w-10 h-10 text-slate-200" />
-                      <p className="text-slate-400 font-medium">No subscribers found matching your filters.</p>
+                      <Search className="w-10 h-10 text-white/30" />
+                      <p className="text-textSecondary font-medium">No subscribers found matching your filters.</p>
                     </div>
                   </td>
                 </tr>
@@ -135,17 +135,17 @@ export default function Customers() {
                 const isOnline = !!session;
 
                 return (
-                  <tr key={c.id} className="group hover:bg-slate-50/50 transition-colors">
+                  <tr key={c.id} className="group hover:bg-white/5 transition-colors">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-2xl ${isOnline ? 'bg-emerald-50' : 'bg-slate-100'} group-hover:scale-105 transition-transform`}>
-                          {isOnline ? <Wifi className="w-5 h-5 text-emerald-600" /> : <WifiOff className="w-5 h-5 text-slate-400" />}
+                        <div className={`p-3 rounded-2xl ${isOnline ? 'bg-emerald-50' : 'bg-white/10'} group-hover:scale-105 transition-transform`}>
+                          {isOnline ? <Wifi className="w-5 h-5 text-emerald-600" /> : <WifiOff className="w-5 h-5 text-textSecondary" />}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 text-[15px]">{c.full_name}</p>
+                          <p className="font-bold text-textPrimary text-[15px]">{c.full_name}</p>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-[12px] font-mono font-bold text-slate-400 px-1.5 py-0.5 bg-slate-100 rounded">@{c.username}</span>
-                            <span className="text-[11px] font-medium text-slate-400 flex items-center">
+                            <span className="text-[12px] font-mono font-bold text-textSecondary px-1.5 py-0.5 bg-white/10 rounded">@{c.username}</span>
+                            <span className="text-[11px] font-medium text-textSecondary flex items-center">
                               <MapPin className="w-3 h-3 mr-1" />
                               {c.address || 'No Location'}
                             </span>
@@ -165,10 +165,10 @@ export default function Customers() {
                             <Activity className="w-3 h-3 mr-1.5" />
                             {session.address}
                           </p>
-                          <p className="text-[11px] font-medium text-slate-500">Uptime: <span className="text-slate-700 font-bold">{session.uptime}</span></p>
+                          <p className="text-[11px] font-medium text-textSecondary">Uptime: <span className="text-textPrimary font-bold">{session.uptime}</span></p>
                         </div>
                       ) : (
-                        <p className="text-[12px] font-medium text-slate-400 italic">Disconnected</p>
+                        <p className="text-[12px] font-medium text-textSecondary italic">Disconnected</p>
                       )}
                     </td>
                     <td className="px-6 py-5">
@@ -177,16 +177,16 @@ export default function Customers() {
                           {c.status}
                         </span>
                         {c.next_due_date && (
-                          <span className="text-[11px] font-medium text-slate-500">Due: {new Date(c.next_due_date).toLocaleDateString()}</span>
+                          <span className="text-[11px] font-medium text-textSecondary">Due: {new Date(c.next_due_date).toLocaleDateString()}</span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-2">
-                         <button className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all shadow-sm">
+                         <button className="p-2.5 bg-bgSecondary border border-white/10 rounded-xl text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-all shadow-sm">
                            <ShieldCheck className="w-4 h-4" />
                          </button>
-                         <button className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all shadow-sm">
+                         <button className="p-2.5 bg-bgSecondary border border-white/10 rounded-xl text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-all shadow-sm">
                            <MoreVertical className="w-4 h-4" />
                          </button>
                       </div>

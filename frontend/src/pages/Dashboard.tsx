@@ -10,9 +10,9 @@ import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
 
 const StatCard = ({ title, value, sub, icon: Icon, colorClass, loading, trend }: any) => (
-  <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-slate-200/60 transition-all duration-500 group">
+  <div className="bg-bgSecondary rounded-2xl p-5 border border-white/5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-white/10 transition-all duration-500 group">
     <div className="flex items-center justify-between mb-4">
-      <div className={`p-2 rounded-xl bg-slate-50/50`}>
+      <div className={`p-2 rounded-xl bg-white/5`}>
         <Icon className={`w-4 h-4 ${colorClass}`} strokeWidth={1.5} />
       </div>
       {trend && (
@@ -23,13 +23,13 @@ const StatCard = ({ title, value, sub, icon: Icon, colorClass, loading, trend }:
       )}
     </div>
     <div>
-      <p className="text-[13px] text-slate-400 mb-1">{title}</p>
+      <p className="text-[13px] text-textSecondary mb-1">{title}</p>
       {loading ? (
-        <div className="w-20 h-7 bg-slate-50 rounded animate-pulse"></div>
+        <div className="w-20 h-7 bg-white/5 rounded animate-pulse"></div>
       ) : (
-        <p className="text-2xl font-light text-slate-800 tracking-tight">{value}</p>
+        <p className="text-2xl font-light text-textPrimary tracking-tight">{value}</p>
       )}
-      <p className="text-[11px] text-slate-300 mt-1.5">{sub}</p>
+      <p className="text-[11px] text-textSecondary mt-1.5">{sub}</p>
     </div>
   </div>
 );
@@ -112,21 +112,21 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6 pb-12 font-sans text-slate-600">
+    <div className="space-y-6 pb-12 font-sans text-textSecondary">
       {/* Refined Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2">
         <div>
-          <h1 className="text-2xl font-light text-slate-800 tracking-tight">Command center</h1>
-          <p className="text-[13px] text-slate-400 mt-1 flex items-center">
+          <h1 className="text-2xl font-light text-textPrimary tracking-tight">Command center</h1>
+          <p className="text-[13px] text-textSecondary mt-1 flex items-center">
             <Activity className="w-3.5 h-3.5 mr-2 text-emerald-400" strokeWidth={1.5} />
             System status: <span className="text-emerald-500/80 ml-1">Optimal performance</span>
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={fetchDashboardData} className="p-2.5 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-all shadow-sm">
-            <Clock className="w-4 h-4 text-slate-400" strokeWidth={1.5} />
+          <button onClick={fetchDashboardData} className="p-2.5 bg-bgSecondary border border-white/5 rounded-xl hover:bg-white/5 transition-all shadow-sm">
+            <Clock className="w-4 h-4 text-textSecondary" strokeWidth={1.5} />
           </button>
-          <button className="bg-slate-800 text-white px-5 py-2.5 rounded-xl text-[13px] font-normal shadow-sm hover:bg-slate-900 transition-all flex items-center">
+          <button className="bg-bgSecondary text-white px-5 py-2.5 rounded-xl text-[13px] font-normal shadow-sm hover:bg-bgPrimary transition-all flex items-center">
             <Zap className="w-3.5 h-3.5 mr-2 text-amber-400" strokeWidth={1.5} />
             Actions
           </button>
@@ -143,15 +143,15 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart: Refined AreaChart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
+        <div className="lg:col-span-2 bg-bgSecondary rounded-2xl p-6 border border-white/5 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="text-lg font-normal text-slate-700">Revenue performance</h3>
-              <p className="text-[12px] text-slate-400">Weekly financial analysis</p>
+              <h3 className="text-lg font-normal text-textPrimary">Revenue performance</h3>
+              <p className="text-[12px] text-textSecondary">Weekly financial analysis</p>
             </div>
-            <div className="bg-slate-50/50 p-1 rounded-lg flex gap-1">
-              <button className="px-3 py-1 bg-white rounded-md text-[11px] font-normal shadow-sm">Income</button>
-              <button className="px-3 py-1 text-[11px] font-normal text-slate-400 hover:text-slate-600 transition">Growth</button>
+            <div className="bg-white/5 p-1 rounded-lg flex gap-1">
+              <button className="px-3 py-1 bg-bgSecondary rounded-md text-[11px] font-normal shadow-sm">Income</button>
+              <button className="px-3 py-1 text-[11px] font-normal text-textSecondary hover:text-textSecondary transition">Growth</button>
             </div>
           </div>
           <div className="h-[320px] w-full">
@@ -175,33 +175,33 @@ export default function Dashboard() {
 
         {/* Side column: Refined Revenue Card & Health */}
         <div className="space-y-4">
-          <div className="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden group">
+          <div className="bg-bgPrimary rounded-2xl p-6 text-white relative overflow-hidden group">
              <div className="absolute -bottom-6 -right-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <CreditCard className="w-32 h-32" strokeWidth={1} />
              </div>
-             <p className="text-slate-500 text-[11px] mb-1">Monthly revenue</p>
+             <p className="text-textSecondary text-[11px] mb-1">Monthly revenue</p>
              <h3 className="text-3xl font-light text-emerald-400">Ksh {stats.monthlyRevenue.toLocaleString()}</h3>
              
              <div className="mt-8 space-y-3 relative z-10">
                 <div className="flex justify-between items-center text-[11px]">
-                  <span className="text-slate-500">Performance target</span>
+                  <span className="text-textSecondary">Performance target</span>
                   <span className="text-emerald-400/80">72% Achieved</span>
                 </div>
-                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                <div className="w-full h-1 bg-bgSecondary/5 rounded-full overflow-hidden">
                   <div className="h-full bg-emerald-500/60" style={{ width: '72%' }}></div>
                 </div>
-                <div className="pt-2 flex items-center justify-between text-[10px] text-slate-500">
+                <div className="pt-2 flex items-center justify-between text-[10px] text-textSecondary">
                    <div className="flex -space-x-1.5">
-                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-slate-900 bg-slate-800 flex items-center justify-center text-[8px]">U{i}</div>)}
+                     {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-slate-900 bg-bgSecondary flex items-center justify-center text-[8px]">U{i}</div>)}
                    </div>
                    <span className="text-emerald-500/60">+12% vs last month</span>
                 </div>
              </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
+          <div className="bg-bgSecondary rounded-2xl p-6 border border-white/5 shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
              <div className="flex items-center justify-between mb-5">
-                <h3 className="text-sm font-normal text-slate-700">Node status</h3>
+                <h3 className="text-sm font-normal text-textPrimary">Node status</h3>
                 <Signal className="w-3.5 h-3.5 text-blue-400" strokeWidth={1.5} />
              </div>
              <div className="space-y-4">
@@ -210,14 +210,14 @@ export default function Dashboard() {
                     <div className="flex items-center gap-2.5">
                        <div className={`w-1.5 h-1.5 rounded-full ${r.status === 'online' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.3)]' : (r.status === 'pending' ? 'bg-amber-400' : 'bg-rose-400')}`}></div>
                        <div>
-                          <p className="text-[12px] font-normal text-slate-700">{r.name}</p>
-                          <p className="text-[10px] text-slate-400">{r.active_sessions} Active | {r.vendor || 'Router'}</p>
+                          <p className="text-[12px] font-normal text-textPrimary">{r.name}</p>
+                          <p className="text-[10px] text-textSecondary">{r.active_sessions} Active | {r.vendor || 'Router'}</p>
                        </div>
                     </div>
-                    <span className="text-[11px] text-slate-400">{r.cpu_load || 0}%</span>
+                    <span className="text-[11px] text-textSecondary">{r.cpu_load || 0}%</span>
                   </div>
                 ))}
-                <button className="w-full py-2.5 mt-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-[11px] font-normal text-slate-500 transition-all">
+                <button className="w-full py-2.5 mt-2 bg-white/5 hover:bg-white/10 rounded-xl text-[11px] font-normal text-textSecondary transition-all">
                   Expand infrastructure
                 </button>
              </div>

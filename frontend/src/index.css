@@ -31,7 +31,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  background-color: rgba(167, 139, 250, 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(167, 139, 250, 0.35);
 }
 
 @layer components {
@@ -73,20 +77,30 @@
 
   /* Status Badges */
   .badge-success {
-    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100;
   }
 
   .badge-error {
-    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-500/15 text-rose-400 border border-rose-500/20;
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100;
   }
 
   .badge-warning {
-    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20;
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-100;
   }
 
-  /* Auth page — high visibility labels, subtle placeholders */
+  /* Auth page */
   .auth-input {
-    @apply block w-full rounded-full border border-slate-200 bg-white px-6 py-4 text-[13px] font-normal text-slate-800 placeholder:text-slate-300 focus:border-black focus:ring-4 focus:ring-black/5 transition-all outline-none shadow-sm;
+    @apply block w-full rounded-full px-6 py-4 text-[13px] font-normal transition-all outline-none;
+    background-color: rgba(36, 31, 58, 0.8);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    color: var(--color-text-primary);
+  }
+  .auth-input::placeholder {
+    color: var(--color-text-secondary);
+  }
+  .auth-input:focus {
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 0 0 4px rgba(192, 132, 252, 0.08);
   }
 
   /* Auth submit button */

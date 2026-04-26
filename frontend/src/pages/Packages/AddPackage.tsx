@@ -198,13 +198,13 @@ export default function AddPackage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/packages')}
-          className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition"
+          className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition"
         >
-          <ArrowLeft className="w-4 h-4 text-slate-600" />
+          <ArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
-          <h2 className="text-[18px] font-medium text-slate-800">Create Internet Package</h2>
-          <p className="text-[13px] text-slate-500 mt-0.5">
+          <h2 className="text-[18px] font-medium text-textPrimary">Create Internet Package</h2>
+          <p className="text-[13px] text-textSecondary mt-0.5">
             Define bandwidth limits, pricing, and RouterOS profile bindings.
           </p>
         </div>
@@ -215,7 +215,7 @@ export default function AddPackage() {
 
           {/* ── Service Architecture ──────────────────────────────────────────── */}
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-3 uppercase tracking-wide">
+            <label className="block text-[12px] font-medium text-textSecondary mb-3 uppercase tracking-wide">
               Service Architecture
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -229,7 +229,7 @@ export default function AddPackage() {
                   className={`cursor-pointer rounded-xl border p-4 transition-all flex flex-col gap-2 ${
                     form.service_type === type
                       ? 'border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500/20'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      : 'border-white/10 bg-bgSecondary hover:border-white/20'
                   }`}
                 >
                   <input
@@ -238,10 +238,10 @@ export default function AddPackage() {
                     onChange={e => { set('service_type', e.target.value); setVerifyStatus('idle'); setVerifyResult(null); }}
                     className="sr-only"
                   />
-                  <Icon className={`w-5 h-5 ${form.service_type === type ? 'text-emerald-500' : 'text-slate-400'}`} />
+                  <Icon className={`w-5 h-5 ${form.service_type === type ? 'text-emerald-500' : 'text-textSecondary'}`} />
                   <div>
-                    <p className="text-[13px] font-semibold text-slate-800">{type}</p>
-                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">{desc}</p>
+                    <p className="text-[13px] font-semibold text-textPrimary">{type}</p>
+                    <p className="text-[11px] text-textSecondary leading-relaxed mt-0.5">{desc}</p>
                   </div>
                 </label>
               ))}
@@ -250,7 +250,7 @@ export default function AddPackage() {
 
           {/* ── Display Name ─────────────────────────────────────────────────── */}
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+            <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
               Display Name *
             </label>
             <input
@@ -260,7 +260,7 @@ export default function AddPackage() {
               className="input-field"
               placeholder="e.g. Home Broadband 10Mbps"
             />
-            <p className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1">
+            <p className="text-[11px] text-textSecondary mt-1.5 flex items-center gap-1">
               <Info className="w-3 h-3" />
               Used in billing UI and customer lists only. Not sent to the router.
             </p>
@@ -268,12 +268,12 @@ export default function AddPackage() {
 
           {/* ── Router Profile Section (hidden for Static) ───────────────────── */}
           {form.service_type !== 'Static' && (
-            <div className="rounded-xl border border-slate-200 p-5 space-y-4 bg-slate-50/40">
+            <div className="rounded-xl border border-white/10 p-5 space-y-4 bg-white/5/40">
               <div>
-                <p className="text-[13px] font-semibold text-slate-800 mb-0.5">Router Profile Binding</p>
-                <p className="text-[12px] text-slate-500">
+                <p className="text-[13px] font-semibold text-textPrimary mb-0.5">Router Profile Binding</p>
+                <p className="text-[12px] text-textSecondary">
                   This is the exact profile name that will be applied to RouterOS during provisioning.
-                  It must match <span className="font-mono bg-slate-200 px-1 rounded text-slate-700">
+                  It must match <span className="font-mono bg-white/10 px-1 rounded text-textPrimary">
                   {form.service_type === 'Hotspot' ? '/ip/hotspot/user/profile' : '/ppp/profile'}
                   </span> on the router.
                 </p>
@@ -281,7 +281,7 @@ export default function AddPackage() {
 
               {/* Profile name input */}
               <div>
-                <label className="block text-[12px] font-medium text-slate-600 mb-2 uppercase tracking-wide">
+                <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                   {activeProfileLabel} *
                 </label>
                 <input
@@ -295,12 +295,12 @@ export default function AddPackage() {
 
               {/* Verify on Router */}
               <div className="space-y-3">
-                <label className="block text-[12px] font-medium text-slate-600 mb-2 uppercase tracking-wide">
+                <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                   Verify Profile on Router (Optional)
                 </label>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 z-10 pointer-events-none" />
+                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 z-10 pointer-events-none" />
                     <SelectDropdown
                       value={verifyRouterId}
                       onChange={(val) => { setVerifyRouterId(val); setVerifyStatus('idle'); setVerifyResult(null); }}
@@ -313,7 +313,7 @@ export default function AddPackage() {
                     type="button"
                     onClick={verifyProfile}
                     disabled={verifyStatus === 'loading' || !verifyRouterId || !activeProfileValue.trim()}
-                    className="px-4 py-2 rounded-xl border border-slate-300 text-[13px] font-medium text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 transition flex items-center gap-2 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl border border-white/20 text-[13px] font-medium text-textPrimary bg-bgSecondary hover:bg-white/5 disabled:opacity-50 transition flex items-center gap-2 whitespace-nowrap"
                   >
                     {verifyStatus === 'loading'
                       ? <><Loader2 className="w-4 h-4 animate-spin" /> Checking...</>
@@ -347,13 +347,13 @@ export default function AddPackage() {
                               key={p}
                               type="button"
                               onClick={() => { set(activeProfileField, p); setVerifyStatus('idle'); setVerifyResult(null); }}
-                              className="font-mono text-[11px] bg-white border border-amber-300 text-amber-900 px-2.5 py-1 rounded-lg hover:bg-amber-100 transition"
+                              className="font-mono text-[11px] bg-bgSecondary border border-amber-300 text-amber-900 px-2.5 py-1 rounded-lg hover:bg-amber-100 transition"
                             >
                               {p}
                             </button>
                           ))}
                         </div>
-                        <p className="text-[10px] text-slate-400 mt-2">Click a profile above to auto-fill the field.</p>
+                        <p className="text-[10px] text-textSecondary mt-2">Click a profile above to auto-fill the field.</p>
                       </div>
                     )}
                   </div>
@@ -365,11 +365,11 @@ export default function AddPackage() {
           {/* ── Speed & Pricing ───────────────────────────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+              <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                 Download Speed (Mbps) *
               </label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0.1" step="0.1"
                   value={form.speed_down_mbps}
@@ -380,11 +380,11 @@ export default function AddPackage() {
               </div>
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+              <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                 Upload Speed (Mbps) *
               </label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0.1" step="0.1"
                   value={form.speed_up_mbps}
@@ -396,11 +396,11 @@ export default function AddPackage() {
             </div>
 
             <div>
-              <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+              <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                 Monthly Price (Ksh) *
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0"
                   value={form.price}
@@ -411,11 +411,11 @@ export default function AddPackage() {
               </div>
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+              <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                 Billing Cycle
               </label>
               <div className="relative">
-                <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none z-10" />
+                <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
                 <SelectDropdown
                   value={form.billing_cycle_months}
                   onChange={val => set('billing_cycle_months', val)}
@@ -433,7 +433,7 @@ export default function AddPackage() {
             {/* Validity Days — shown for Hotspot */}
             {form.service_type === 'Hotspot' && (
               <div>
-                <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+                <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                   Validity (Days)
                 </label>
                 <input
@@ -449,11 +449,11 @@ export default function AddPackage() {
             {/* Session Timeout — shown for RADIUS/PPPoE/Hotspot */}
             {form.service_type !== 'Static' && (
               <div>
-                <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+                <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                   RADIUS Session Timeout
                 </label>
                 <div className="relative">
-                  <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none z-10" />
+                  <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
                   <SelectDropdown
                     value={form.session_timeout}
                     onChange={val => set('session_timeout', val)}
@@ -465,7 +465,7 @@ export default function AddPackage() {
                     icon={<Clock className="w-4 h-4" />}
                   />
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1">
+                <p className="text-[10px] text-textSecondary mt-1.5 flex items-center gap-1">
                   <Info className="w-3 h-3" />
                   Forces PPPoE re-authentication at this interval.
                 </p>
@@ -474,7 +474,7 @@ export default function AddPackage() {
 
             {/* Description */}
             <div className="md:col-span-2">
-              <label className="block text-[12px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+              <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                 Description (Optional)
               </label>
               <textarea
@@ -495,10 +495,10 @@ export default function AddPackage() {
           )}
         </div>
 
-        <div className="p-4 bg-slate-50/50 border-t border-slate-200/60 flex justify-between items-center px-6 md:px-8">
+        <div className="p-4 bg-white/5 border-t border-white/10 flex justify-between items-center px-6 md:px-8">
           <button
             onClick={() => navigate('/packages')}
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-800 transition"
+            className="text-[13px] font-medium text-textSecondary hover:text-textPrimary transition"
           >
             Cancel
           </button>

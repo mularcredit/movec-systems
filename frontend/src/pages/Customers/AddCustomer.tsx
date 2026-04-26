@@ -332,8 +332,8 @@ export default function AddCustomer() {
   };
 
   const StepIndicator = ({ num, label }: { num: number; label: string }) => (
-    <div className={`flex items-center ${step >= num ? 'text-emerald-600' : 'text-slate-400'}`}>
-      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-medium mr-2 ${step > num ? 'bg-emerald-500 text-white' : step === num ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100'}`}>
+    <div className={`flex items-center ${step >= num ? 'text-emerald-600' : 'text-textSecondary'}`}>
+      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-medium mr-2 ${step > num ? 'bg-emerald-500 text-white' : step === num ? 'bg-emerald-100 text-emerald-700' : 'bg-white/10'}`}>
         {step > num ? '✓' : num}
       </div>
       <span className="text-[13px] font-medium hidden sm:inline-block">{label}</span>
@@ -343,56 +343,56 @@ export default function AddCustomer() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-20">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/customers/all')} className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition shrink-0">
-          <ArrowLeft className="w-4 h-4 text-slate-600" />
+        <button onClick={() => navigate('/customers/all')} className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition shrink-0">
+          <ArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
-          <h2 className="text-[18px] font-medium text-slate-800">Provision Service</h2>
-          <p className="text-[13px] text-slate-500 mt-0.5">Deploy a new internet connection tied to an identity and physical unit.</p>
+          <h2 className="text-[18px] font-medium text-textPrimary">Provision Service</h2>
+          <p className="text-[13px] text-textSecondary mt-0.5">Deploy a new internet connection tied to an identity and physical unit.</p>
         </div>
       </div>
 
       {/* Step Indicator */}
-      <div className="flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-200/60 overflow-x-auto">
+      <div className="flex items-center gap-3 bg-bgSecondary p-4 rounded-2xl shadow-sm border border-white/10 overflow-x-auto">
         <StepIndicator num={1} label="Identity (Person)" />
-        <div className="w-8 sm:w-12 h-px bg-slate-200 shrink-0" />
+        <div className="w-8 sm:w-12 h-px bg-white/10 shrink-0" />
         <StepIndicator num={2} label="Location (Property)" />
-        <div className="w-8 sm:w-12 h-px bg-slate-200 shrink-0" />
+        <div className="w-8 sm:w-12 h-px bg-white/10 shrink-0" />
         <StepIndicator num={3} label="Network Service" />
-        <div className="w-8 sm:w-12 h-px bg-slate-200 shrink-0" />
+        <div className="w-8 sm:w-12 h-px bg-white/10 shrink-0" />
         <StepIndicator num={4} label="Payment & Finish" />
       </div>
 
-      <div className="card p-0 overflow-hidden shadow-sm border border-slate-200/60">
+      <div className="card p-0 overflow-hidden shadow-sm border border-white/10">
         <div className="p-6 md:p-8 min-h-[400px]">
 
           {/* STEP 1: IDENTITY */}
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
                   <UserCircle className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-medium text-slate-800">Account Holder</h3>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Who legally owns this service connection?</p>
+                  <h3 className="text-[14px] font-medium text-textPrimary">Account Holder</h3>
+                  <p className="text-[12px] text-textSecondary mt-0.5">Who legally owns this service connection?</p>
                 </div>
               </div>
               
-              <div className="flex p-1 bg-slate-100 rounded-lg max-w-sm mb-6">
+              <div className="flex p-1 bg-white/10 rounded-lg max-w-sm mb-6">
                 <button 
                   onClick={() => setI('mode', 'existing')}
-                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${identity.mode === 'existing' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${identity.mode === 'existing' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                 >Existing Identity</button>
                 <button 
                   onClick={() => setI('mode', 'new')}
-                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${identity.mode === 'new' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${identity.mode === 'new' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                 >New Identity</button>
               </div>
 
               {identity.mode === 'existing' ? (
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Select Person *</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Select Person *</label>
                   <Combobox
                     value={identity.id}
                     onChange={val => setI('id', val)}
@@ -404,25 +404,25 @@ export default function AddCustomer() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Full Name *</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Full Name *</label>
                     <div className="relative">
-                      <UserPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                      <UserPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={identity.fullName} onChange={e => setI('fullName', e.target.value)} className={`pl-10 input-field ${validationErrors.fullName ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="John Mwangi" />
                     </div>
                     {validationErrors.fullName && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.fullName}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Phone Number *</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Phone Number *</label>
                     <div className="relative">
-                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={identity.phone} onChange={e => setI('phone', e.target.value)} className={`pl-10 input-field font-mono ${validationErrors.phone ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="0712 345 678" />
                     </div>
                     {validationErrors.phone && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.phone}</p>}
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Email Address</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Email Address</label>
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="email" value={identity.email} onChange={e => setI('email', e.target.value)} className={`pl-10 input-field ${validationErrors.email ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="john@example.com" />
                     </div>
                     {validationErrors.email && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.email}</p>}
@@ -436,29 +436,29 @@ export default function AddCustomer() {
           {step === 2 && (
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
                   <Building2 className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-medium text-slate-800">Physical Target</h3>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Where is the cable physically terminating?</p>
+                  <h3 className="text-[14px] font-medium text-textPrimary">Physical Target</h3>
+                  <p className="text-[12px] text-textSecondary mt-0.5">Where is the cable physically terminating?</p>
                 </div>
               </div>
 
-              <div className="flex p-1 bg-slate-100 rounded-lg max-w-sm mb-6">
+              <div className="flex p-1 bg-white/10 rounded-lg max-w-sm mb-6">
                 <button 
                   onClick={() => setL('mode', 'existing')}
-                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${location.mode === 'existing' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${location.mode === 'existing' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                 >Existing Building</button>
                 <button 
                   onClick={() => setL('mode', 'new')}
-                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${location.mode === 'new' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-1.5 rounded-md text-[13px] font-medium transition-all ${location.mode === 'new' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                 >New Building</button>
               </div>
 
               {location.mode === 'existing' ? (
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Select Property / Building *</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Select Property / Building *</label>
                   <Combobox
                     value={location.property_id}
                     onChange={val => setL('property_id', val)}
@@ -470,14 +470,14 @@ export default function AddCustomer() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Property / Building Name *</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Property / Building Name *</label>
                     <div className="relative">
-                      <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                      <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={location.propertyName} onChange={e => setL('propertyName', e.target.value)} className="pl-10 input-field" placeholder="e.g., Summit Apartments" />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Area / Zone (Kenya)</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Area / Zone (Kenya)</label>
                     <Combobox
                       value={location.area}
                       onChange={(val) => setL('area', val)}
@@ -490,9 +490,9 @@ export default function AddCustomer() {
               )}
 
                <div>
-                 <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide mt-2">Unit / Door Number *</label>
+                 <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide mt-2">Unit / Door Number *</label>
                  <div className="relative">
-                   <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                   <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                    <input type="text" value={location.unitNumber} onChange={e => setL('unitNumber', e.target.value)} className="pl-10 input-field font-mono max-w-[200px]" placeholder="e.g., A4" />
                  </div>
                </div>
@@ -503,24 +503,24 @@ export default function AddCustomer() {
           {step === 3 && (
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
                   <Shield className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-medium text-slate-800">Internet Parameters</h3>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Route this connection to the MikroTik NAS.</p>
+                  <h3 className="text-[14px] font-medium text-textPrimary">Internet Parameters</h3>
+                  <p className="text-[12px] text-textSecondary mt-0.5">Route this connection to the MikroTik NAS.</p>
                 </div>
               </div>
 
               {/* Service Type */}
               <div>
-                <label className="block text-[11px] font-medium text-slate-500 mb-3 uppercase tracking-wide">Connection Logic</label>
+                <label className="block text-[11px] font-medium text-textSecondary mb-3 uppercase tracking-wide">Connection Logic</label>
                 <div className="grid grid-cols-3 gap-3 max-w-lg">
                   {['PPPoE', 'Hotspot', 'Static'].map(t => (
-                    <label key={t} className={`cursor-pointer rounded-xl border p-3.5 flex items-center gap-2.5 transition-all ${service.service_type === t ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300'}`}>
+                    <label key={t} className={`cursor-pointer rounded-xl border p-3.5 flex items-center gap-2.5 transition-all ${service.service_type === t ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-white/10 hover:border-white/20'}`}>
                       <input type="radio" value={t} checked={service.service_type === t} onChange={e => setS('service_type', e.target.value)} className="sr-only" />
-                      <Wifi className={`w-4 h-4 shrink-0 ${service.service_type === t ? 'text-emerald-500' : 'text-slate-400'}`} />
-                      <span className={`text-[13px] font-medium ${service.service_type === t ? 'text-emerald-700' : 'text-slate-600'}`}>{t}</span>
+                      <Wifi className={`w-4 h-4 shrink-0 ${service.service_type === t ? 'text-emerald-500' : 'text-textSecondary'}`} />
+                      <span className={`text-[13px] font-medium ${service.service_type === t ? 'text-emerald-700' : 'text-textSecondary'}`}>{t}</span>
                     </label>
                   ))}
                 </div>
@@ -528,26 +528,26 @@ export default function AddCustomer() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="md:col-span-2">
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Service Account Num (Auto-Generated)</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Service Account Num (Auto-Generated)</label>
                   <div className="relative">
                     <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 w-4 h-4" />
-                    <input type="text" value={service.accountNumber} readOnly className="pl-10 input-field font-mono bg-emerald-50/40 text-slate-700" />
+                    <input type="text" value={service.accountNumber} readOnly className="pl-10 input-field font-mono bg-emerald-50/40 text-textPrimary" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Package *</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Package *</label>
                   <SelectDropdown
                     value={service.package_id}
                     onChange={val => setS('package_id', val)}
                     options={packages.map(p => ({ label: `${p.display_name} — Ksh ${p.price}/mo`, value: p.id }))}
                     placeholder="Select billing plan..."
-                    className="bg-white border-slate-200"
+                    className="bg-bgSecondary border-white/10"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Network Node (Router)</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Network Node (Router)</label>
                   <SelectDropdown
                     value={service.router_id}
                     onChange={val => setS('router_id', val)}
@@ -562,16 +562,16 @@ export default function AddCustomer() {
                 {service.service_type !== 'Static' && (
                   <>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">{service.service_type} Username *</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">{service.service_type} Username *</label>
                       <div className="relative">
-                        <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                        <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="text" value={service.ppp_username} onChange={e => setS('ppp_username', e.target.value)} className="pl-10 input-field font-mono" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">{service.service_type} Password</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">{service.service_type} Password</label>
                       <div className="relative">
-                        <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                        <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="text" value={service.ppp_password} onChange={e => setS('ppp_password', e.target.value)} className="pl-10 input-field font-mono" />
                       </div>
                     </div>
@@ -579,17 +579,17 @@ export default function AddCustomer() {
                 )}
 
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Static IP (Optional)</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Static IP (Optional)</label>
                   <div className="relative">
-                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                     <input type="text" value={service.ip_address} onChange={e => setS('ip_address', e.target.value)} className="pl-10 input-field font-mono" placeholder="10.0.0.100" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">First Bill Date</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">First Bill Date</label>
                   <div className="relative">
-                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                     <input type="date" value={service.next_due_date} onChange={e => setS('next_due_date', e.target.value)} className="pl-10 input-field" />
                   </div>
                 </div>
@@ -601,12 +601,12 @@ export default function AddCustomer() {
           {step === 4 && (
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
                   <CreditCard className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-medium text-slate-800">Payment Selection</h3>
-                  <p className="text-[12px] text-slate-500 mt-0.5">How is the customer paying for this setup?</p>
+                  <h3 className="text-[14px] font-medium text-textPrimary">Payment Selection</h3>
+                  <p className="text-[12px] text-textSecondary mt-0.5">How is the customer paying for this setup?</p>
                 </div>
               </div>
 
@@ -620,23 +620,23 @@ export default function AddCustomer() {
                   <button
                     key={cat.id}
                     onClick={() => setP('category', cat.id)}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all ${payment.category === cat.id ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all ${payment.category === cat.id ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-white/10 hover:border-white/20 bg-bgSecondary'}`}
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${payment.category === cat.id ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${payment.category === cat.id ? 'bg-emerald-500 text-white' : 'bg-white/10 text-textSecondary'}`}>
                       {cat.icon}
                     </div>
-                    <span className={`text-[12px] font-medium ${payment.category === cat.id ? 'text-emerald-700' : 'text-slate-600'}`}>{cat.label}</span>
+                    <span className={`text-[12px] font-medium ${payment.category === cat.id ? 'text-emerald-700' : 'text-textSecondary'}`}>{cat.label}</span>
                   </button>
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 bg-slate-50/50 rounded-2xl border border-slate-200/60">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 bg-white/5 rounded-2xl border border-white/10">
                 {payment.category === 'full' && (
                   <div className="md:col-span-2">
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Amount to Pay</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount to Pay</label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                      <input type="text" value={`Ksh ${packagePrice.toLocaleString()}`} readOnly className="pl-10 input-field bg-white font-medium text-slate-700" />
+                      <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <input type="text" value={`Ksh ${packagePrice.toLocaleString()}`} readOnly className="pl-10 input-field bg-bgSecondary font-medium text-textPrimary" />
                     </div>
                   </div>
                 )}
@@ -644,18 +644,18 @@ export default function AddCustomer() {
                 {payment.category === 'partial' && (
                   <>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Amount Paid Now *</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount Paid Now *</label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="number" value={payment.amount_paid} onChange={e => setP('amount_paid', e.target.value)} className="pl-10 input-field bg-white" placeholder="e.g. 500" />
+                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <input type="number" value={payment.amount_paid} onChange={e => setP('amount_paid', e.target.value)} className="pl-10 input-field bg-bgSecondary" placeholder="e.g. 500" />
                       </div>
-                      <p className="text-[11px] text-slate-400 mt-1.5">Remaining: Ksh {(packagePrice - parseFloat(payment.amount_paid || '0')).toLocaleString()}</p>
+                      <p className="text-[11px] text-textSecondary mt-1.5">Remaining: Ksh {(packagePrice - parseFloat(payment.amount_paid || '0')).toLocaleString()}</p>
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Balance Due Date *</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Balance Due Date *</label>
                       <div className="relative">
-                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="date" value={payment.balance_due_date} onChange={e => setP('balance_due_date', e.target.value)} className="pl-10 input-field bg-white" />
+                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <input type="date" value={payment.balance_due_date} onChange={e => setP('balance_due_date', e.target.value)} className="pl-10 input-field bg-bgSecondary" />
                       </div>
                     </div>
                   </>
@@ -664,17 +664,17 @@ export default function AddCustomer() {
                 {payment.category === 'discounted' && (
                   <>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Discount Amount *</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Discount Amount *</label>
                       <div className="relative">
-                        <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="number" value={payment.discount_amount} onChange={e => setP('discount_amount', e.target.value)} className="pl-10 input-field bg-white" placeholder="e.g. 200" />
+                        <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <input type="number" value={payment.discount_amount} onChange={e => setP('discount_amount', e.target.value)} className="pl-10 input-field bg-bgSecondary" placeholder="e.g. 200" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Final Price</label>
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Final Price</label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="text" value={`Ksh ${(packagePrice - parseFloat(payment.discount_amount || '0')).toLocaleString()}`} readOnly className="pl-10 input-field bg-white/50" />
+                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <input type="text" value={`Ksh ${(packagePrice - parseFloat(payment.discount_amount || '0')).toLocaleString()}`} readOnly className="pl-10 input-field bg-bgSecondary/50" />
                       </div>
                     </div>
                   </>
@@ -689,7 +689,7 @@ export default function AddCustomer() {
 
                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Payment Method</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Payment Method</label>
                     <SelectDropdown
                       value={payment.method}
                       onChange={val => {
@@ -705,9 +705,9 @@ export default function AddCustomer() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Transaction Code (Optional)</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Transaction Code (Optional)</label>
                     <div className="flex gap-2">
-                      <input type="text" value={payment.txn_code} onChange={e => setP('txn_code', e.target.value)} className="input-field bg-white flex-1" placeholder="REF: XYZ123" />
+                      <input type="text" value={payment.txn_code} onChange={e => setP('txn_code', e.target.value)} className="input-field bg-bgSecondary flex-1" placeholder="REF: XYZ123" />
                       {payment.method === 'M-Pesa' && (
                         <button
                           type="button"
@@ -755,7 +755,7 @@ export default function AddCustomer() {
                           value={stkPhone} 
                           onChange={e => setStkPhone(e.target.value)} 
                           disabled={stkStatus === 'sending' || stkStatus === 'sent' || stkStatus === 'success'}
-                          className="input-field bg-white border-emerald-100 text-emerald-900 font-mono disabled:opacity-50" 
+                          className="input-field bg-bgSecondary border-emerald-100 text-emerald-900 font-mono disabled:opacity-50" 
                           placeholder={identity.phone || '07xx xxx xxx'} 
                         />
                       </div>
@@ -804,8 +804,8 @@ export default function AddCustomer() {
                 )}
 
                 <div className="md:col-span-2">
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Notes / Reason</label>
-                  <textarea value={payment.notes} onChange={e => setP('notes', e.target.value)} className="input-field bg-white min-h-[80px] py-3" placeholder="Additional details..."></textarea>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Notes / Reason</label>
+                  <textarea value={payment.notes} onChange={e => setP('notes', e.target.value)} className="input-field bg-bgSecondary min-h-[80px] py-3" placeholder="Additional details..."></textarea>
                 </div>
 
                 <div className="md:col-span-2 pt-2">
@@ -817,12 +817,12 @@ export default function AddCustomer() {
                         onChange={e => setP('send_sms', e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:bg-emerald-500 transition-colors"></div>
-                      <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div>
+                      <div className="w-10 h-5 bg-white/10 rounded-full peer peer-checked:bg-emerald-500 transition-colors"></div>
+                      <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-bgSecondary rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Bell className={`w-4 h-4 ${payment.send_sms ? 'text-emerald-500' : 'text-slate-400'}`} />
-                      <span className="text-[13px] font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Send Welcome SMS to Customer</span>
+                      <Bell className={`w-4 h-4 ${payment.send_sms ? 'text-emerald-500' : 'text-textSecondary'}`} />
+                      <span className="text-[13px] font-medium text-textSecondary group-hover:text-textPrimary transition-colors">Send Welcome SMS to Customer</span>
                     </div>
                   </label>
                 </div>
@@ -833,10 +833,10 @@ export default function AddCustomer() {
           {error && <div className="mt-6 p-4 bg-rose-50 border border-rose-200 rounded-xl text-[13px] text-rose-700 flex items-center gap-2"><div className="w-1.5 h-1.5 bg-rose-500 rounded-full"/>{error}</div>}
         </div>
 
-        <div className="p-4 bg-slate-50/50 border-t border-slate-200/60 flex justify-between items-center px-6 md:px-8">
+        <div className="p-4 bg-white/5 border-t border-white/10 flex justify-between items-center px-6 md:px-8">
           <button
             onClick={() => step > 1 ? setStep(step - 1) : navigate('/customers/all')}
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-800 transition"
+            className="text-[13px] font-medium text-textSecondary hover:text-textPrimary transition"
           >
             {step > 1 ? 'Back' : 'Cancel'}
           </button>

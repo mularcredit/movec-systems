@@ -50,10 +50,10 @@ export default function ConfirmModal({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-0">
       <div 
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200" 
+        className="fixed inset-0 bg-bgPrimary/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200" 
         onClick={() => !isLoading && onCancel()}
       />
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-bgSecondary rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <div className="flex flex-col items-center text-center">
           <div className={clsx(
             "w-12 h-12 rounded-full flex items-center justify-center mb-4",
@@ -61,8 +61,8 @@ export default function ConfirmModal({
           )}>
             <AlertTriangle className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-semibold text-slate-800 mb-2">{title}</h3>
-          <p className="text-sm text-slate-500 mb-6">{message}</p>
+          <h3 className="text-lg font-semibold text-textPrimary mb-2">{title}</h3>
+          <p className="text-sm text-textSecondary mb-6">{message}</p>
         </div>
         
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">

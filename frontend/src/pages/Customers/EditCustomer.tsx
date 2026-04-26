@@ -118,7 +118,7 @@ export default function EditCustomer() {
     return (
       <div className="flex flex-col items-center justify-center h-96">
         <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-        <p className="text-slate-500 font-medium">Retrieving subscriber data...</p>
+        <p className="text-textSecondary font-medium">Retrieving subscriber data...</p>
       </div>
     );
   }
@@ -130,13 +130,13 @@ export default function EditCustomer() {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-400 hover:text-slate-600"
+            className="p-2 hover:bg-white/10 rounded-lg transition text-textSecondary hover:text-textSecondary"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h2 className="text-[20px] font-semibold text-slate-800">Edit Subscriber</h2>
-            <p className="text-[13px] text-slate-500 mt-1">Update profile and network configuration for {fullName}</p>
+            <h2 className="text-[20px] font-semibold text-textPrimary">Edit Subscriber</h2>
+            <p className="text-[13px] text-textSecondary mt-1">Update profile and network configuration for {fullName}</p>
           </div>
         </div>
         <button 
@@ -159,19 +159,19 @@ export default function EditCustomer() {
       <form id="edit-form" onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Information */}
         <div className="card p-6 lg:p-8">
-          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/5">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-[16px] font-semibold text-slate-800">Subscriber Profile</h3>
-              <p className="text-[12px] text-slate-400 mt-0.5">Personal and contact information</p>
+              <h3 className="text-[16px] font-semibold text-textPrimary">Subscriber Profile</h3>
+              <p className="text-[12px] text-textSecondary mt-0.5">Personal and contact information</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <User className="w-3.5 h-3.5" /> Full Name
               </label>
               <input 
@@ -181,17 +181,17 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Hash className="w-3.5 h-3.5" /> Account Number
               </label>
               <input 
                 type="text" required value={accountNumber} onChange={e => setAccountNumber(e.target.value)}
-                className="input-field bg-slate-50 cursor-not-allowed" readOnly
+                className="input-field bg-white/5 cursor-not-allowed" readOnly
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5" /> Phone Number
               </label>
               <input 
@@ -201,7 +201,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5" /> Email Address (Optional)
               </label>
               <input 
@@ -211,7 +211,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5" /> Physical Address
               </label>
               <input 
@@ -224,19 +224,19 @@ export default function EditCustomer() {
 
         {/* Network & Billing */}
         <div className="card p-6 lg:p-8 border-emerald-100 shadow-emerald-500/5">
-          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/5">
             <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
               <Wifi className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-[16px] font-semibold text-slate-800">Service Configuration</h3>
-              <p className="text-[12px] text-slate-400 mt-0.5">Router and subscription plan details</p>
+              <h3 className="text-[16px] font-semibold text-textPrimary">Service Configuration</h3>
+              <p className="text-[12px] text-textSecondary mt-0.5">Router and subscription plan details</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Package className="w-3.5 h-3.5" /> Service Plan
               </label>
               <SelectDropdown 
@@ -247,7 +247,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Server className="w-3.5 h-3.5" /> Assignment Router
               </label>
               <SelectDropdown 
@@ -258,7 +258,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <User className="w-3.5 h-3.5" /> PPPoE/Hotspot Username
               </label>
               <input 
@@ -268,7 +268,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Lock className="w-3.5 h-3.5" /> New Password (Leave blank to keep current)
               </label>
               <input 
@@ -278,7 +278,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Shield className="w-3.5 h-3.5" /> Static IP Address (Optional)
               </label>
               <input 
@@ -288,7 +288,7 @@ export default function EditCustomer() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
                 <Calendar className="w-3.5 h-3.5" /> Next Due Date
               </label>
               <input 

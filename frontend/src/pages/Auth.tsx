@@ -137,15 +137,15 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
       </div>
 
       {/* ── RIGHT — Auth form (50% width) ────────────────────────── */}
-      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center px-12 py-12 overflow-y-auto">
+      <div className="w-full md:w-1/2 bg-bgSecondary flex flex-col justify-center items-center px-12 py-12 overflow-y-auto">
         <div className="w-full max-w-[400px]">
           <div className="flex items-center gap-2.5 mb-10 md:hidden">
             <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
           </div>
 
           <div className="mb-10">
-            <h2 className="text-[22px] font-medium text-slate-800 mb-2 tracking-tight">{titles[mode]}</h2>
-            <p className="text-[14px] text-slate-400 leading-relaxed font-normal">
+            <h2 className="text-[22px] font-medium text-textPrimary mb-2 tracking-tight">{titles[mode]}</h2>
+            <p className="text-[14px] text-textSecondary leading-relaxed font-normal">
               {mode === 'login'  && 'Sign in to access your business dashboard.'}
               {mode === 'signup' && 'Register your ISP to start managing your customers.'}
               {mode === 'reset'  && 'Enter your email to reset your password.'}
@@ -208,13 +208,13 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                     <div
                       key={i}
                       className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                        i <= strength ? strengthColors[strength - 1] : 'bg-slate-100'
+                        i <= strength ? strengthColors[strength - 1] : 'bg-white/10'
                       }`}
                     />
                   ))}
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-slate-400 font-medium uppercase tracking-[0.05em]">Password Strength</span>
+                  <span className="text-[10px] text-textSecondary font-medium uppercase tracking-[0.05em]">Password Strength</span>
                   <span className={`text-[10px] font-bold uppercase tracking-[0.05em] ${
                     strength === 1 ? 'text-rose-500' :
                     strength === 2 ? 'text-orange-500' :
@@ -275,7 +275,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
 
           <div className="mt-8 text-center">
             {mode === 'login' && (
-              <p className="text-[12px] text-slate-400">
+              <p className="text-[12px] text-textSecondary">
                 Don't have an account?{' '}
                 <button onClick={() => { setMode('signup'); reset(); }} className="text-emerald-600 hover:text-emerald-700 transition font-semibold">
                   Create one
@@ -283,7 +283,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
               </p>
             )}
             {mode === 'signup' && (
-              <p className="text-[12px] text-slate-400">
+              <p className="text-[12px] text-textSecondary">
                 Already have an account?{' '}
                 <button onClick={() => { setMode('login'); reset(); }} className="text-emerald-600 hover:text-emerald-700 transition font-semibold">
                   Sign in
@@ -291,14 +291,14 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
               </p>
             )}
             {mode === 'reset' && (
-              <button onClick={() => { setMode('login'); reset(); }} className="text-[12px] text-slate-400 hover:text-slate-600 transition font-medium">
+              <button onClick={() => { setMode('login'); reset(); }} className="text-[12px] text-textSecondary hover:text-textSecondary transition font-medium">
                 ← Back to sign in
               </button>
             )}
           </div>
         </div>
 
-        <p className="absolute bottom-6 left-0 right-0 text-center text-[10px] text-slate-300 md:relative md:mt-10 md:bottom-auto">
+        <p className="absolute bottom-6 left-0 right-0 text-center text-[10px] text-textSecondary md:relative md:mt-10 md:bottom-auto">
           © {new Date().getFullYear()} Movec Connect ISP Platform
         </p>
       </div>

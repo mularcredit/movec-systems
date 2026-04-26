@@ -193,42 +193,42 @@ export default function Payments() {
       {/* Payment Modal */}
       {modal.open && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-[17px] font-medium text-slate-800">
+                <h3 className="text-[17px] font-medium text-textPrimary">
                     {modal.mode === 'stk' ? 'Request Mobile Payment' : 'Record Manual Payment'}
                 </h3>
-                <p className="text-[12px] text-slate-500 mt-0.5">
+                <p className="text-[12px] text-textSecondary mt-0.5">
                     {modal.mode === 'stk' ? 'Initiate an STK Push to the customer\'s phone.' : 'Log a cash or external bank payment.'}
                 </p>
               </div>
-              <button onClick={() => setM('open', false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
+              <button onClick={() => setM('open', false)} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5" /></button>
             </div>
 
             {modal.success ? (
               <div className="flex flex-col items-center py-8 text-center">
                 <CheckCircle2 className="w-14 h-14 text-emerald-500 mb-3" />
-                <p className="text-[16px] font-medium text-slate-800">
+                <p className="text-[16px] font-medium text-textPrimary">
                     {modal.mode === 'stk' ? 'STK Push Sent' : 'Payment Recorded'}
                 </p>
-                <p className="text-[13px] text-slate-500 mt-1">
+                <p className="text-[13px] text-textSecondary mt-1">
                     {modal.mode === 'stk' ? 'Ask the customer to enter their PIN.' : 'The financial ledger has been updated.'}
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {/* Mode Selector */}
-                <div className="flex p-1 bg-slate-100 rounded-lg mb-4">
+                <div className="flex p-1 bg-white/10 rounded-lg mb-4">
                     <button 
                         onClick={() => setM('mode', 'stk')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'stk' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'stk' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                     >
                         <Smartphone className="w-3.5 h-3.5" /> STK Push
                     </button>
                     <button 
                         onClick={() => setM('mode', 'manual')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'manual' ? 'bg-white text-slate-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'manual' ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                     >
                         <History className="w-3.5 h-3.5" /> Manual Entry
                     </button>
@@ -236,7 +236,7 @@ export default function Payments() {
 
                 {/* Customer */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Customer *</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Customer *</label>
                   <Combobox
                     value={modal.customerId}
                     onChange={(val: string) => setM('customerId', val)}
@@ -247,19 +247,19 @@ export default function Payments() {
 
                 {/* Amount */}
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Amount (KES) *</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount (KES) *</label>
                   <input type="number" value={modal.amount} onChange={e => setM('amount', e.target.value)} className="input-field font-mono" placeholder="2500" />
                 </div>
 
                 {modal.mode === 'stk' ? (
                     <div>
-                        <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">M-Pesa Phone Number</label>
+                        <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">M-Pesa Phone Number</label>
                         <input type="text" value={modal.phone} onChange={e => setM('phone', e.target.value)} className="input-field font-mono" placeholder="254712345678" />
                     </div>
                 ) : (
                     <>
                         <div>
-                        <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Payment Method</label>
+                        <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Payment Method</label>
                         <SelectDropdown
                           value={modal.method}
                           onChange={(val: string) => setM('method', val)}
@@ -267,14 +267,14 @@ export default function Payments() {
                         />
                         </div>
                         <div>
-                        <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Transaction Code (Optional)</label>
+                        <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Transaction Code (Optional)</label>
                         <input type="text" value={modal.txnCode} onChange={e => setM('txnCode', e.target.value)} className="input-field font-mono" placeholder="e.g. SIC7XXXXXXX" />
                         </div>
                     </>
                 )}
 
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Notes</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Notes</label>
                   <input type="text" value={modal.notes} onChange={e => setM('notes', e.target.value)} className="input-field" placeholder="e.g. Subscription extension" />
                 </div>
 
@@ -295,8 +295,8 @@ export default function Payments() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-[18px] font-medium text-slate-800">Financial Ledger</h2>
-          <p className="text-[13px] text-slate-500 mt-1">M-Pesa IPN receipts, STK Push requests, and manual logs</p>
+          <h2 className="text-[18px] font-medium text-textPrimary">Financial Ledger</h2>
+          <p className="text-[13px] text-textSecondary mt-1">M-Pesa IPN receipts, STK Push requests, and manual logs</p>
         </div>
         <div className="flex gap-3">
           <button className="btn-secondary flex items-center text-[13px]">
@@ -310,17 +310,17 @@ export default function Payments() {
 
       {/* Summary strip */}
       {filtered.length > 0 && (
-        <div className="flex items-center gap-2 text-[13px] text-slate-500 bg-slate-50/50 border border-slate-200/60 rounded-xl px-4 py-3">
-          <span className="font-medium text-slate-800">{filtered.length} transactions</span> showing ·
+        <div className="flex items-center gap-2 text-[13px] text-textSecondary bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+          <span className="font-medium text-textPrimary">{filtered.length} transactions</span> showing ·
           <span className="font-medium text-emerald-700">Ksh {totalFiltered.toLocaleString('en-KE', { minimumFractionDigits: 2 })}</span> total
         </div>
       )}
 
       <div className="card p-0 flex flex-col">
         {/* Search & Filter */}
-        <div className="p-4 border-b border-slate-200/60 flex flex-col sm:flex-row sm:items-center gap-3 bg-white rounded-t-xl">
+        <div className="p-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center gap-3 bg-bgSecondary rounded-t-xl">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by TXN code, customer, or account..." className="pl-10 input-field" />
           </div>
           <SelectDropdown
@@ -334,20 +334,20 @@ export default function Payments() {
         {loading ? (
           <div className="p-16 flex flex-col items-center justify-center">
             <Loader2 className="w-6 h-6 text-emerald-500 animate-spin mb-3" />
-            <p className="text-[13px] text-slate-500">Loading payment ledger...</p>
+            <p className="text-[13px] text-textSecondary">Loading payment ledger...</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <CreditCard className="w-8 h-8 text-slate-300 mb-4" />
-            <h3 className="text-[15px] font-medium text-slate-800 mb-1">No Transactions Found</h3>
-            <p className="text-[13px] text-slate-500 max-w-sm">
+            <CreditCard className="w-8 h-8 text-textSecondary mb-4" />
+            <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Transactions Found</h3>
+            <p className="text-[13px] text-textSecondary max-w-sm">
               {search ? `Nothing matching "${search}".` : 'No payments recorded yet.'}
             </p>
           </div>
         ) : (
           <table className="w-full text-left whitespace-nowrap">
             <thead>
-              <tr className="bg-[#fbfbfd] text-slate-500 text-[11px] font-medium uppercase tracking-wider border-b border-slate-200/60">
+              <tr className="bg-bgSecondary text-textSecondary text-[11px] font-medium uppercase tracking-wider border-b border-white/10">
                 <th className="px-5 py-3.5">TXN Code</th>
                 <th className="px-5 py-3.5">Customer</th>
                 <th className="px-5 py-3.5 text-right">Amount</th>
@@ -356,15 +356,15 @@ export default function Payments() {
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5">
               {filtered.map(pay => (
-                <tr key={pay.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-3.5 font-mono text-[12px] text-slate-700">
-                    <span className="bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">{pay.txn}</span>
+                <tr key={pay.id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-3.5 font-mono text-[12px] text-textPrimary">
+                    <span className="bg-white/10 border border-white/10 px-2 py-0.5 rounded">{pay.txn}</span>
                   </td>
                   <td className="px-5 py-3.5">
-                    <p className="font-medium text-[13px] text-slate-800">{pay.customer}</p>
-                    <p className="font-mono text-[11px] text-slate-400 mt-0.5">{pay.account}</p>
+                    <p className="font-medium text-[13px] text-textPrimary">{pay.customer}</p>
+                    <p className="font-mono text-[11px] text-textSecondary mt-0.5">{pay.account}</p>
                   </td>
                   <td className="px-5 py-3.5 text-right font-medium text-[14px]">
                     <div className="text-emerald-700">Ksh {parseFloat(pay.amount).toLocaleString('en-KE', { minimumFractionDigits: 2 })}</div>
@@ -375,15 +375,15 @@ export default function Payments() {
                     )}
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${methodBadgeClass[pay.method] || 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
+                    <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${methodBadgeClass[pay.method] || 'bg-white/10 text-textSecondary border border-white/10'}`}>
                       {pay.method}
                     </span>
                   </td>
-                  <td className="px-5 py-3.5 text-[12px] text-slate-500">{pay.date}</td>
+                  <td className="px-5 py-3.5 text-[12px] text-textSecondary">{pay.date}</td>
                   <td className="px-5 py-3.5 text-right">
                     <button 
                         onClick={() => downloadReceipt(pay.id)}
-                        className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
+                        className="p-2 text-textSecondary hover:text-emerald-600 transition-colors"
                         title="Download Receipt"
                     >
                         <Receipt className="w-4 h-4" />

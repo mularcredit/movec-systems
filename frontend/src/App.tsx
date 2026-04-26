@@ -36,11 +36,11 @@ import { apiFetch } from './lib/apiClient';
 // Minimal Placeholder UI
 const Placeholder = ({ title }: { title: string }) => (
   <div className="flex flex-col h-full min-h-[400px] items-center justify-center p-10 text-center animate-in fade-in">
-    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-6">
-       <LayoutTemplate className="w-8 h-8 text-slate-300" />
+    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6">
+       <LayoutTemplate className="w-8 h-8 text-textSecondary" />
     </div>
-    <h2 className="text-[16px] font-medium text-slate-700 mb-2">{title} Module</h2>
-    <p className="text-[13px] text-slate-400 max-w-sm">This interface component is currently pending live interop integration.</p>
+    <h2 className="text-[16px] font-medium text-textPrimary mb-2">{title} Module</h2>
+    <p className="text-[13px] text-textSecondary max-w-sm">This interface component is currently pending live interop integration.</p>
   </div>
 );
 
@@ -70,8 +70,8 @@ const RequireRouter = ({ children }: { children: React.ReactNode }) => {
     return (
       <div className="h-full flex flex-col items-center justify-center p-10 text-center animate-in fade-in">
         <Server className="w-10 h-10 text-rose-300 mb-4" />
-        <h2 className="text-[16px] font-medium text-slate-700 mb-2">Backend Disconnected</h2>
-        <p className="text-[13px] text-slate-500 max-w-sm">Movec Connect cannot reach the backend service to verify router modules.</p>
+        <h2 className="text-[16px] font-medium text-textPrimary mb-2">Backend Disconnected</h2>
+        <p className="text-[13px] text-textSecondary max-w-sm">Movec Connect cannot reach the backend service to verify router modules.</p>
       </div>
     );
   }
@@ -97,7 +97,7 @@ function App() {
   // Still resolving auth state — show spinner
   if (session === undefined) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white">
+      <div className="fixed inset-0 flex items-center justify-center bg-bgSecondary">
         <Loader2 className="w-6 h-6 text-emerald-500 animate-spin" />
       </div>
     );

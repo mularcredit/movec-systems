@@ -86,8 +86,8 @@ export default function DashboardLayout() {
           "flex items-center px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 group mb-0.5 relative",
           isSub ? "ml-6" : "",
           isActive 
-            ? "bg-white/10 text-white shadow-sm" 
-            : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+            ? "bg-accentPrimary/20 text-accentPrimary shadow-sm" 
+            : "text-textSecondary hover:bg-bgSecondary/5 hover:text-textPrimary"
         )}
       >
         {isActive && !isSub && <div className="absolute left-[-16px] w-1 h-5 bg-emerald-500 rounded-full" />}
@@ -98,18 +98,18 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#fbfbfd] font-sans">
+    <div className="flex h-screen overflow-hidden bg-bgPrimary font-sans">
       {/* MOBILE BACKDROP */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
+          className="fixed inset-0 bg-bgPrimary/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* SIDEBAR */}
       <aside className={clsx(
-        "fixed inset-y-0 left-0 w-64 bg-[#0a0f1d] flex flex-col z-50 lg:static lg:translate-x-0 transition-transform duration-300 border-r border-[#1f2937]/50",
+        "fixed inset-y-0 left-0 w-64 bg-bgSecondary flex flex-col z-50 lg:static lg:translate-x-0 transition-transform duration-300 border-r border-white/5",
         sidebarOpen ? "translate-x-0 shadow-2xl shadow-slate-900" : "-translate-x-full"
       )}>
         <div className="h-14 lg:h-20 flex items-center px-4 border-b border-white/5 shrink-0 justify-between lg:justify-start">
@@ -118,7 +118,7 @@ export default function DashboardLayout() {
           </div>
           <button 
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 text-slate-400 hover:text-white"
+            className="lg:hidden p-2 text-textSecondary hover:text-textPrimary"
           >
             <X className="w-5 h-5" />
           </button>
@@ -126,102 +126,102 @@ export default function DashboardLayout() {
         
         <div className="flex-1 overflow-y-auto px-4 py-6 flex flex-col hide-scrollbar space-y-6">
           <div>
-            <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest px-2 mb-3">Core Operation</div>
+            <div className="text-[10px] font-medium text-textSecondary/80 uppercase tracking-widest px-2 mb-3">Core Operation</div>
             {navGroups.map((item) => <Item key={item.path} item={item} />)}
           </div>
 
           <div>
             <button 
               onClick={() => setNetworkOpen(!networkOpen)}
-              className="w-full flex items-center justify-between px-2 py-1.5 text-slate-400 hover:text-slate-200 transition group mb-2"
+              className="w-full flex items-center justify-between px-2 py-1.5 text-textSecondary hover:text-textPrimary transition group mb-2"
             >
-              <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest">Network Edge</div>
+              <div className="text-[10px] font-medium text-textSecondary/80 uppercase tracking-widest">Network Edge</div>
               {networkOpen ? <ChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100" /> : <ChevronRight className="w-3 h-3 opacity-50 group-hover:opacity-100" />}
             </button>
             
             {networkOpen && (
-              <div className="relative before:absolute before:left-4 before:top-1 before:bottom-1 before:w-[1px] before:bg-white/5">
+              <div className="relative before:absolute before:left-4 before:top-1 before:bottom-1 before:w-[1px] before:bg-bgSecondary/5">
                 {networkSubmenu.map((item) => <Item key={item.path} item={item} isSub />)}
               </div>
             )}
           </div>
           
           <div className="mt-auto">
-            <div className="text-[10px] font-medium text-slate-500/80 uppercase tracking-widest px-2 mb-3">Platform System</div>
+            <div className="text-[10px] font-medium text-textSecondary/80 uppercase tracking-widest px-2 mb-3">Platform System</div>
             {bottomGroup.map((item) => <Item key={item.path} item={item} />)}
           </div>
         </div>
       </aside>
 
       {/* MAIN CONTENT AREA */}
-      <main className="flex-1 overflow-y-auto flex flex-col relative bg-[#fbfbfd]">
+      <main className="flex-1 overflow-y-auto flex flex-col relative bg-bgPrimary">
         {/* Top Header */}
-        <header className="h-14 bg-white/80 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between px-4 lg:px-8 shadow-[0_1px_2px_rgba(0,0,0,0.02)] z-30 shrink-0 sticky top-0">
+        <header className="h-14 bg-bgSecondary/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 lg:px-8 shadow-[0_1px_2px_rgba(0,0,0,0.02)] z-30 shrink-0 sticky top-0">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 transition"
+              className="lg:hidden p-2 -ml-2 text-textSecondary hover:text-textPrimary transition"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h2 className="text-[13px] lg:text-[14px] font-medium text-slate-700">Platform Command</h2>
+            <h2 className="text-[13px] lg:text-[14px] font-medium text-textPrimary">Platform Command</h2>
           </div>
           
           <div className="flex items-center gap-3 lg:gap-5">
             {/* Global Status */}
-            <div className="hidden sm:flex px-2.5 py-1 bg-[#fbfbfd] text-slate-600 border border-slate-200 text-[11px] font-medium rounded-md items-center shadow-sm">
+            <div className="hidden sm:flex px-2.5 py-1 bg-bgPrimary text-textPrimary border border-white/10 text-[11px] font-medium rounded-md items-center shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 shadow-[0_0_6px_rgba(16,185,129,0.5)]"></span>
               API Connected
             </div>
 
-            <button className="text-slate-400 hover:text-slate-600 transition relative p-1">
+            <button className="text-textSecondary hover:text-textPrimary transition relative p-1">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 border-2 border-white rounded-full"></span>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 border-2 border-bgSecondary rounded-full"></span>
             </button>
 
             {/* Profile Dropdown */}
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               <button 
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 lg:gap-3 hover:bg-slate-50 p-1 lg:p-1.5 lg:pr-2 rounded-full transition-all group"
+                className="flex items-center gap-2 lg:gap-3 hover:bg-bgPrimary p-1 lg:p-1.5 lg:pr-2 rounded-full transition-all group"
               >
-                <div className="w-7 h-7 lg:w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-[11px] lg:text-[12px] font-medium shadow-sm transition-transform group-hover:scale-105">
+                <div className="w-7 h-7 lg:w-8 h-8 rounded-full bg-accentPrimary flex items-center justify-center text-bgPrimary text-[11px] lg:text-[12px] font-medium shadow-sm transition-transform group-hover:scale-105">
                   {userData?.name?.split(' ').map(n => n[0]).join('') || 'U'}
                 </div>
                 <div className="hidden lg:block text-left">
-                  <p className="text-[13px] font-medium text-slate-800 leading-none mb-0.5">{userData?.name}</p>
-                  <p className="text-[11px] text-slate-400 leading-none truncate w-32">Movec Administrator</p>
+                  <p className="text-[13px] font-medium text-textPrimary leading-none mb-0.5">{userData?.name}</p>
+                  <p className="text-[11px] text-textSecondary leading-none truncate w-32">Movec Administrator</p>
                 </div>
-                <ChevronDown className={clsx("w-3.5 h-3.5 text-slate-400 transition-transform", profileOpen && "rotate-180")} />
+                <ChevronDown className={clsx("w-3.5 h-3.5 text-textSecondary transition-transform", profileOpen && "rotate-180")} />
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl shadow-slate-200/50 py-1.5 animate-in fade-in zoom-in-95 duration-100 z-40">
-                  <div className="px-4 py-3 border-b border-slate-100 mb-1">
-                    <p className="text-[13px] font-medium text-slate-800 truncate">{userData?.name}</p>
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{userData?.email}</p>
+                <div className="absolute right-0 mt-2 w-56 bg-bgSecondary border border-white/10 rounded-xl shadow-xl shadow-bgPrimary/50 py-1.5 animate-in fade-in zoom-in-95 duration-100 z-40">
+                  <div className="px-4 py-3 border-b border-white/5 mb-1">
+                    <p className="text-[13px] font-medium text-textPrimary truncate">{userData?.name}</p>
+                    <p className="text-[11px] text-textSecondary truncate mt-0.5">{userData?.email}</p>
                   </div>
                   
                   <button 
                     onClick={() => { setProfileOpen(false); navigate('/settings'); }}
-                    className="w-full flex items-center px-4 py-2 text-[13px] text-slate-600 hover:bg-slate-50 transition"
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-textSecondary hover:bg-bgPrimary hover:text-textPrimary transition"
                   >
-                    <User className="w-4 h-4 mr-3 text-slate-400" />
+                    <User className="w-4 h-4 mr-3 text-textSecondary" />
                     My Profile
                   </button>
                   <button 
                     onClick={() => { setProfileOpen(false); navigate('/settings'); }}
-                    className="w-full flex items-center px-4 py-2 text-[13px] text-slate-600 hover:bg-slate-50 transition"
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-textSecondary hover:bg-bgPrimary hover:text-textPrimary transition"
                   >
-                    <Settings className="w-4 h-4 mr-3 text-slate-400" />
+                    <Settings className="w-4 h-4 mr-3 text-textSecondary" />
                     Account Settings
                   </button>
                   
-                  <div className="h-px bg-slate-100 my-1"></div>
+                  <div className="h-px bg-bgSecondary/5 my-1"></div>
                   
                   <button 
                     onClick={handleLogout}
-                    className="w-full flex items-center px-4 py-2 text-[13px] text-rose-600 hover:bg-rose-50 transition"
+                    className="w-full flex items-center px-4 py-2 text-[13px] text-rose-500 hover:bg-rose-500/10 transition"
                   >
                     <LogOut className="w-4 h-4 mr-3" />
                     Logout Session

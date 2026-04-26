@@ -79,8 +79,8 @@ export default function RoutersList() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-medium text-slate-800">Network Routers</h2>
-          <p className="text-sm text-slate-500 mt-1">Manage network gateways ({routers.length} total nodes)</p>
+          <h2 className="text-2xl font-medium text-textPrimary">Network Routers</h2>
+          <p className="text-sm text-textSecondary mt-1">Manage network gateways ({routers.length} total nodes)</p>
         </div>
         <button 
           onClick={() => navigate('/network/routers/add')}
@@ -94,7 +94,7 @@ export default function RoutersList() {
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 py-4">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
           <input 
             type="text" 
             placeholder="Search by name, IP, or location..." 
@@ -103,10 +103,10 @@ export default function RoutersList() {
         </div>
         <div className="flex gap-3">
           <button className="btn-secondary">
-            <Filter className="w-4 h-4 mr-2 text-slate-400" /> Filters
+            <Filter className="w-4 h-4 mr-2 text-textSecondary" /> Filters
           </button>
           <button className="btn-secondary">
-            <RefreshCw className="w-4 h-4 mr-2 text-slate-400" /> Sync List
+            <RefreshCw className="w-4 h-4 mr-2 text-textSecondary" /> Sync List
           </button>
         </div>
       </div>
@@ -115,9 +115,9 @@ export default function RoutersList() {
       <div className="card p-0 overflow-x-auto">
         {routers.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <Server className="w-8 h-8 text-slate-300 mb-4" />
-            <h3 className="text-[15px] font-medium text-slate-800 mb-1">No Routers Found</h3>
-            <p className="text-[13px] text-slate-500 max-w-sm mb-6">
+            <Server className="w-8 h-8 text-textSecondary mb-4" />
+            <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Routers Found</h3>
+            <p className="text-[13px] text-textSecondary max-w-sm mb-6">
               You haven't linked any NAS gateways yet. Add a router to begin processing connected user sessions.
             </p>
             <button onClick={() => navigate('/network/routers/add')} className="btn-primary">
@@ -127,7 +127,7 @@ export default function RoutersList() {
         ) : (
           <table className="w-full text-left whitespace-nowrap">
             <thead>
-              <tr className="bg-[#fbfbfd] text-slate-500 text-[11px] font-medium uppercase tracking-wider border-b border-slate-200/60">
+              <tr className="bg-bgSecondary text-textSecondary text-[11px] font-medium uppercase tracking-wider border-b border-white/10">
                 <th className="px-6 py-3.5">Router Name</th>
                 <th className="px-6 py-3.5">Vendor</th>
                 <th className="px-6 py-3.5">Connection</th>
@@ -137,16 +137,16 @@ export default function RoutersList() {
                 <th className="px-6 py-3.5 text-right"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5">
               {routers.map((router) => (
-                <tr key={router.id} className="hover:bg-slate-50/50 transition duration-150 group">
+                <tr key={router.id} className="hover:bg-white/5 transition duration-150 group">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       <div>
-                        <p className="font-medium text-[14px] text-slate-800 cursor-pointer group-hover:text-emerald-600 transition-colors" onClick={() => navigate(`/network/routers/${router.id}`)}>
+                        <p className="font-medium text-[14px] text-textPrimary cursor-pointer group-hover:text-emerald-600 transition-colors" onClick={() => navigate(`/network/routers/${router.id}`)}>
                           {router.name}
                         </p>
-                        <p className="text-[12px] text-slate-500 mt-0.5">{router.location || 'No Location'}</p>
+                        <p className="text-[12px] text-textSecondary mt-0.5">{router.location || 'No Location'}</p>
                       </div>
                     </div>
                   </td>
@@ -162,8 +162,8 @@ export default function RoutersList() {
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    <p className="font-mono text-[13px] text-slate-700 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-md w-fit mb-1">{router.ip_address}</p>
-                    <p className="text-[11px] text-slate-400">Port {router.api_port}</p>
+                    <p className="font-mono text-[13px] text-textPrimary bg-white/5 border border-white/10 px-2.5 py-1 rounded-md w-fit mb-1">{router.ip_address}</p>
+                    <p className="text-[11px] text-textSecondary">Port {router.api_port}</p>
                   </td>
                   <td className="px-6 py-4">
                     {(() => {
@@ -186,14 +186,14 @@ export default function RoutersList() {
                         </span>
                       );
                       return (
-                        <span className="badge-error bg-slate-50 text-slate-600 border-slate-200" title={live?.uptime || 'Disconnected'}>
+                        <span className="badge-error bg-white/5 text-textSecondary border-white/10" title={live?.uptime || 'Disconnected'}>
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5" /> Offline
                         </span>
                       );
                     })()}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="text-[14px] font-medium text-slate-700">
+                    <span className="text-[14px] font-medium text-textPrimary">
                       {liveStatus[router.id]?.active_sessions ?? router.total_users ?? 0}
                     </span>
                   </td>
@@ -201,24 +201,24 @@ export default function RoutersList() {
                     {router.vendor === 'radius' ? (
                       <span className="text-[12px] font-medium text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded">RADIUS AAA</span>
                     ) : (
-                      <span className="text-[12px] font-medium text-slate-600">{liveStatus[router.id]?.os_version || router.router_os_version || 'Polling...'}</span>
+                      <span className="text-[12px] font-medium text-textSecondary">{liveStatus[router.id]?.os_version || router.router_os_version || 'Polling...'}</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-right flex items-center justify-end gap-3">
                     <button 
                       onClick={() => navigate(`/network/routers/${router.id}`)} 
-                      className="text-[13px] font-medium text-slate-400 hover:text-emerald-600 transition-colors"
+                      className="text-[13px] font-medium text-textSecondary hover:text-emerald-600 transition-colors"
                     >
                       View Details
                     </button>
                     <button 
                       onClick={() => requestDelete(router.id, router.name)}
                       disabled={deletingId === router.id}
-                      className="p-1.5 rounded-lg text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
+                      className="p-1.5 rounded-lg text-textSecondary hover:text-rose-500 hover:bg-rose-50 transition-all"
                       title="Decommission Router"
                     >
                       {deletingId === router.id ? (
-                        <RefreshCw className="w-4 h-4 animate-spin text-slate-400" />
+                        <RefreshCw className="w-4 h-4 animate-spin text-textSecondary" />
                       ) : (
                         <Trash2 className="w-4 h-4" />
                       )}

@@ -228,8 +228,8 @@ export default function Settings() {
         </div>
       )}
       <div className="mb-8">
-        <h2 className="text-[20px] font-medium text-slate-800">System Configuration</h2>
-        <p className="text-[13px] text-slate-500 mt-1">Configure platform behavior, M-Pesa IPN callbacks, and branding.</p>
+        <h2 className="text-[20px] font-medium text-textPrimary">System Configuration</h2>
+        <p className="text-[13px] text-textSecondary mt-1">Configure platform behavior, M-Pesa IPN callbacks, and branding.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -239,9 +239,9 @@ export default function Settings() {
             <button
               key={tab.name}
               onClick={() => setActiveTab(tab.name)}
-              className={`w-full flex items-center px-4 py-3 rounded-xl text-[13px] font-medium transition-all ${activeTab === tab.name ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+              className={`w-full flex items-center px-4 py-3 rounded-xl text-[13px] font-medium transition-all ${activeTab === tab.name ? 'bg-emerald-500 text-white shadow-sm' : 'text-textSecondary hover:bg-white/10'}`}
             >
-              <tab.icon className={`w-4 h-4 mr-3 ${activeTab === tab.name ? 'text-white' : 'text-slate-400'}`} />
+              <tab.icon className={`w-4 h-4 mr-3 ${activeTab === tab.name ? 'text-white' : 'text-textSecondary'}`} />
               {tab.name}
             </button>
           ))}
@@ -253,46 +253,46 @@ export default function Settings() {
           {/* COMPANY PROFILE */}
           {activeTab === 'Company Profile' && (
             <div className="space-y-6">
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4">Company Details</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4">Company Details</h3>
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Company Name</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Company Name</label>
                   <input type="text" value={company.name} onChange={e => setC('name', e.target.value)} className="input-field" placeholder="Movec Connect Ltd" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Support Phone</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Support Phone</label>
                   <input type="text" value={company.phone} onChange={e => setC('phone', e.target.value)} className="input-field font-mono" placeholder="+254 700 000 000" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Support Email</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Support Email</label>
                   <input type="email" value={company.email} onChange={e => setC('email', e.target.value)} className="input-field" placeholder="support@yourcompany.co.ke" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">HQ Address</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">HQ Address</label>
                   <input type="text" value={company.address} onChange={e => setC('address', e.target.value)} className="input-field" placeholder="Westlands, Nairobi" />
                 </div>
               </div>
 
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 mt-2">Automation Rules</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 mt-2">Automation Rules</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div>
-                    <h4 className="font-medium text-slate-800 text-[14px]">Auto Suspension</h4>
-                    <p className="text-[12px] text-slate-500 mt-0.5">Suspend accounts automatically after grace period expires.</p>
+                    <h4 className="font-medium text-textPrimary text-[14px]">Auto Suspension</h4>
+                    <p className="text-[12px] text-textSecondary mt-0.5">Suspend accounts automatically after grace period expires.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                    <div className="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
+                    <div className="w-10 h-5 bg-white/10 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-bgSecondary after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
                   </label>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div>
-                    <h4 className="font-medium text-slate-800 text-[14px]">Grace Period</h4>
-                    <p className="text-[12px] text-slate-500 mt-0.5">Hours before strict suspension after due date.</p>
+                    <h4 className="font-medium text-textPrimary text-[14px]">Grace Period</h4>
+                    <p className="text-[12px] text-textSecondary mt-0.5">Hours before strict suspension after due date.</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <input type="number" defaultValue="48" className="input-field w-20 text-center font-medium" />
-                    <span className="text-[12px] text-slate-400">hours</span>
+                    <span className="text-[12px] text-textSecondary">hours</span>
                   </div>
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function Settings() {
           {/* BILLING & IPN RULES */}
           {activeTab === 'Billing & IPN Rules' && (
             <div className="space-y-6">
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4">M-Pesa Daraja Configuration</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4">M-Pesa Daraja Configuration</h3>
 
               {/* Info banner */}
               <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
@@ -317,23 +317,23 @@ export default function Settings() {
 
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">M-Pesa Paybill / Till</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">M-Pesa Paybill / Till</label>
                   <input type="text" value={billing.mpesa_paybill} onChange={e => setB('mpesa_paybill', e.target.value)} className="input-field font-mono" placeholder="247247" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Account Reference</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Account Reference</label>
                   <input type="text" value={billing.mpesa_account_ref} onChange={e => setB('mpesa_account_ref', e.target.value)} className="input-field font-mono" placeholder="e.g. Account Number" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Daraja Consumer Key</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Daraja Consumer Key</label>
                   <input type="text" value={billing.mpesa_consumer_key} onChange={e => setB('mpesa_consumer_key', e.target.value)} className="input-field font-mono" placeholder="From Daraja App" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Daraja Consumer Secret</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Daraja Consumer Secret</label>
                   <input type="password" value={billing.mpesa_consumer_secret} onChange={e => setB('mpesa_consumer_secret', e.target.value)} className="input-field font-mono" placeholder="●●●●●●●●●●●●" />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Daraja Passkey (For STK Push)</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Daraja Passkey (For STK Push)</label>
                   <input type="password" value={billing.mpesa_passkey} onChange={e => setB('mpesa_passkey', e.target.value)} className="input-field font-mono" placeholder="●●●●●●●●●●●●" />
                 </div>
               </div>
@@ -350,13 +350,13 @@ export default function Settings() {
               </div>
 
               {/* INTEGRITY DIAGNOSTICS */}
-              <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl mt-4">
+              <div className="p-5 bg-white/5 border border-white/10 rounded-2xl mt-4">
                  <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h4 className="text-[14px] font-semibold text-slate-800">Configuration Integrity Check</h4>
-                        <p className="text-[12px] text-slate-500 mt-0.5">Verify that your encrypted keys are readable by the server.</p>
+                        <h4 className="text-[14px] font-semibold text-textPrimary">Configuration Integrity Check</h4>
+                        <p className="text-[12px] text-textSecondary mt-0.5">Verify that your encrypted keys are readable by the server.</p>
                     </div>
-                    <button onClick={handleRunDiag} disabled={runningDiag} className="bg-white text-slate-700 hover:bg-slate-50 px-3 py-1.5 border border-slate-200 rounded-lg text-[12px] font-medium transition shadow-sm">
+                    <button onClick={handleRunDiag} disabled={runningDiag} className="bg-bgSecondary text-textPrimary hover:bg-white/5 px-3 py-1.5 border border-white/10 rounded-lg text-[12px] font-medium transition shadow-sm">
                         {runningDiag ? 'Running...' : 'Run Diagnostics'}
                     </button>
                  </div>
@@ -364,20 +364,20 @@ export default function Settings() {
                  {diagReport && (
                     <div className="space-y-2 animate-in fade-in slide-in-from-top-1">
                         <div className="grid grid-cols-2 gap-2">
-                           <div className="p-3 bg-white rounded-xl border border-slate-100">
-                              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Database Rows</p>
-                              <p className="text-[15px] font-mono font-bold text-slate-700">{diagReport.total_rows_in_db}</p>
+                           <div className="p-3 bg-bgSecondary rounded-xl border border-white/5">
+                              <p className="text-[10px] text-textSecondary uppercase font-bold tracking-wider">Database Rows</p>
+                              <p className="text-[15px] font-mono font-bold text-textPrimary">{diagReport.total_rows_in_db}</p>
                            </div>
-                           <div className="p-3 bg-white rounded-xl border border-slate-100">
-                              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Tenant ID Reference</p>
-                              <p className="text-[11px] font-mono text-slate-500 truncate" title={diagReport.tenant_id}>{diagReport.tenant_id}</p>
+                           <div className="p-3 bg-bgSecondary rounded-xl border border-white/5">
+                              <p className="text-[10px] text-textSecondary uppercase font-bold tracking-wider">Tenant ID Reference</p>
+                              <p className="text-[11px] font-mono text-textSecondary truncate" title={diagReport.tenant_id}>{diagReport.tenant_id}</p>
                            </div>
                         </div>
-                        <div className="p-3 bg-white rounded-xl border border-slate-100 space-y-2">
-                           <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Sensitive Keys Integrity</p>
+                        <div className="p-3 bg-bgSecondary rounded-xl border border-white/5 space-y-2">
+                           <p className="text-[10px] text-textSecondary uppercase font-bold tracking-wider">Sensitive Keys Integrity</p>
                            {Object.entries(diagReport.sensitive_keys_status).map(([key, status]: any) => (
-                              <div key={key} className="flex items-center justify-between py-1 border-b border-slate-50 last:border-0">
-                                 <span className="text-[12px] font-mono text-slate-600">{key}</span>
+                              <div key={key} className="flex items-center justify-between py-1 border-b border-white/5 last:border-0">
+                                 <span className="text-[12px] font-mono text-textSecondary">{key}</span>
                                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
                                     status === 'LOADED_AND_DECRYPTED' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
                                  }`}>
@@ -390,26 +390,26 @@ export default function Settings() {
                  )}
               </div>
 
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 mt-2">Billing Cycle Rules</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 mt-2">Billing Cycle Rules</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div>
-                    <h4 className="font-medium text-slate-800 text-[14px]">Pre-expiry Renewal Reminder</h4>
-                    <p className="text-[12px] text-slate-500 mt-0.5">Days before due date to send payment reminder to customer.</p>
+                    <h4 className="font-medium text-textPrimary text-[14px]">Pre-expiry Renewal Reminder</h4>
+                    <p className="text-[12px] text-textSecondary mt-0.5">Days before due date to send payment reminder to customer.</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <input type="number" value={billing.auto_renewal_days} onChange={e => setB('auto_renewal_days', e.target.value)} className="input-field w-16 text-center font-medium" />
-                    <span className="text-[12px] text-slate-400">days</span>
+                    <span className="text-[12px] text-textSecondary">days</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div>
-                    <h4 className="font-medium text-slate-800 text-[14px]">Auto-Reconnect on Payment</h4>
-                    <p className="text-[12px] text-slate-500 mt-0.5">Automatically re-enable suspended accounts when IPN confirms payment received.</p>
+                    <h4 className="font-medium text-textPrimary text-[14px]">Auto-Reconnect on Payment</h4>
+                    <p className="text-[12px] text-textSecondary mt-0.5">Automatically re-enable suspended accounts when IPN confirms payment received.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                    <div className="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
+                    <div className="w-10 h-5 bg-white/10 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-bgSecondary after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
                   </label>
                 </div>
               </div>
@@ -419,60 +419,60 @@ export default function Settings() {
           {/* COMMUNICATION */}
           {activeTab === 'Communication Specs' && (
             <div className="space-y-6">
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4">SMS Gateway — Celcom Africa</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4">SMS Gateway — Celcom Africa</h3>
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Celcom Partner ID</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Celcom Partner ID</label>
                   <input type="text" className="input-field font-mono" placeholder="e.g. 1234" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Celcom API Key</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Celcom API Key</label>
                   <input type="password" className="input-field font-mono" placeholder="●●●●●●●●●●●●●" />
                 </div>
               </div>
 
               {/* Sender ID type */}
               <div>
-                <label className="block text-[11px] font-medium text-slate-500 mb-3 uppercase tracking-wide">Sender ID Type</label>
+                <label className="block text-[11px] font-medium text-textSecondary mb-3 uppercase tracking-wide">Sender ID Type</label>
                 <div className="grid grid-cols-2 gap-3">
                   <label className="cursor-pointer rounded-xl border border-emerald-500 bg-emerald-50/50 p-4 flex items-start gap-3">
                     <input type="radio" name="sender_type" defaultChecked className="mt-0.5" />
                     <div>
                       <p className="text-[13px] font-medium text-emerald-700">Shared Sender ID</p>
-                      <p className="text-[11px] text-slate-500 mt-0.5">Use our platform shortcode. No registration needed. Available immediately.</p>
+                      <p className="text-[11px] text-textSecondary mt-0.5">Use our platform shortcode. No registration needed. Available immediately.</p>
                       <span className="inline-block mt-2 text-[10px] font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">MOVEC</span>
                     </div>
                   </label>
-                  <label className="cursor-pointer rounded-xl border border-slate-200 p-4 flex items-start gap-3 hover:border-slate-300">
+                  <label className="cursor-pointer rounded-xl border border-white/10 p-4 flex items-start gap-3 hover:border-white/20">
                     <input type="radio" name="sender_type" className="mt-0.5" />
                     <div>
-                      <p className="text-[13px] font-medium text-slate-700">Custom Sender ID</p>
-                      <p className="text-[11px] text-slate-500 mt-0.5">Register your own brand name as sender. Requires Celcom approval (3-5 days).</p>
-                      <input type="text" className="mt-2 w-full px-2 py-1 text-[12px] font-mono border border-slate-200 rounded-lg" placeholder="Your Brand ID" />
+                      <p className="text-[13px] font-medium text-textPrimary">Custom Sender ID</p>
+                      <p className="text-[11px] text-textSecondary mt-0.5">Register your own brand name as sender. Requires Celcom approval (3-5 days).</p>
+                      <input type="text" className="mt-2 w-full px-2 py-1 text-[12px] font-mono border border-white/10 rounded-lg" placeholder="Your Brand ID" />
                     </div>
                   </label>
                 </div>
               </div>
 
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 mt-2">WhatsApp Business (Meta Cloud API)</h3>
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 mt-2">WhatsApp Business (Meta Cloud API)</h3>
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Business Name</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Business Name</label>
                   <input type="text" className="input-field" placeholder="e.g. Movec Connect Ltd" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Phone Number ID</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Phone Number ID</label>
                   <input type="text" className="input-field font-mono" placeholder="From Meta Business Manager" />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Permanent Access Token</label>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Permanent Access Token</label>
                   <input type="password" className="input-field font-mono" placeholder="EAAxxxxxxxxxxxx" />
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl">
-                <p className="text-[12px] font-medium text-slate-700 mb-1">Message Templates</p>
-                <p className="text-[11px] text-slate-500">WhatsApp Business requires pre-approved message templates for outbound initiation. Free-form text is only available within 24h of a customer message. Manage templates in the <a href="https://business.facebook.com" target="_blank" className="text-emerald-600 underline">Meta Business Manager</a>.</p>
+              <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                <p className="text-[12px] font-medium text-textPrimary mb-1">Message Templates</p>
+                <p className="text-[11px] text-textSecondary">WhatsApp Business requires pre-approved message templates for outbound initiation. Free-form text is only available within 24h of a customer message. Manage templates in the <a href="https://business.facebook.com" target="_blank" className="text-emerald-600 underline">Meta Business Manager</a>.</p>
               </div>
             </div>
           )}
@@ -483,12 +483,12 @@ export default function Settings() {
 
               {/* Admin Profile */}
               <form onSubmit={handleSaveProfile} className="space-y-5">
-                <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 flex items-center gap-2">
+                <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
                   <User className="w-4 h-4 text-emerald-500" /> Admin Identity
                 </h3>
                 <div className="grid grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Display Name</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Display Name</label>
                     <input
                       type="text"
                       value={profile.display_name}
@@ -499,7 +499,7 @@ export default function Settings() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">Admin Email Address</label>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Admin Email Address</label>
                     <input
                       type="email"
                       value={profile.email}
@@ -508,7 +508,7 @@ export default function Settings() {
                       placeholder="you@company.co.ke"
                       required
                     />
-                    <p className="text-[11px] text-slate-400 mt-1.5">A confirmation link will be sent to the new email address before it takes effect.</p>
+                    <p className="text-[11px] text-textSecondary mt-1.5">A confirmation link will be sent to the new email address before it takes effect.</p>
                   </div>
                 </div>
                 <div className="flex justify-start">
@@ -521,13 +521,13 @@ export default function Settings() {
 
               {/* Change Password */}
               <form onSubmit={handleChangePassword} className="space-y-5">
-                <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 flex items-center gap-2">
+                <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
                   <Lock className="w-4 h-4 text-emerald-500" /> Change Admin Password
                 </h3>
                 <div className="space-y-4">
                   {(['current', 'newPw', 'confirm'] as const).map((field, i) => (
                     <div key={field}>
-                      <label className="block text-[11px] font-medium text-slate-500 mb-2 uppercase tracking-wide">
+                      <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">
                         {field === 'current' ? 'Current Password' : field === 'newPw' ? 'New Password' : 'Confirm New Password'}
                       </label>
                       <div className="relative">
@@ -542,7 +542,7 @@ export default function Settings() {
                         <button
                           type="button"
                           onClick={() => setShowPw(p => ({ ...p, [field]: !p[field] }))}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-textSecondary"
                         >
                           {showPw[field] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -566,35 +566,35 @@ export default function Settings() {
           {/* THEME & WHITELABEL */}
           {activeTab === 'Theme & Whitelabel' && (
             <div className="space-y-6">
-              <h3 className="text-[15px] font-medium text-slate-800 border-b border-slate-100 pb-4 flex items-center gap-2">
+              <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
                 <PaintBucket className="w-4 h-4 text-emerald-500" /> Branding & Whitelabel
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <label className="block text-[11px] font-medium text-slate-500 uppercase tracking-wide">Brand Primary Color</label>
+                  <label className="block text-[11px] font-medium text-textSecondary uppercase tracking-wide">Brand Primary Color</label>
                   <div className="flex items-center gap-3">
                     <input type="color" value={theme.primary_color} onChange={e => setT('primary_color', e.target.value)} className="w-10 h-10 rounded cursor-pointer border-0 p-0 shadow-sm" />
                     <input type="text" value={theme.primary_color} onChange={e => setT('primary_color', e.target.value)} className="input-field font-mono max-w-[120px]" />
                   </div>
-                  <p className="text-[11px] text-slate-400">Used for customer portal buttons and highlights.</p>
+                  <p className="text-[11px] text-textSecondary">Used for customer portal buttons and highlights.</p>
                 </div>
                 
                 <div className="space-y-3">
-                   <label className="block text-[11px] font-medium text-slate-500 uppercase tracking-wide">Customer Portal Domain</label>
+                   <label className="block text-[11px] font-medium text-textSecondary uppercase tracking-wide">Customer Portal Domain</label>
                    <input type="text" value={theme.portal_domain} onChange={e => setT('portal_domain', e.target.value)} className="input-field font-mono" placeholder="myisp.movec.app" />
-                   <p className="text-[11px] text-slate-400">Custom CNAME for your self-care portal.</p>
+                   <p className="text-[11px] text-textSecondary">Custom CNAME for your self-care portal.</p>
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-50/50 border border-slate-200/60 rounded-xl flex items-center justify-between mt-4">
+              <div className="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between mt-4">
                 <div>
-                  <h4 className="font-medium text-slate-800 text-[14px]">Remove "Powered by Movec"</h4>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Hides the default vendor branding on customer-facing pages.</p>
+                  <h4 className="font-medium text-textPrimary text-[14px]">Remove "Powered by Movec"</h4>
+                  <p className="text-[12px] text-textSecondary mt-0.5">Hides the default vendor branding on customer-facing pages.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={theme.hide_branding} onChange={e => setT('hide_branding', e.target.checked)} className="sr-only peer" />
-                  <div className="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
+                  <div className="w-10 h-5 bg-white/10 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-bgSecondary after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
                 </label>
               </div>
 
@@ -607,7 +607,7 @@ export default function Settings() {
             </div>
           )}
 
-          <div className="flex justify-end pt-4 border-t border-slate-100">
+          <div className="flex justify-end pt-4 border-t border-white/5">
             <button onClick={handleSave} className={`btn-primary flex items-center transition-all ${saved ? 'bg-emerald-600' : ''}`}>
               <Save className="w-4 h-4 mr-2" />
               {saved ? 'Saved!' : 'Update Configuration'}

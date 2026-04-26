@@ -43,13 +43,13 @@ export function SelectDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(o => !o)}
-        className={`input-field w-full flex items-center justify-between gap-2 text-left cursor-pointer select-none ${!selected ? 'text-slate-400' : 'text-slate-800'}`}
+        className={`input-field w-full flex items-center justify-between gap-2 text-left cursor-pointer select-none ${!selected ? 'text-textSecondary' : 'text-textPrimary'}`}
       >
         <span className="flex items-center gap-2 truncate">
-          {icon && <span className="text-slate-400 shrink-0">{icon}</span>}
+          {icon && <span className="text-textSecondary shrink-0">{icon}</span>}
           <span className="truncate text-[13px]">{displayLabel}</span>
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-textSecondary shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
       </button>
 
       {isOpen && (
@@ -64,7 +64,7 @@ export function SelectDropdown({
                 className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[13px] flex items-center justify-between transition-all ${
                   isSelected
                     ? 'bg-emerald-600 text-white font-medium shadow-lg shadow-emerald-600/30'
-                    : 'text-emerald-950 font-medium hover:bg-white hover:shadow-sm border border-transparent hover:border-emerald-100/50'
+                    : 'text-emerald-950 font-medium hover:bg-bgSecondary hover:shadow-sm border border-transparent hover:border-emerald-100/50'
                 }`}
               >
                 <span>{opt.label}</span>

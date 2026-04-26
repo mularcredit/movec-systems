@@ -122,17 +122,17 @@ export default function EditRouter() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate(`/network/routers/${id}`)} className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-slate-50 transition border border-slate-200">
-          <ArrowLeft className="w-4 h-4 text-slate-600" />
+        <button onClick={() => navigate(`/network/routers/${id}`)} className="w-8 h-8 rounded-lg bg-bgSecondary shadow-sm flex items-center justify-center hover:bg-white/5 transition border border-white/10">
+          <ArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
-          <h2 className="text-2xl font-medium text-slate-800">Edit Router</h2>
-          <p className="text-[13px] text-slate-500 mt-0.5">Update configuration for {routerName}</p>
+          <h2 className="text-2xl font-medium text-textPrimary">Edit Router</h2>
+          <p className="text-[13px] text-textSecondary mt-0.5">Update configuration for {routerName}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+      <div className="bg-bgSecondary rounded-2xl shadow-sm border border-white/10 overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
             <div className="flex items-center gap-2">
                 {vendor === 'mikrotik' 
                  ? <span className="inline-flex items-center text-[12px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full"><Cpu className="w-3.5 h-3.5 mr-1.5" /> MikroTik</span>
@@ -144,47 +144,47 @@ export default function EditRouter() {
         <form onSubmit={handleSave} className="p-8 space-y-8">
           <div className="space-y-4">
             <div>
-              <label className="block text-[13px] font-medium text-slate-700 mb-1.5">Router Name</label>
+              <label className="block text-[13px] font-medium text-textPrimary mb-1.5">Router Name</label>
               <input type="text" required value={routerName} onChange={e => setRouterName(e.target.value)} className="auth-input max-w-sm" />
             </div>
           </div>
 
-          <div className="h-px bg-slate-100" />
+          <div className="h-px bg-white/10" />
 
           {vendor === 'mikrotik' && (
             <div className="space-y-6">
-              <h3 className="text-[14px] font-semibold text-slate-800">Connection Details</h3>
+              <h3 className="text-[14px] font-semibold text-textPrimary">Connection Details</h3>
               <div className="grid grid-cols-2 gap-5">
                  <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">Connection Type</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">Connection Type</label>
                     <select value={connType} onChange={e => setConnType(e.target.value)} className="auth-input">
                         <option value="direct">Direct Public IP</option>
                         <option value="wireguard">WireGuard Tunnel</option>
                     </select>
                  </div>
                  <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">IP Address</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">IP Address</label>
                     <input type="text" required value={directIp} onChange={e => setDirectIp(e.target.value)} className="auth-input font-mono" />
                  </div>
                  <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Port</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">API Port</label>
                     <input type="number" required value={apiPort} onChange={e => setApiPort(e.target.value)} className="auth-input font-mono" />
                  </div>
               </div>
               
               <div className="mt-8">
-                  <h3 className="text-[14px] font-semibold text-slate-800 mb-4 flex items-center gap-2"><Key className="w-4 h-4 text-slate-400"/> Update API Credentials</h3>
+                  <h3 className="text-[14px] font-semibold text-textPrimary mb-4 flex items-center gap-2"><Key className="w-4 h-4 text-textSecondary"/> Update API Credentials</h3>
                   <div className="flex items-start gap-3 bg-amber-50 p-4 rounded-xl border border-amber-200 mb-4">
                       <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <p className="text-[12px] text-amber-800">Leave these fields blank to keep the existing credentials unchanged. If you are updating credentials, you must provide both the username and password.</p>
                   </div>
                   <div className="grid grid-cols-2 gap-5">
                       <div>
-                          <label className="block text-[13px] font-medium text-slate-700 mb-1.5">New API Username</label>
+                          <label className="block text-[13px] font-medium text-textPrimary mb-1.5">New API Username</label>
                           <input type="text" value={authUser} onChange={e => setAuthUser(e.target.value)} className="auth-input font-mono" placeholder="Leave blank to keep existing" />
                       </div>
                       <div>
-                          <label className="block text-[13px] font-medium text-slate-700 mb-1.5">New API Password</label>
+                          <label className="block text-[13px] font-medium text-textPrimary mb-1.5">New API Password</label>
                           <input type="password" value={authPass} onChange={e => setAuthPass(e.target.value)} className="auth-input font-mono" placeholder="••••••••" />
                       </div>
                   </div>
@@ -194,47 +194,47 @@ export default function EditRouter() {
 
           {vendor === 'radius' && (
             <div className="space-y-6">
-              <h3 className="text-[14px] font-semibold text-slate-800">RADIUS Configuration</h3>
+              <h3 className="text-[14px] font-semibold text-textPrimary">RADIUS Configuration</h3>
               <div className="grid grid-cols-2 gap-5">
                  <div className="col-span-2">
-                    <label className="block text-[13px] font-medium text-slate-700 mb-0.5">NAS IP Address</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-0.5">NAS IP Address</label>
                     <p className="text-[11px] text-amber-700 mb-1.5 bg-amber-50 border border-amber-100 px-3 py-2 rounded-lg">
                       ⚠️ <strong>Critical:</strong> This must exactly match the source IP that this router sends accounting packets from (visible in server logs as "Incoming"). A mismatch causes sessions to appear on the wrong router or be dropped entirely.
                     </p>
                     <input type="text" value={nasIp} onChange={e => setNasIp(e.target.value)} className="auth-input font-mono max-w-sm" placeholder="e.g. 10.8.0.2 or leave blank for any" />
                  </div>
                  <div className="col-span-2">
-                    <label className="block text-[13px] font-medium text-slate-700 mb-0.5">RADIUS Shared Secret</label>
-                    <p className="text-[11px] text-slate-400 mb-1.5 pb-1">Must match exactly what is configured on the MikroTik RADIUS client.</p>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-0.5">RADIUS Shared Secret</label>
+                    <p className="text-[11px] text-textSecondary mb-1.5 pb-1">Must match exactly what is configured on the MikroTik RADIUS client.</p>
                     <input type="text" required value={radiusSecret} onChange={e => setRadiusSecret(e.target.value)} className="auth-input font-mono max-w-sm" />
                  </div>
               </div>
 
               {/* MikroTik API Enhancement */}
-              <div className="border-t border-slate-100 pt-6">
+              <div className="border-t border-white/5 pt-6">
                 <div className="flex items-center gap-2 mb-1">
                   <Key className="w-4 h-4 text-emerald-500" />
-                  <h3 className="text-[14px] font-semibold text-slate-800">
+                  <h3 className="text-[14px] font-semibold text-textPrimary">
                     MikroTik API Access
-                    <span className="ml-2 text-[11px] font-normal text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Optional — unlocks CPU · Traffic · Kill-switch</span>
+                    <span className="ml-2 text-[11px] font-normal text-textSecondary bg-white/10 px-2 py-0.5 rounded-full">Optional — unlocks CPU · Traffic · Kill-switch</span>
                   </h3>
                 </div>
-                <p className="text-[12px] text-slate-500 mb-4">
+                <p className="text-[12px] text-textSecondary mb-4">
                   Provide your MikroTik Winbox credentials to enable live CPU monitoring, per-interface bandwidth, PPPoE session control, and the ability to suspend users directly from the dashboard.
                   Connect via WireGuard tunnel IP or direct public IP on port <strong>8729</strong>.
                 </p>
                 <div className="grid grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API IP Address</label>
-                    <p className="text-[11px] text-slate-400 mb-1.5">WireGuard tunnel IP or router's public IP.</p>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">API IP Address</label>
+                    <p className="text-[11px] text-textSecondary mb-1.5">WireGuard tunnel IP or router's public IP.</p>
                     <input type="text" value={directIp} onChange={e => setDirectIp(e.target.value)} className="auth-input font-mono" placeholder="10.8.0.2 or router's public IP" />
                   </div>
                   <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Port</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">API Port</label>
                     <input type="number" value={apiPort === '1812' ? '8729' : apiPort} onChange={e => setApiPort(e.target.value)} className="auth-input font-mono" placeholder="8729" />
                   </div>
                   <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Username</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">API Username</label>
                     <input
                       type="text"
                       value={authUser === '(credentials stored)' ? '' : authUser}
@@ -244,7 +244,7 @@ export default function EditRouter() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">API Password</label>
+                    <label className="block text-[13px] font-medium text-textPrimary mb-1.5">API Password</label>
                     <input
                       type="password"
                       value={authPass}
@@ -265,7 +265,7 @@ export default function EditRouter() {
              </div>
           )}
 
-          <div className="flex gap-3 justify-end pt-4 border-t border-slate-100">
+          <div className="flex gap-3 justify-end pt-4 border-t border-white/5">
              <button type="button" onClick={() => navigate(-1)} className="btn-secondary">Cancel</button>
              <button type="submit" disabled={isSaving} className="btn-primary">
                  {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
