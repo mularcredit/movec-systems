@@ -146,7 +146,6 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
           <div className="mb-10">
             <h2 className="text-[22px] font-medium text-textPrimary mb-2 tracking-tight">{titles[mode]}</h2>
             <p className="text-[14px] text-textSecondary leading-relaxed font-normal">
-              {mode === 'login'  && 'Sign in to access your business dashboard.'}
               {mode === 'signup' && 'Register your ISP to start managing your customers.'}
               {mode === 'reset'  && 'Enter your email to reset your password.'}
             </p>
@@ -161,7 +160,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                   onChange={e => setName(e.target.value)}
                   required
                   placeholder="Kevin Mwendwa"
-                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  className="w-full rounded-[25px] px-4 py-3 text-[14px] font-normal transition-all outline-none"
                   style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
                   onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
                   onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
@@ -199,7 +198,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                   onChange={e => setPassword(e.target.value)}
                   required
                   placeholder="••••••••••"
-                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  className="w-full rounded-[25px] px-4 py-3 text-[14px] font-normal transition-all outline-none"
                   style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
                   onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
                   onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
@@ -243,7 +242,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
                   onChange={e => setConfirm(e.target.value)}
                   required
                   placeholder="••••••••••"
-                  className="w-full rounded-xl px-4 py-3 text-[14px] font-normal transition-all outline-none"
+                  className="w-full rounded-[25px] px-4 py-3 text-[14px] font-normal transition-all outline-none"
                   style={{ background: 'rgba(30,24,52,0.8)', border: '1px solid rgba(167,139,250,0.2)', color: '#F3F0FF' }}
                   onFocus={e => { e.target.style.borderColor = 'rgba(167,139,250,0.5)'; e.target.style.boxShadow = '0 0 0 4px rgba(192,132,252,0.08)'; }}
                   onBlur={e  => { e.target.style.borderColor = 'rgba(167,139,250,0.2)'; e.target.style.boxShadow = 'none'; }}
@@ -265,7 +264,7 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3.5 px-6 rounded-xl text-[14px] font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-2 py-3.5 px-6 rounded-[25px] text-[14px] font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ background: 'linear-gradient(135deg, #4c1d95 0%, #a78bfa 100%)' }}
             >
               {loading
