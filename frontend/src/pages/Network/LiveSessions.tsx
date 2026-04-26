@@ -5,6 +5,7 @@ import {
   ShieldCheck, Wifi, Radio
 } from 'lucide-react';
 import { apiFetch } from '../../lib/apiClient';
+import CustomLoader from '../../components/common/CustomLoader';
 
 interface Session {
   source: 'mikrotik' | 'radius';
@@ -153,8 +154,7 @@ export default function LiveSessions() {
       <div className="bg-bgSecondary rounded-2xl border border-white/5 shadow-sm overflow-hidden min-h-[400px]">
         {loading && sessions.length === 0 ? (
           <div className="h-96 flex flex-col items-center justify-center">
-             <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-             <p className="text-[13px] text-textSecondary">Polling network nodes...</p>
+             <CustomLoader message="Polling network nodes..." />
           </div>
         ) : filtered.length === 0 ? (
           <div className="h-96 flex flex-col items-center justify-center text-center p-8">

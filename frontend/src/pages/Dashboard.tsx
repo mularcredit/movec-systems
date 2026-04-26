@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
+import CustomLoader from '../components/common/CustomLoader';
 
 const StatCard = ({ title, value, sub, icon: Icon, colorClass, loading, trend }: any) => (
   <div className="bg-bgSecondary rounded-2xl p-5 border border-white/5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-white/10 transition-all duration-500 group">
@@ -110,6 +111,14 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
+        <CustomLoader message="Loading dashboard..." />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 pb-12 font-sans text-textSecondary">
