@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import CustomLoader from '../../../components/common/CustomLoader';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import {
-  Server, Activity, Shield, Wifi, Share2, Terminal, Cpu,
-  BarChart2, FileText, ArrowLeft, RefreshCw, Loader2,
-  CheckCircle2, XCircle, XOctagon, Zap, HardDrive, Thermometer, Play, Pause, Trash2
-} from 'lucide-react';
+import { IconActivity, IconArrowLeft, IconBolt, IconChartBar, IconCircleCheck, IconCircleX, IconCpu, IconDatabase, IconFileText, IconLoader2, IconPlayerPause, IconPlayerPlay, IconRefresh, IconServer, IconShare, IconShield, IconTemperature, IconTerminal2, IconTrash, IconWifi } from '@tabler/icons-react';;
 import clsx from 'clsx';
 import { apiFetch } from '../../../lib/apiClient';
 import ConfirmModal from '../../../components/ui/ConfirmModal';
@@ -61,13 +57,13 @@ const LiveTrafficPoller = ({ routerId }: { routerId: string }) => {
           onClick={() => setIsPaused(!isPaused)} 
           className="btn-secondary flex items-center text-[12px]"
         >
-          {isPaused ? <><Play className="w-4 h-4 mr-1.5" /> Resume Stream</> : <><Pause className="w-4 h-4 mr-1.5" /> Pause Stream</>}
+          {isPaused ? <><IconPlayerPlay className="w-4 h-4 mr-1.5" /> Resume Stream</> : <><IconPlayerPause className="w-4 h-4 mr-1.5" /> Pause Stream</>}
         </button>
       </div>
       
       {!traffic.length ? (
         <div className="p-10 flex flex-col items-center justify-center text-center">
-          <Activity className="w-8 h-8 text-textSecondary mb-3" />
+          <IconActivity className="w-8 h-8 text-textSecondary mb-3" />
           <p className="text-[13px] text-textSecondary">No active traffic streams detected.</p>
         </div>
       ) : (
@@ -241,16 +237,16 @@ export default function RouterDetail() {
   };
 
   const tabs = [
-    { id: 'overview',    label: 'Overview',    icon: BarChart2 },
-    { id: 'interfaces',  label: 'Interfaces',  icon: Activity  },
-    { id: 'pppoe',       label: 'PPPoE',       icon: Share2    },
-    { id: 'hotspot',     label: 'Hotspot',     icon: Wifi      },
-    { id: 'dhcp',        label: 'DHCP Leases', icon: Cpu       },
-    { id: 'firewall',    label: 'Firewall',    icon: Shield    },
-    { id: 'wireless',    label: 'Wireless',    icon: Wifi      },
-    { id: 'scripts',     label: 'Scripts',     icon: Terminal  },
-    { id: 'monitor',     label: 'Live Monitor',icon: Activity  },
-    { id: 'stats',       label: 'Health',      icon: Thermometer },
+    { id: 'overview',    label: 'Overview',    icon: IconChartBar },
+    { id: 'interfaces',  label: 'Interfaces',  icon: IconActivity  },
+    { id: 'pppoe',       label: 'PPPoE',       icon: IconShare    },
+    { id: 'hotspot',     label: 'Hotspot',     icon: IconWifi      },
+    { id: 'dhcp',        label: 'DHCP Leases', icon: IconCpu       },
+    { id: 'firewall',    label: 'Firewall',    icon: IconShield    },
+    { id: 'wireless',    label: 'Wireless',    icon: IconWifi      },
+    { id: 'scripts',     label: 'Scripts',     icon: IconTerminal2  },
+    { id: 'monitor',     label: 'Live Monitor',icon: IconActivity  },
+    { id: 'stats',       label: 'Health',      icon: IconTemperature },
   ];
 
   if (routerLoading) return (
@@ -273,11 +269,11 @@ export default function RouterDetail() {
       <div className="card p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4 border-l-emerald-500">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate('/network/routers')} className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition shrink-0">
-            <ArrowLeft className="w-4 h-4 text-textSecondary" />
+            <IconArrowLeft className="w-4 h-4 text-textSecondary" />
           </button>
           <div className="relative shrink-0">
             <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center border border-white/10">
-              <Server className="w-6 h-6 text-textSecondary" />
+              <IconServer className="w-6 h-6 text-textSecondary" />
             </div>
             <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-white ${isOnline ? 'bg-emerald-500' : 'bg-slate-300'}`} />
           </div>
@@ -295,14 +291,14 @@ export default function RouterDetail() {
             Edit Settings
           </button>
           <button onClick={forceSync} className="btn-secondary flex items-center text-[13px]">
-            <RefreshCw className="w-3.5 h-3.5 mr-1.5" /> Sync
+            <IconRefresh className="w-3.5 h-3.5 mr-1.5" /> Sync
           </button>
           <button 
             onClick={confirmDelete}
             disabled={isDeleting}
             className="flex items-center px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all gap-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 shadow-sm"
           >
-            {isDeleting ? <CustomLoader inline size="sm" /> : <Trash2 className="w-3.5 h-3.5" />}
+            {isDeleting ? <CustomLoader inline size="sm" /> : <IconTrash className="w-3.5 h-3.5" />}
             Decommission
           </button>
           <button className="btn-primary text-[13px]">Force Config Push</button>
@@ -329,7 +325,7 @@ export default function RouterDetail() {
       {/* Tab Error Banner */}
       {tabError && (
         <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-[13px] text-amber-800">
-          <XOctagon className="w-4 h-4 text-amber-500 shrink-0" />
+          <IconCircleX className="w-4 h-4 text-amber-500 shrink-0" />
           {tabError} {!isOnline && '— This router is currently offline.'}
         </div>
       )}
@@ -363,7 +359,7 @@ export default function RouterDetail() {
         {/* INTERFACES */}
         {activeTab === 'interfaces' && (
           <TabPanel loading={tabLoading}>
-            {!tabData?.data?.length ? <EmptyState icon={Activity} label="No interfaces found or router offline." /> : (
+            {!tabData?.data?.length ? <EmptyState icon={IconActivity} label="No interfaces found or router offline." /> : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>Name</Th><Th>Type</Th><Th>Status</Th><Th right>RX</Th><Th right>TX</Th><Th>Comment</Th></tr></thead>
                 <tbody className="divide-y divide-white/5">
@@ -373,8 +369,8 @@ export default function RouterDetail() {
                       <Td><span className="text-[11px] bg-white/10 text-textSecondary px-2 py-0.5 rounded">{iface.type || 'ether'}</span></Td>
                       <Td>
                         {iface.running === 'true' && iface.disabled !== 'true'
-                          ? <span className="flex items-center gap-1 text-emerald-600 text-[12px]"><CheckCircle2 className="w-3.5 h-3.5" /> Running</span>
-                          : <span className="flex items-center gap-1 text-textSecondary text-[12px]"><XCircle className="w-3.5 h-3.5" /> Inactive</span>}
+                          ? <span className="flex items-center gap-1 text-emerald-600 text-[12px]"><IconCircleCheck className="w-3.5 h-3.5" /> Running</span>
+                          : <span className="flex items-center gap-1 text-textSecondary text-[12px]"><IconCircleX className="w-3.5 h-3.5" /> Inactive</span>}
                       </Td>
                       <Td right mono>{formatBytes(iface['rx-byte'])}</Td>
                       <Td right mono>{formatBytes(iface['tx-byte'])}</Td>
@@ -397,7 +393,7 @@ export default function RouterDetail() {
               </div>
             </div>
             {!tabData?.active_sessions?.length ? (
-              <EmptyState icon={Share2} label="No active PPPoE sessions on this router." />
+              <EmptyState icon={IconShare} label="No active PPPoE sessions on this router." />
             ) : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>Username</Th><Th>IP Address</Th><Th>MAC / Caller-ID</Th><Th>Uptime</Th><Th>Service</Th><Th right>Action</Th></tr></thead>
@@ -429,7 +425,7 @@ export default function RouterDetail() {
               <p className="text-[12px] text-textSecondary">{tabData?.accounts?.length || 0} provisioned</p>
             </div>
             {!tabData?.accounts?.length ? (
-              <EmptyState icon={Share2} label="No PPP secrets found on this router." />
+              <EmptyState icon={IconShare} label="No PPP secrets found on this router." />
             ) : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>Username</Th><Th>Profile</Th><Th>Local Address</Th><Th>Remote Address</Th><Th right>Status</Th></tr></thead>
@@ -461,7 +457,7 @@ export default function RouterDetail() {
               <p className="text-[12px] text-textSecondary mt-0.5">{tabData?.active_sessions?.length || 0} currently connected</p>
             </div>
             {!tabData?.active_sessions?.length ? (
-              <EmptyState icon={Wifi} label="No active hotspot sessions." />
+              <EmptyState icon={IconWifi} label="No active hotspot sessions." />
             ) : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>User</Th><Th>IP</Th><Th>MAC</Th><Th>Uptime</Th><Th right>Action</Th></tr></thead>
@@ -492,7 +488,7 @@ export default function RouterDetail() {
         {/* DHCP */}
         {activeTab === 'dhcp' && (
           <TabPanel loading={tabLoading}>
-            {!tabData?.leases?.length ? <EmptyState icon={Cpu} label="No DHCP leases found." /> : (
+            {!tabData?.leases?.length ? <EmptyState icon={IconCpu} label="No DHCP leases found." /> : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>IP Address</Th><Th>MAC Address</Th><Th>Hostname</Th><Th>Status</Th><Th>Expires</Th></tr></thead>
                 <tbody className="divide-y divide-white/5">
@@ -517,7 +513,7 @@ export default function RouterDetail() {
             <div className="p-5 border-b border-white/10">
               <h3 className="text-[14px] font-medium text-textPrimary">Filter Rules <span className="text-textSecondary font-normal">({tabData?.rules?.filter?.length || 0})</span></h3>
             </div>
-            {!tabData?.rules?.filter?.length ? <EmptyState icon={Shield} label="No filter rules found." /> : (
+            {!tabData?.rules?.filter?.length ? <EmptyState icon={IconShield} label="No filter rules found." /> : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>#</Th><Th>Chain</Th><Th>Protocol</Th><Th>Src/Dst</Th><Th>Action</Th><Th>Comment</Th></tr></thead>
                 <tbody className="divide-y divide-white/5">
@@ -540,7 +536,7 @@ export default function RouterDetail() {
         {/* WIRELESS */}
         {activeTab === 'wireless' && (
           <TabPanel loading={tabLoading}>
-            {!tabData?.clients?.length ? <EmptyState icon={Wifi} label="No wireless clients registered." /> : (
+            {!tabData?.clients?.length ? <EmptyState icon={IconWifi} label="No wireless clients registered." /> : (
               <table className="w-full text-left">
                 <thead><tr className="bg-white/5 border-b border-white/10"><Th>MAC Address</Th><Th>Signal</Th><Th>Interface</Th><Th>Uptime</Th><Th right>TX / RX Rate</Th></tr></thead>
                 <tbody className="divide-y divide-white/5">
@@ -562,7 +558,7 @@ export default function RouterDetail() {
         {/* HEALTH STATS */}
         {activeTab === 'stats' && (
           <TabPanel loading={tabLoading}>
-            {!tabData?.hardware ? <EmptyState icon={Thermometer} label="Could not retrieve hardware stats. Router may be offline." /> : (
+            {!tabData?.hardware ? <EmptyState icon={IconTemperature} label="Could not retrieve hardware stats. Router may be offline." /> : (
               <div className="p-6 space-y-6 animate-in fade-in">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
@@ -627,7 +623,7 @@ export default function RouterDetail() {
               <p className="text-[12px] text-textSecondary mt-0.5">{tabData?.scripts?.length || 0} active scripts deployed on hardware</p>
             </div>
             {!tabData?.scripts?.length ? (
-              <EmptyState icon={Terminal} label="No scripts found on this gateway." />
+              <EmptyState icon={IconTerminal2} label="No scripts found on this gateway." />
             ) : (
               <table className="w-full text-left">
                 <thead><tr className="bg-bgSecondary border-b border-white/10 shadow-sm"><Th>Command Name</Th><Th>Run Count</Th><Th>Source Policy</Th><Th>Action</Th></tr></thead>
@@ -650,7 +646,7 @@ export default function RouterDetail() {
               <p className="text-[12px] text-textSecondary mt-0.5">{tabData?.schedulers?.length || 0} automated CRON tasks</p>
             </div>
             {!tabData?.schedulers?.length ? (
-              <EmptyState icon={Terminal} label="No job schedulers found." />
+              <EmptyState icon={IconTerminal2} label="No job schedulers found." />
             ) : (
               <table className="w-full text-left">
                 <thead><tr className="bg-bgSecondary border-b border-white/10 shadow-sm"><Th>Job Identifier</Th><Th>Start Time</Th><Th>Interval</Th><Th right>Next Run</Th></tr></thead>

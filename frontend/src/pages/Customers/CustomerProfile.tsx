@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CustomLoader from '../../components/common/CustomLoader';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { 
-  ArrowLeft, User, Phone, Mail, MapPin, CreditCard, 
-  Wifi, Shield, Server, Activity, CalendarClock, History,
-  Loader2, Globe, Clock, CheckCircle2, AlertCircle, Edit3, X
-} from 'lucide-react';
+import { IconActivity, IconAlertCircle, IconArrowLeft, IconCalendarTime, IconCircleCheck, IconClock, IconCreditCard, IconEdit, IconGlobe, IconHistory, IconLoader2, IconMail, IconMapPin, IconPhone, IconServer, IconShield, IconUser, IconWifi, IconX } from '@tabler/icons-react';;
 import { apiFetch } from '../../lib/apiClient';
 
 export default function CustomerProfile() {
@@ -141,11 +137,11 @@ export default function CustomerProfile() {
   if (!customer) {
     return (
       <div className="flex flex-col items-center justify-center p-32 text-center">
-        <User className="w-12 h-12 text-textSecondary mb-4" />
+        <IconUser className="w-12 h-12 text-textSecondary mb-4" />
         <h2 className="text-lg font-medium text-textPrimary">Customer Not Found</h2>
         <p className="text-sm text-textSecondary max-w-sm mt-2 mb-6">The requested subscriber profile does not exist or has been deleted.</p>
         <button onClick={() => navigate('/customers/all')} className="btn-secondary">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
+          <IconArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
         </button>
       </div>
     );
@@ -171,7 +167,7 @@ export default function CustomerProfile() {
         <div className={`fixed top-5 right-5 z-50 text-[13px] font-medium px-4 py-3 rounded-xl shadow-lg border animate-in fade-in slide-in-from-top-2 flex items-center gap-2 ${
           toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'
         }`}>
-          {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertCircle className="w-4 h-4 text-rose-600" />}
+          {toast.type === 'success' ? <IconCircleCheck className="w-4 h-4 text-emerald-600" /> : <IconAlertCircle className="w-4 h-4 text-rose-600" />}
           {toast.msg}
         </div>
       )}
@@ -182,7 +178,7 @@ export default function CustomerProfile() {
           <div className="bg-bgSecondary rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex justify-between items-center mb-5">
               <h3 className="text-[16px] font-semibold text-textPrimary">Change Authentication Password</h3>
-              <button disabled={savingPassword} onClick={() => setShowPasswordModal(false)} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5"/></button>
+              <button disabled={savingPassword} onClick={() => setShowPasswordModal(false)} className="text-textSecondary hover:text-textSecondary"><IconX className="w-5 h-5"/></button>
             </div>
             <form onSubmit={handleChangePassword}>
               <div className="mb-6">
@@ -203,7 +199,7 @@ export default function CustomerProfile() {
               <div className="flex gap-3">
                 <button type="button" onClick={() => setShowPasswordModal(false)} className="btn-secondary w-full" disabled={savingPassword}>Cancel</button>
                 <button type="submit" className="btn-primary w-full shadow-md shadow-emerald-500/20" disabled={savingPassword || !newPassword.trim()}>
-                  {savingPassword ? <Loader2 className="w-4 h-4 animate-spin mx-auto"/> : 'Push to Router'}
+                  {savingPassword ? <IconLoader2 className="w-4 h-4 animate-spin mx-auto"/> : 'Push to Router'}
                 </button>
               </div>
             </form>
@@ -214,7 +210,7 @@ export default function CustomerProfile() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <button onClick={() => navigate('/customers/all')} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bgSecondary shadow-sm border border-white/10 hover:bg-white/5 text-textSecondary transition">
-          <ArrowLeft className="w-4 h-4" />
+          <IconArrowLeft className="w-4 h-4" />
         </button>
         <div>
           <div className="flex items-center gap-3">
@@ -230,7 +226,7 @@ export default function CustomerProfile() {
             onClick={() => navigate(`/customers/edit/${id}`)}
             className="btn-secondary flex items-center gap-2"
           >
-            <Edit3 className="w-4 h-4" /> Edit Profile
+            <IconEdit className="w-4 h-4" /> Edit Profile
           </button>
         </div>
       </div>
@@ -240,11 +236,11 @@ export default function CustomerProfile() {
         {/* Contact info */}
         <div className="card">
           <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
-            <User className="w-3.5 h-3.5" /> Identity & Contact
+            <IconUser className="w-3.5 h-3.5" /> Identity & Contact
           </h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Phone className="w-4 h-4 text-textSecondary mt-0.5" />
+              <IconPhone className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
                 <p className="text-xs text-textSecondary mb-0.5">Phone Number</p>
                 <p className="text-sm font-medium text-textPrimary">{customer.phone}</p>
@@ -252,7 +248,7 @@ export default function CustomerProfile() {
             </div>
             {customer.email && (
               <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-textSecondary mt-0.5" />
+                <IconMail className="w-4 h-4 text-textSecondary mt-0.5" />
                 <div>
                   <p className="text-xs text-textSecondary mb-0.5">Email Address</p>
                   <p className="text-sm font-medium text-textPrimary">{customer.email}</p>
@@ -260,7 +256,7 @@ export default function CustomerProfile() {
               </div>
             )}
             <div className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-textSecondary mt-0.5" />
+              <IconMapPin className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
                 <p className="text-xs text-textSecondary mb-0.5">Installation Location</p>
                 <p className="text-sm font-medium text-textPrimary">
@@ -274,7 +270,7 @@ export default function CustomerProfile() {
         {/* Financial */}
         <div className="card">
           <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
-            <CreditCard className="w-3.5 h-3.5" /> Financial Standing
+            <IconCreditCard className="w-3.5 h-3.5" /> Financial Standing
           </h3>
           <div className="space-y-5">
             <div>
@@ -288,7 +284,7 @@ export default function CustomerProfile() {
             
             <div className="bg-white/5 rounded-xl p-3 border border-white/5">
               <div className="flex items-start gap-3">
-                <CalendarClock className="w-4 h-4 text-emerald-500 mt-0.5" />
+                <IconCalendarTime className="w-4 h-4 text-emerald-500 mt-0.5" />
                 <div>
                   <p className="text-xs font-semibold text-textPrimary">Next Renewal Date</p>
                   <p className="text-sm font-medium text-emerald-700 mt-0.5">
@@ -303,11 +299,11 @@ export default function CustomerProfile() {
         {/* Technical */}
         <div className="card">
           <h3 className="text-[11px] font-semibold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-2 pt-1">
-            <Activity className="w-3.5 h-3.5" /> Provisioning
+            <IconActivity className="w-3.5 h-3.5" /> Provisioning
           </h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Wifi className="w-4 h-4 text-textSecondary mt-0.5" />
+              <IconWifi className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
                 <p className="text-xs text-textSecondary mb-0.5">Active Package</p>
                 <p className="text-sm font-medium text-textPrimary">
@@ -321,7 +317,7 @@ export default function CustomerProfile() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Shield className="w-4 h-4 text-textSecondary mt-0.5" />
+              <IconShield className="w-4 h-4 text-textSecondary mt-0.5" />
               <div>
                 <p className="text-xs text-textSecondary mb-0.5">Authentication ({customer.service_type || 'PPPoE'})</p>
                 <div className="flex items-center justify-between group">
@@ -329,7 +325,7 @@ export default function CustomerProfile() {
                     {customer.username || 'No credentials'}
                   </p>
                   <button onClick={() => setShowPasswordModal(true)} className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 flex items-center gap-1 hover:bg-emerald-100">
-                    <Edit3 className="w-3 h-3" /> Edit Password
+                    <IconEdit className="w-3 h-3" /> Edit Password
                   </button>
                 </div>
                 {customer.ip_address && (
@@ -339,7 +335,7 @@ export default function CustomerProfile() {
             </div>
             {customer.routers && (
               <div className="flex items-start gap-3">
-                <Server className="w-4 h-4 text-textSecondary mt-0.5" />
+                <IconServer className="w-4 h-4 text-textSecondary mt-0.5" />
                 <div>
                   <p className="text-xs text-textSecondary mb-0.5">Provisioned Router</p>
                   <p className="text-sm font-medium text-textPrimary">
@@ -358,12 +354,12 @@ export default function CustomerProfile() {
         <div className="flex items-center justify-between mb-5 border-b border-white/5 pb-4">
           <div>
             <h3 className="text-[14px] font-semibold text-textPrimary flex items-center gap-2">
-              <History className="w-4 h-4 text-emerald-500" /> Live Router Activity Logs
+              <IconHistory className="w-4 h-4 text-emerald-500" /> Live Router Activity Logs
             </h3>
             <p className="text-[12px] text-textSecondary mt-0.5">Direct telemetry matching '{customer.username}' from the MikroTik buffer.</p>
           </div>
           <button onClick={() => fetchLogs(id!)} className="btn-secondary text-[11px] px-3 py-1 flex flex-row gap-1 border border-white/10">
-            <Activity className="w-3.5 h-3.5" /> Refresh Cache
+            <IconActivity className="w-3.5 h-3.5" /> Refresh Cache
           </button>
         </div>
 

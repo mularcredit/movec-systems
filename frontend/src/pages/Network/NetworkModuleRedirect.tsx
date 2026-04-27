@@ -9,7 +9,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Server, Plus, Activity, ArrowRight } from 'lucide-react';
+import { IconActivity, IconArrowRight, IconLoader2, IconPlus, IconServer } from '@tabler/icons-react';;
 import CustomLoader from '../../components/common/CustomLoader';
 
 import { apiFetch } from '../../lib/apiClient';
@@ -59,7 +59,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
       <div className="max-w-4xl mx-auto py-10 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-emerald-100/50 shadow-sm">
-            <Activity className="w-8 h-8 text-emerald-500" />
+            <IconActivity className="w-8 h-8 text-emerald-500" />
           </div>
           <h2 className="text-2xl font-semibold text-textPrimary mb-2">Select a Target Router</h2>
           <p className="text-[15px] text-textSecondary max-w-md mx-auto leading-relaxed">
@@ -76,7 +76,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
             >
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/5 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                  <Server className="w-5 h-5 text-textSecondary group-hover:text-emerald-500 transition-colors" />
+                  <IconServer className="w-5 h-5 text-textSecondary group-hover:text-emerald-500 transition-colors" />
                 </div>
                 {router.connection_status === 'online' ? (
                   <span className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[11px] font-bold tracking-wide uppercase">
@@ -93,7 +93,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
               
               <div className="flex items-center justify-between text-[13px] font-medium text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span>View {label}</span>
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <IconArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           ))}
@@ -105,7 +105,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
   return (
     <div className="flex flex-col items-center justify-center h-64 text-center animate-in fade-in p-10">
       <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-5">
-        <Server className="w-8 h-8 text-textSecondary" />
+        <IconServer className="w-8 h-8 text-textSecondary" />
       </div>
       <h2 className="text-[16px] font-medium text-textPrimary mb-2">No Router Linked</h2>
       <p className="text-[13px] text-textSecondary max-w-xs mb-6">
@@ -118,7 +118,7 @@ export default function NetworkModuleRedirect({ tab, label }: Props) {
           onClick={() => navigate('/network/routers/add')}
           className="btn-primary flex items-center"
         >
-          <Plus className="w-4 h-4 mr-2" /> Link a Router
+          <IconPlus className="w-4 h-4 mr-2" /> Link a Router
         </button>
       )}
     </div>

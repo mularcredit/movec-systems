@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Activity, ArrowLeft, Loader2, Save, Cpu, Radio, ShieldAlert, Key, AlertTriangle } from 'lucide-react';
+import { IconActivity, IconAlertTriangle, IconArrowLeft, IconCpu, IconDeviceFloppy, IconKey, IconLoader2, IconRouter, IconShieldX } from '@tabler/icons-react';;
 import CustomLoader from '../../../components/common/CustomLoader';
 
 import { apiFetch } from '../../../lib/apiClient';
@@ -125,7 +125,7 @@ export default function EditRouter() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
         <button onClick={() => navigate(`/network/routers/${id}`)} className="w-8 h-8 rounded-lg bg-bgSecondary shadow-sm flex items-center justify-center hover:bg-white/5 transition border border-white/10">
-          <ArrowLeft className="w-4 h-4 text-textSecondary" />
+          <IconArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
           <h2 className="text-2xl font-medium text-textPrimary">Edit Router</h2>
@@ -137,8 +137,8 @@ export default function EditRouter() {
         <div className="px-6 py-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
             <div className="flex items-center gap-2">
                 {vendor === 'mikrotik' 
-                 ? <span className="inline-flex items-center text-[12px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full"><Cpu className="w-3.5 h-3.5 mr-1.5" /> MikroTik</span>
-                 : <span className="inline-flex items-center text-[12px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full"><Radio className="w-3.5 h-3.5 mr-1.5" /> RADIUS NAS</span>
+                 ? <span className="inline-flex items-center text-[12px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full"><IconCpu className="w-3.5 h-3.5 mr-1.5" /> MikroTik</span>
+                 : <span className="inline-flex items-center text-[12px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full"><IconRouter className="w-3.5 h-3.5 mr-1.5" /> RADIUS NAS</span>
                 }
             </div>
         </div>
@@ -175,9 +175,9 @@ export default function EditRouter() {
               </div>
               
               <div className="mt-8">
-                  <h3 className="text-[14px] font-semibold text-textPrimary mb-4 flex items-center gap-2"><Key className="w-4 h-4 text-textSecondary"/> Update API Credentials</h3>
+                  <h3 className="text-[14px] font-semibold text-textPrimary mb-4 flex items-center gap-2"><IconKey className="w-4 h-4 text-textSecondary"/> Update API Credentials</h3>
                   <div className="flex items-start gap-3 bg-amber-50 p-4 rounded-xl border border-amber-200 mb-4">
-                      <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                      <IconAlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <p className="text-[12px] text-amber-800">Leave these fields blank to keep the existing credentials unchanged. If you are updating credentials, you must provide both the username and password.</p>
                   </div>
                   <div className="grid grid-cols-2 gap-5">
@@ -215,7 +215,7 @@ export default function EditRouter() {
               {/* MikroTik API Enhancement */}
               <div className="border-t border-white/5 pt-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <Key className="w-4 h-4 text-emerald-500" />
+                  <IconKey className="w-4 h-4 text-emerald-500" />
                   <h3 className="text-[14px] font-semibold text-textPrimary">
                     MikroTik API Access
                     <span className="ml-2 text-[11px] font-normal text-textSecondary bg-white/10 px-2 py-0.5 rounded-full">Optional — unlocks CPU · Traffic · Kill-switch</span>
@@ -262,7 +262,7 @@ export default function EditRouter() {
 
           {error && (
              <div className="p-4 bg-rose-50 text-rose-700 text-sm rounded-xl border border-rose-100 flex items-start gap-3">
-                 <ShieldAlert className="w-5 h-5 shrink-0" />
+                 <IconShieldX className="w-5 h-5 shrink-0" />
                  {error}
              </div>
           )}
@@ -270,7 +270,7 @@ export default function EditRouter() {
           <div className="flex gap-3 justify-end pt-4 border-t border-white/5">
              <button type="button" onClick={() => navigate(-1)} className="btn-secondary">Cancel</button>
              <button type="submit" disabled={isSaving} className="btn-primary">
-                 {isSaving ? <CustomLoader inline size="sm" /> : <Save className="w-4 h-4 mr-2" />}
+                 {isSaving ? <CustomLoader inline size="sm" /> : <IconDeviceFloppy className="w-4 h-4 mr-2" />}
                  Save Changes
              </button>
           </div>

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomLoader from '../../components/common/CustomLoader';
 import { useNavigate } from 'react-router-dom';
-import {
-  Shield, Wifi, Zap, ChevronRight, DollarSign, Clock, ArrowLeft,
-  Server, CheckCircle2, XCircle, Loader2, AlertTriangle, Globe, Info
-} from 'lucide-react';
+import { IconAlertTriangle, IconArrowLeft, IconBolt, IconChevronRight, IconCircleCheck, IconCircleX, IconClock, IconCurrencyDollar, IconGlobe, IconInfoCircle, IconLoader2, IconServer, IconShield, IconWifi } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
 import { SelectDropdown } from '../../components/ui/SelectDropdown';
@@ -201,7 +198,7 @@ export default function AddPackage() {
           onClick={() => navigate('/packages')}
           className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition"
         >
-          <ArrowLeft className="w-4 h-4 text-textSecondary" />
+          <IconArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
           <h2 className="text-[18px] font-medium text-textPrimary">Create Internet Package</h2>
@@ -221,9 +218,9 @@ export default function AddPackage() {
             </label>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { type: 'PPPoE',   icon: Shield, desc: 'Username/password authenticated tunnel' },
-                { type: 'Hotspot', icon: Wifi,   desc: 'Captive portal / voucher-based access' },
-                { type: 'Static',  icon: Globe,  desc: 'Fixed IP — no RouterOS profile needed' }
+                { type: 'PPPoE',   icon: IconShield, desc: 'Username/password authenticated tunnel' },
+                { type: 'Hotspot', icon: IconWifi,   desc: 'Captive portal / voucher-based access' },
+                { type: 'Static',  icon: IconGlobe,  desc: 'Fixed IP — no RouterOS profile needed' }
               ].map(({ type, icon: Icon, desc }) => (
                 <label
                   key={type}
@@ -262,7 +259,7 @@ export default function AddPackage() {
               placeholder="e.g. Home Broadband 10Mbps"
             />
             <p className="text-[11px] text-textSecondary mt-1.5 flex items-center gap-1">
-              <Info className="w-3 h-3" />
+              <IconInfoCircle className="w-3 h-3" />
               Used in billing UI and customer lists only. Not sent to the router.
             </p>
           </div>
@@ -301,13 +298,13 @@ export default function AddPackage() {
                 </label>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 z-10 pointer-events-none" />
+                    <IconServer className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 z-10 pointer-events-none" />
                     <SelectDropdown
                       value={verifyRouterId}
                       onChange={(val) => { setVerifyRouterId(val); setVerifyStatus('idle'); setVerifyResult(null); }}
                       options={routers.map((r: any) => ({ label: `${r.name} (${r.ip_address})`, value: r.id }))}
                       placeholder="— Select router to test against —"
-                      icon={<Server className="w-4 h-4" />}
+                      icon={<IconServer className="w-4 h-4" />}
                     />
                   </div>
                   <button
@@ -325,7 +322,7 @@ export default function AddPackage() {
                 {/* Verify result */}
                 {verifyStatus === 'success' && verifyResult && (
                   <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-3 rounded-xl text-[13px]">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
+                    <IconCircleCheck className="w-4 h-4 shrink-0" />
                     Profile <span className="font-mono font-semibold mx-1">{activeProfileValue}</span> confirmed on router.
                   </div>
                 )}
@@ -333,7 +330,7 @@ export default function AddPackage() {
                 {verifyStatus === 'error' && verifyResult && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
                     <div className="flex items-start gap-2 text-amber-800 text-[13px]">
-                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                      <IconAlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>{verifyResult.warning || `Profile '${activeProfileValue}' not found on selected router.`}</span>
                     </div>
                     {/* Available profiles list — prepared for future dropdown-based selection */}
@@ -370,7 +367,7 @@ export default function AddPackage() {
                 Download Speed (Mbps) *
               </label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconBolt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0.1" step="0.1"
                   value={form.speed_down_mbps}
@@ -385,7 +382,7 @@ export default function AddPackage() {
                 Upload Speed (Mbps) *
               </label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconBolt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0.1" step="0.1"
                   value={form.speed_up_mbps}
@@ -401,7 +398,7 @@ export default function AddPackage() {
                 Monthly Price (Ksh) *
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconCurrencyDollar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input
                   type="number" min="0"
                   value={form.price}
@@ -416,7 +413,7 @@ export default function AddPackage() {
                 Billing Cycle
               </label>
               <div className="relative">
-                <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
+                <IconClock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
                 <SelectDropdown
                   value={form.billing_cycle_months}
                   onChange={val => set('billing_cycle_months', val)}
@@ -426,7 +423,7 @@ export default function AddPackage() {
                     { label: 'Semi-Annual (6 months)',  value: '6' },
                     { label: 'Annual (12 months)',      value: '12' }
                   ]}
-                  icon={<Clock className="w-4 h-4" />}
+                  icon={<IconClock className="w-4 h-4" />}
                 />
               </div>
             </div>
@@ -454,7 +451,7 @@ export default function AddPackage() {
                   RADIUS Session Timeout
                 </label>
                 <div className="relative">
-                  <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
+                  <IconClock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4 pointer-events-none z-10" />
                   <SelectDropdown
                     value={form.session_timeout}
                     onChange={val => set('session_timeout', val)}
@@ -463,11 +460,11 @@ export default function AddPackage() {
                       { label: '7 Days (604800s)',                value: '604800' },
                       { label: '30 Days (2592000s)',               value: '2592000' }
                     ]}
-                    icon={<Clock className="w-4 h-4" />}
+                    icon={<IconClock className="w-4 h-4" />}
                   />
                 </div>
                 <p className="text-[10px] text-textSecondary mt-1.5 flex items-center gap-1">
-                  <Info className="w-3 h-3" />
+                  <IconInfoCircle className="w-3 h-3" />
                   Forces PPPoE re-authentication at this interval.
                 </p>
               </div>
@@ -490,7 +487,7 @@ export default function AddPackage() {
 
           {error && (
             <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-[13px] text-rose-700 flex items-start gap-2">
-              <XCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <IconCircleX className="w-4 h-4 shrink-0 mt-0.5" />
               {error}
             </div>
           )}
@@ -508,7 +505,7 @@ export default function AddPackage() {
             disabled={loading}
             className="btn-primary flex items-center"
           >
-            {loading ? 'Saving...' : <><span>Deploy Package</span><ChevronRight className="w-4 h-4 ml-1" /></>}
+            {loading ? 'Saving...' : <><span>Deploy Package</span><IconChevronRight className="w-4 h-4 ml-1" /></>}
           </button>
         </div>
       </div>

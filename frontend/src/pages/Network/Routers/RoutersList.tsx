@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Filter, MoreVertical, RefreshCw, Server, CheckCircle2, XCircle, Cpu, Radio, Trash2 } from 'lucide-react';
+import { IconCircleCheck, IconCircleX, IconCpu, IconDotsVertical, IconFilter, IconPlus, IconRefresh, IconRouter, IconSearch, IconServer, IconTrash } from '@tabler/icons-react';;
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../../lib/apiClient';
 import ConfirmModal from '../../../components/ui/ConfirmModal';
@@ -86,7 +86,7 @@ export default function RoutersList() {
           onClick={() => navigate('/network/routers/add')}
           className="btn-primary flex items-center shadow-md hover:shadow-lg"
         >
-          <Plus className="w-5 h-5 mr-2" />
+          <IconPlus className="w-5 h-5 mr-2" />
           Link New Router
         </button>
       </div>
@@ -94,7 +94,7 @@ export default function RoutersList() {
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 py-4">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+          <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
           <input 
             type="text" 
             placeholder="Search by name, IP, or location..." 
@@ -103,10 +103,10 @@ export default function RoutersList() {
         </div>
         <div className="flex gap-3">
           <button className="btn-secondary">
-            <Filter className="w-4 h-4 mr-2 text-textSecondary" /> Filters
+            <IconFilter className="w-4 h-4 mr-2 text-textSecondary" /> Filters
           </button>
           <button className="btn-secondary">
-            <RefreshCw className="w-4 h-4 mr-2 text-textSecondary" /> Sync List
+            <IconRefresh className="w-4 h-4 mr-2 text-textSecondary" /> Sync List
           </button>
         </div>
       </div>
@@ -115,13 +115,13 @@ export default function RoutersList() {
       <div className="card p-0 overflow-x-auto">
         {routers.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <Server className="w-8 h-8 text-textSecondary mb-4" />
+            <IconServer className="w-8 h-8 text-textSecondary mb-4" />
             <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Routers Found</h3>
             <p className="text-[13px] text-textSecondary max-w-sm mb-6">
               You haven't linked any NAS gateways yet. Add a router to begin processing connected user sessions.
             </p>
             <button onClick={() => navigate('/network/routers/add')} className="btn-primary">
-              <Plus className="w-4 h-4 mr-2" /> Link Router
+              <IconPlus className="w-4 h-4 mr-2" /> Link Router
             </button>
           </div>
         ) : (
@@ -153,11 +153,11 @@ export default function RoutersList() {
                   <td className="px-6 py-4">
                     {router.vendor === 'radius' ? (
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full">
-                        <Radio className="w-3 h-3" /> RADIUS
+                        <IconRouter className="w-3 h-3" /> RADIUS
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">
-                        <Cpu className="w-3 h-3" /> MikroTik
+                        <IconCpu className="w-3 h-3" /> MikroTik
                       </span>
                     )}
                   </td>
@@ -218,9 +218,9 @@ export default function RoutersList() {
                       title="Decommission Router"
                     >
                       {deletingId === router.id ? (
-                        <RefreshCw className="w-4 h-4 animate-spin text-textSecondary" />
+                        <IconRefresh className="w-4 h-4 animate-spin text-textSecondary" />
                       ) : (
-                        <Trash2 className="w-4 h-4" />
+                        <IconTrash className="w-4 h-4" />
                       )}
                     </button>
                   </td>

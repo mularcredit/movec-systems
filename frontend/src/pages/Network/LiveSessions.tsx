@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Activity, Users, Globe, Zap, ArrowUpRight, 
-  ArrowDownLeft, Trash2, Search, RefreshCw,
-  ShieldCheck, Wifi, Radio
-} from 'lucide-react';
+import { IconActivity, IconArrowDownLeft, IconArrowUpRight, IconBolt, IconGlobe, IconRefresh, IconRouter, IconSearch, IconShieldCheck, IconTrash, IconUsers, IconWifi } from '@tabler/icons-react';;
 import { apiFetch } from '../../lib/apiClient';
 import CustomLoader from '../../components/common/CustomLoader';
 
@@ -102,7 +98,7 @@ export default function LiveSessions() {
         <div>
           <h2 className="text-2xl font-light text-textPrimary tracking-tight">Live Subscriber Hub</h2>
           <p className="text-[12px] text-textSecondary mt-1 flex items-center">
-            <Activity className="w-3 h-3 text-emerald-500 mr-2" />
+            <IconActivity className="w-3 h-3 text-emerald-500 mr-2" />
             Monitoring real-time sessions across your hybrid network
           </p>
         </div>
@@ -128,7 +124,7 @@ export default function LiveSessions() {
       {/* Control Bar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-textSecondary" />
+          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-textSecondary" />
           <input 
             type="text"
             placeholder="Search by username, IP, or MAC..."
@@ -145,7 +141,7 @@ export default function LiveSessions() {
             disabled={loading}
             className="p-2.5 bg-bgSecondary border border-white/5 rounded-xl text-textSecondary hover:text-emerald-600 transition-all shadow-sm"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <IconRefresh className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
@@ -159,7 +155,7 @@ export default function LiveSessions() {
         ) : filtered.length === 0 ? (
           <div className="h-96 flex flex-col items-center justify-center text-center p-8">
              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
-                <Users className="w-8 h-8 text-white/30" />
+                <IconUsers className="w-8 h-8 text-white/30" />
              </div>
              <p className="text-[15px] font-normal text-textSecondary">No active sessions found</p>
              <p className="text-[12px] text-textSecondary mt-1">Check if your routers are online or adjust your search.</p>
@@ -195,11 +191,11 @@ export default function LiveSessions() {
                       <div className="flex items-center gap-2">
                         {s.source === 'mikrotik' ? (
                           <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 rounded-md text-[10px] font-medium">
-                            <Zap className="w-3 h-3" /> API
+                            <IconBolt className="w-3 h-3" /> API
                           </div>
                         ) : (
                           <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-500/15 text-blue-400 border border-blue-500/20 rounded-md text-[10px] font-medium">
-                            <ShieldCheck className="w-3 h-3" /> RADIUS
+                            <IconShieldCheck className="w-3 h-3" /> RADIUS
                           </div>
                         )}
                         <span className="text-[11px] text-textSecondary uppercase font-mono">{s.service || 'PPPoE'}</span>
@@ -215,10 +211,10 @@ export default function LiveSessions() {
                     <td className="px-6 py-4 text-right">
                        <div className="inline-block text-right">
                           <div className="flex items-center justify-end gap-2 text-[12px] text-textPrimary">
-                             <ArrowDownLeft className="w-3 h-3 text-emerald-500" /> {s.download}
+                             <IconArrowDownLeft className="w-3 h-3 text-emerald-500" /> {s.download}
                           </div>
                           <div className="flex items-center justify-end gap-2 text-[10px] text-textSecondary">
-                             <ArrowUpRight className="w-3 h-3 text-blue-400" /> {s.upload}
+                             <IconArrowUpRight className="w-3 h-3 text-blue-400" /> {s.upload}
                           </div>
                        </div>
                     </td>
@@ -230,7 +226,7 @@ export default function LiveSessions() {
                            className="p-2 text-textSecondary hover:text-rose-400 transition-all rounded-lg hover:bg-rose-500/10"
                            title="Disconnect User"
                          >
-                           {disconnecting === s.session_id ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                           {disconnecting === s.session_id ? <IconRefresh className="w-4 h-4 animate-spin" /> : <IconTrash className="w-4 h-4" />}
                          </button>
                        ) : (
                          <span className="text-[10px] text-textSecondary italic">No direct kill</span>
@@ -245,7 +241,7 @@ export default function LiveSessions() {
       </div>
 
       <div className="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20 flex items-start gap-3">
-         <Globe className="w-4 h-4 text-blue-400 mt-0.5" />
+         <IconGlobe className="w-4 h-4 text-blue-400 mt-0.5" />
          <p className="text-[12px] text-blue-200/80 leading-relaxed">
            <strong>Smart Monitoring:</strong> We poll MikroTik API for precise real-time counters. RADIUS data is based on the last accounting interim update (usually every 5-10 mins). Live "Kill" commands are sent directly to the hardware gateway.
          </p>

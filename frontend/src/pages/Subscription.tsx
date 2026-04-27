@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  CheckCircle2, Zap, Shield, Star, Server, Users,
-  BarChart2, Clock, ChevronRight, Crown, ArrowUpRight,
-  Wifi, HelpCircle, Mail
-} from 'lucide-react';
+import { IconArrowUpRight, IconBolt, IconChartBar, IconChevronRight, IconCircleCheck, IconClock, IconCrown, IconHelpCircle, IconMail, IconServer, IconShield, IconStar, IconUsers, IconWifi } from '@tabler/icons-react';;
 
 const PLANS = [
   {
@@ -99,7 +95,7 @@ export default function Subscription() {
         <div className="bg-gradient-to-r from-[#0a0f1d] via-[#0d1a35] to-[#0a1628] px-8 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <Crown className="w-6 h-6 text-emerald-400" />
+              <IconCrown className="w-6 h-6 text-emerald-400" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -130,7 +126,7 @@ export default function Subscription() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Server className="w-4 h-4 text-textSecondary" />
+                <IconServer className="w-4 h-4 text-textSecondary" />
                 <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Router Usage</span>
               </div>
               <span className="text-[12px] font-medium text-textPrimary">{CURRENT.routersUsed}/{CURRENT.routerLimit}</span>
@@ -149,7 +145,7 @@ export default function Subscription() {
           {/* Customers */}
           <div className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Users className="w-4 h-4 text-textSecondary" />
+              <IconUsers className="w-4 h-4 text-textSecondary" />
               <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Customers</span>
             </div>
             <p className="text-[28px] font-medium text-textPrimary leading-none">{CURRENT.customersCount}</p>
@@ -159,7 +155,7 @@ export default function Subscription() {
           {/* Plan Limit */}
           <div className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Wifi className="w-4 h-4 text-textSecondary" />
+              <IconWifi className="w-4 h-4 text-textSecondary" />
               <span className="text-[12px] font-medium text-textSecondary uppercase tracking-wide">Plan Limit</span>
             </div>
             <p className="text-[28px] font-medium text-textPrimary leading-none">{CURRENT.routerLimit}</p>
@@ -175,7 +171,7 @@ export default function Subscription() {
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
             <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
               <div className="w-12 h-12 bg-emerald-500/15 rounded-xl flex items-center justify-center mb-5">
-                <ArrowUpRight className="w-6 h-6 text-emerald-400" />
+                <IconArrowUpRight className="w-6 h-6 text-emerald-400" />
               </div>
               <h3 className="text-[18px] font-medium text-textPrimary mb-2">Upgrade to {target.name}?</h3>
               <p className="text-[13px] text-textSecondary mb-6 leading-relaxed">
@@ -226,9 +222,9 @@ export default function Subscription() {
 
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-4">
-                    {plan.id === 'basic' && <Zap className="w-4 h-4 text-textSecondary" />}
-                    {plan.id === 'standard' && <Star className="w-4 h-4 text-emerald-500" />}
-                    {plan.id === 'premium' && <Crown className="w-4 h-4 text-violet-500" />}
+                    {plan.id === 'basic' && <IconBolt className="w-4 h-4 text-textSecondary" />}
+                    {plan.id === 'standard' && <IconStar className="w-4 h-4 text-emerald-500" />}
+                    {plan.id === 'premium' && <IconCrown className="w-4 h-4 text-violet-500" />}
                     <span className={`text-[13px] font-medium ${
                       plan.id === 'premium' ? 'text-violet-400' :
                       plan.id === 'standard' ? 'text-emerald-400' : 'text-textSecondary'
@@ -244,7 +240,7 @@ export default function Subscription() {
                 <ul className="space-y-3 flex-1 mb-6">
                   {plan.features.map(f => (
                     <li key={f} className="flex items-start gap-2.5">
-                      <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${
+                      <IconCircleCheck className={`w-4 h-4 mt-0.5 shrink-0 ${
                         plan.id === 'premium' ? 'text-violet-500' :
                         plan.id === 'standard' ? 'text-emerald-500' : 'text-textSecondary'
                       }`} />
@@ -265,9 +261,9 @@ export default function Subscription() {
                   }`}
                 >
                   {isCurrent ? (
-                    <><CheckCircle2 className="w-4 h-4" /> Current Plan</>
+                    <><IconCircleCheck className="w-4 h-4" /> Current Plan</>
                   ) : (
-                    <>Upgrade <ChevronRight className="w-4 h-4" /></>
+                    <>Upgrade <IconChevronRight className="w-4 h-4" /></>
                   )}
                 </button>
               </div>
@@ -279,14 +275,14 @@ export default function Subscription() {
       {/* Help footer */}
       <div className="flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl">
         <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-          <HelpCircle className="w-5 h-5 text-textSecondary" />
+          <IconHelpCircle className="w-5 h-5 text-textSecondary" />
         </div>
         <div className="flex-1">
           <p className="text-[14px] font-medium text-textPrimary">Need a custom enterprise plan?</p>
           <p className="text-[12px] text-textSecondary mt-0.5">Contact us for plans with more than 50 routers, white-labeling, or on-premise deployment.</p>
         </div>
         <a href="mailto:support@enterprise.edge" className="btn-secondary flex items-center gap-2 text-[13px] shrink-0">
-          <Mail className="w-4 h-4" /> Contact Sales
+          <IconMail className="w-4 h-4" /> Contact Sales
         </a>
       </div>
     </div>

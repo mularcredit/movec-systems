@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomLoader from '../../components/common/CustomLoader';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  User, Phone, Mail, MapPin, Hash, Package, 
-  Server, Lock, Calendar, Loader2, Save, ArrowLeft,
-  Wifi, Shield, AlertCircle
-} from 'lucide-react';
+import { IconAlertCircle, IconArrowLeft, IconCalendar, IconDeviceFloppy, IconHash, IconLoader2, IconLock, IconMail, IconMapPin, IconPackage, IconPhone, IconServer, IconShield, IconUser, IconWifi } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
 import { SelectDropdown } from '../../components/ui/SelectDropdown';
@@ -133,7 +129,7 @@ export default function EditCustomer() {
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-white/10 rounded-lg transition text-textSecondary hover:text-textSecondary"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <IconArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <h2 className="text-[20px] font-semibold text-textPrimary">Edit Subscriber</h2>
@@ -145,14 +141,14 @@ export default function EditCustomer() {
           disabled={saving}
           className="btn-primary flex items-center gap-2 shadow-lg shadow-emerald-500/20"
         >
-          {saving ? <CustomLoader inline size="sm" /> : <Save className="w-4 h-4" />}
+          {saving ? <CustomLoader inline size="sm" /> : <IconDeviceFloppy className="w-4 h-4" />}
           {saving ? 'Saving Changes...' : 'Save Changes'}
         </button>
       </div>
 
       {error && (
         <div className="bg-rose-50 border border-rose-100 text-rose-600 p-4 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
-          <AlertCircle className="w-5 h-5 shrink-0" />
+          <IconAlertCircle className="w-5 h-5 shrink-0" />
           <p className="text-[13px] font-medium">{error}</p>
         </div>
       )}
@@ -162,7 +158,7 @@ export default function EditCustomer() {
         <div className="card p-6 lg:p-8">
           <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/5">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-              <User className="w-5 h-5" />
+              <IconUser className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-[16px] font-semibold text-textPrimary">Subscriber Profile</h3>
@@ -173,7 +169,7 @@ export default function EditCustomer() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <User className="w-3.5 h-3.5" /> Full Name
+                <IconUser className="w-3.5 h-3.5" /> Full Name
               </label>
               <input 
                 type="text" required value={fullName} onChange={e => setFullName(e.target.value)}
@@ -183,7 +179,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Hash className="w-3.5 h-3.5" /> Account Number
+                <IconHash className="w-3.5 h-3.5" /> Account Number
               </label>
               <input 
                 type="text" required value={accountNumber} onChange={e => setAccountNumber(e.target.value)}
@@ -193,7 +189,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5" /> Phone Number
+                <IconPhone className="w-3.5 h-3.5" /> Phone Number
               </label>
               <input 
                 type="tel" required value={phone} onChange={e => setPhone(e.target.value)}
@@ -203,7 +199,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5" /> Email Address (Optional)
+                <IconMail className="w-3.5 h-3.5" /> Email Address (Optional)
               </label>
               <input 
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
@@ -213,7 +209,7 @@ export default function EditCustomer() {
 
             <div className="md:col-span-2 space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <MapPin className="w-3.5 h-3.5" /> Physical Address
+                <IconMapPin className="w-3.5 h-3.5" /> Physical Address
               </label>
               <input 
                 type="text" value={address} onChange={e => setAddress(e.target.value)}
@@ -227,7 +223,7 @@ export default function EditCustomer() {
         <div className="card p-6 lg:p-8 border-emerald-100 shadow-emerald-500/5">
           <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/5">
             <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
-              <Wifi className="w-5 h-5" />
+              <IconWifi className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-[16px] font-semibold text-textPrimary">Service Configuration</h3>
@@ -238,7 +234,7 @@ export default function EditCustomer() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Package className="w-3.5 h-3.5" /> Service Plan
+                <IconPackage className="w-3.5 h-3.5" /> Service Plan
               </label>
               <SelectDropdown 
                 value={packageId} 
@@ -249,7 +245,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Server className="w-3.5 h-3.5" /> Assignment Router
+                <IconServer className="w-3.5 h-3.5" /> Assignment Router
               </label>
               <SelectDropdown 
                 value={routerId} 
@@ -260,7 +256,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <User className="w-3.5 h-3.5" /> PPPoE/Hotspot Username
+                <IconUser className="w-3.5 h-3.5" /> PPPoE/Hotspot Username
               </label>
               <input 
                 type="text" value={username} onChange={e => setUsername(e.target.value)}
@@ -270,7 +266,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Lock className="w-3.5 h-3.5" /> New Password (Leave blank to keep current)
+                <IconLock className="w-3.5 h-3.5" /> New Password (Leave blank to keep current)
               </label>
               <input 
                 type="password" value={password} onChange={e => setPassword(e.target.value)}
@@ -280,7 +276,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Shield className="w-3.5 h-3.5" /> Static IP Address (Optional)
+                <IconShield className="w-3.5 h-3.5" /> Static IP Address (Optional)
               </label>
               <input 
                 type="text" value={ipAddress} onChange={e => setIpAddress(e.target.value)}
@@ -290,7 +286,7 @@ export default function EditCustomer() {
 
             <div className="space-y-2">
               <label className="text-[12px] font-semibold text-textSecondary uppercase tracking-wider flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5" /> Next Due Date
+                <IconCalendar className="w-3.5 h-3.5" /> Next Due Date
               </label>
               <input 
                 type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}

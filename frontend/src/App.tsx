@@ -20,7 +20,7 @@ import EditPackage from './pages/Packages/EditPackage';
 import Subscription from './pages/Subscription';
 import Communication from './pages/Communication/Communication';
 import PaymentMonitor from './pages/PaymentMonitor/PaymentMonitor';
-import { LayoutTemplate, Loader2, Server } from 'lucide-react';
+import { IconLayoutBoard, IconLoader2, IconServer } from '@tabler/icons-react';;
 
 // Network
 import RoutersList from './pages/Network/Routers/RoutersList';
@@ -38,7 +38,7 @@ import CustomLoader from './components/common/CustomLoader';
 const Placeholder = ({ title }: { title: string }) => (
   <div className="flex flex-col h-full min-h-[400px] items-center justify-center p-10 text-center animate-in fade-in">
     <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6">
-       <LayoutTemplate className="w-8 h-8 text-textSecondary" />
+       <IconLayoutBoard className="w-8 h-8 text-textSecondary" />
     </div>
     <h2 className="text-[16px] font-medium text-textPrimary mb-2">{title} Module</h2>
     <p className="text-[13px] text-textSecondary max-w-sm">This interface component is currently pending live interop integration.</p>
@@ -70,7 +70,7 @@ const RequireRouter = ({ children }: { children: React.ReactNode }) => {
   if (hasError) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-10 text-center animate-in fade-in">
-        <Server className="w-10 h-10 text-rose-300 mb-4" />
+        <IconServer className="w-10 h-10 text-rose-300 mb-4" />
         <h2 className="text-[16px] font-medium text-textPrimary mb-2">Backend Disconnected</h2>
         <p className="text-[13px] text-textSecondary max-w-sm">Movec Connect cannot reach the backend service to verify router modules.</p>
       </div>

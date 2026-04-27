@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { IconAlertTriangle, IconLoader2 } from '@tabler/icons-react';;
 import clsx from 'clsx';
 
 interface ConfirmModalProps {
@@ -59,7 +59,7 @@ export default function ConfirmModal({
             "w-12 h-12 rounded-full flex items-center justify-center mb-4",
             isDangerous ? "bg-rose-100 text-rose-600" : "bg-blue-100 text-blue-600"
           )}>
-            <AlertTriangle className="w-6 h-6" />
+            <IconAlertTriangle className="w-6 h-6" />
           </div>
           <h3 className="text-lg font-semibold text-textPrimary mb-2">{title}</h3>
           <p className="text-sm text-textSecondary mb-6">{message}</p>
@@ -85,7 +85,7 @@ export default function ConfirmModal({
             onClick={handleConfirm}
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+            {isLoading ? <IconLoader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
             {confirmText}
           </button>
         </div>

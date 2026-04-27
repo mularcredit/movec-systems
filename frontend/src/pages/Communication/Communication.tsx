@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import CustomLoader from '../../components/common/CustomLoader';
-import {
-  MessageSquare, Send, Users, Clock, CheckCircle2, XCircle,
-  Loader2, Smartphone, MessageCircle, ChevronDown, RefreshCw,
-  Zap, AlertTriangle, Search, X, BarChart3
-} from 'lucide-react';
+import { IconAlertTriangle, IconBolt, IconChartBar, IconChevronDown, IconCircleCheck, IconCircleX, IconClock, IconDeviceMobile, IconLoader2, IconMessage, IconMessageCircle, IconRefresh, IconSearch, IconSend, IconUsers, IconX } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
 
@@ -20,11 +16,11 @@ const TEMPLATES = [
 ];
 
 const FILTERS = [
-  { value: 'all',       label: 'All Customers',       icon: Users,         color: 'text-textSecondary' },
-  { value: 'active',    label: 'Active Subscribers',  icon: CheckCircle2,  color: 'text-emerald-600' },
-  { value: 'suspended', label: 'Suspended Accounts',  icon: XCircle,       color: 'text-rose-600' },
-  { value: 'expiring',  label: 'Expiring in 3 Days',  icon: Clock,         color: 'text-amber-600' },
-  { value: 'overdue',   label: 'Overdue Accounts',    icon: AlertTriangle, color: 'text-orange-600' },
+  { value: 'all',       label: 'All Customers',       icon: IconUsers,         color: 'text-textSecondary' },
+  { value: 'active',    label: 'Active Subscribers',  icon: IconCircleCheck,  color: 'text-emerald-600' },
+  { value: 'suspended', label: 'Suspended Accounts',  icon: IconCircleX,       color: 'text-rose-600' },
+  { value: 'expiring',  label: 'Expiring in 3 Days',  icon: IconClock,         color: 'text-amber-600' },
+  { value: 'overdue',   label: 'Overdue Accounts',    icon: IconAlertTriangle, color: 'text-orange-600' },
 ];
 
 type Channel = 'sms' | 'whatsapp';
@@ -162,8 +158,8 @@ export default function Communication() {
           className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-[13px] font-medium transition-all ${value === ch ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
         >
           {ch === 'sms'
-            ? <><Smartphone className="w-4 h-4" /> SMS (Celcom)</>
-            : <><MessageCircle className="w-4 h-4 text-green-600" /> WhatsApp Business</>
+            ? <><IconDeviceMobile className="w-4 h-4" /> SMS (Celcom)</>
+            : <><IconMessageCircle className="w-4 h-4 text-green-600" /> WhatsApp Business</>
           }
         </button>
       ))}
@@ -181,9 +177,9 @@ export default function Communication() {
       {/* Tabs */}
       <div className="flex gap-1 p-1 bg-white/10 rounded-xl w-fit">
         {([
-          { id: 'compose',   label: 'Compose',  icon: MessageSquare },
-          { id: 'broadcast', label: 'Broadcast', icon: Zap           },
-          { id: 'history',   label: 'History',  icon: Clock         },
+          { id: 'compose',   label: 'Compose',  icon: IconMessage },
+          { id: 'broadcast', label: 'Broadcast', icon: IconBolt           },
+          { id: 'history',   label: 'History',  icon: IconClock         },
         ] as { id: Tab; label: string; icon: any }[]).map(t => (
           <button
             key={t.id}
@@ -232,7 +228,7 @@ export default function Communication() {
                 {selectedCustomer
                   ? <span className="font-medium text-textPrimary">{selectedCustomer.full_name} — {selectedCustomer.phone}</span>
                   : <span className="text-textSecondary">Search customer...</span>}
-                <ChevronDown className="w-4 h-4 text-textSecondary shrink-0" />
+                <IconChevronDown className="w-4 h-4 text-textSecondary shrink-0" />
               </div>
               {showCustDropdown && (
                 <div className="absolute top-full mt-1 left-0 right-0 bg-bgSecondary border border-white/10 rounded-xl shadow-lg z-20 overflow-hidden">
@@ -268,7 +264,7 @@ export default function Communication() {
               )}
               {selectedCustomer && (
                 <button onClick={() => setSelectedCustomer(null)} className="absolute right-10 top-9 text-textSecondary hover:text-textSecondary">
-                  <X className="w-3.5 h-3.5" />
+                  <IconX className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
@@ -295,7 +291,7 @@ export default function Communication() {
 
             {sendResult && (
               <div className={`p-3.5 rounded-xl text-[13px] flex items-center gap-2 ${sendResult.ok ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}`}>
-                {sendResult.ok ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <XCircle className="w-4 h-4 shrink-0" />}
+                {sendResult.ok ? <IconCircleCheck className="w-4 h-4 shrink-0" /> : <IconCircleX className="w-4 h-4 shrink-0" />}
                 {sendResult.msg}
               </div>
             )}
@@ -307,7 +303,7 @@ export default function Communication() {
             >
               {sendLoading
                 ? <><CustomLoader inline size="sm" /> Sending...</>
-                : <><Send className="w-4 h-4" /> Send {channel === 'sms' ? 'SMS' : 'WhatsApp'}</>}
+                : <><IconSend className="w-4 h-4" /> Send {channel === 'sms' ? 'SMS' : 'WhatsApp'}</>}
             </button>
           </div>
         </div>
@@ -336,7 +332,7 @@ export default function Communication() {
             <ChannelToggle value={bChannel} onChange={setBChannel} />
 
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-[13px] text-amber-800 flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+              <IconAlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <div>
                 <strong>Broadcast sends to all customers in your selected group.</strong> Messages are personalized automatically using {'{name}'}, {'{account}'}, and {'{due_date}'} variables.
               </div>
@@ -381,7 +377,7 @@ export default function Communication() {
             >
               {bLoading
                 ? <><CustomLoader inline size="sm" /> Sending to group...</>
-                : <><Zap className="w-4 h-4" /> Broadcast to {FILTERS.find(f => f.value === bFilter)?.label}</>}
+                : <><IconBolt className="w-4 h-4" /> Broadcast to {FILTERS.find(f => f.value === bFilter)?.label}</>}
             </button>
           </div>
         </div>
@@ -408,11 +404,11 @@ export default function Communication() {
           {/* Search + Refresh */}
           <div className="flex gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+              <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
               <input type="text" value={logSearch} onChange={e => setLogSearch(e.target.value)} placeholder="Search logs..." className="pl-10 input-field" />
             </div>
             <button onClick={fetchLogs} className="btn-secondary flex items-center gap-2 text-[13px]">
-              <RefreshCw className="w-4 h-4" /> Refresh
+              <IconRefresh className="w-4 h-4" /> Refresh
             </button>
           </div>
 
@@ -421,7 +417,7 @@ export default function Communication() {
               <div className="flex items-center justify-center h-32"><CustomLoader inline size="sm" /></div>
             ) : filteredLogs.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-40 text-center">
-                <BarChart3 className="w-6 h-6 text-textSecondary mb-2" />
+                <IconChartBar className="w-6 h-6 text-textSecondary mb-2" />
                 <p className="text-[13px] text-textSecondary">No message history yet.</p>
               </div>
             ) : (
@@ -441,8 +437,8 @@ export default function Communication() {
                     <tr key={log.id} className="hover:bg-white/5">
                       <td className="px-5 py-3.5">
                         {log.channel === 'sms'
-                          ? <span className="flex items-center gap-1.5 text-[12px] font-medium text-blue-600"><Smartphone className="w-3.5 h-3.5" /> SMS</span>
-                          : <span className="flex items-center gap-1.5 text-[12px] font-medium text-green-600"><MessageCircle className="w-3.5 h-3.5" /> WhatsApp</span>}
+                          ? <span className="flex items-center gap-1.5 text-[12px] font-medium text-blue-600"><IconDeviceMobile className="w-3.5 h-3.5" /> SMS</span>
+                          : <span className="flex items-center gap-1.5 text-[12px] font-medium text-green-600"><IconMessageCircle className="w-3.5 h-3.5" /> WhatsApp</span>}
                       </td>
                       <td className="px-5 py-3.5 text-[13px] font-medium text-textPrimary">{log.customers?.full_name || '—'}</td>
                       <td className="px-5 py-3.5 font-mono text-[12px] text-textSecondary">{log.recipient}</td>

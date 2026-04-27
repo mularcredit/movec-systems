@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MapPin, Check, ChevronDown, Plus } from 'lucide-react';
+import { IconCheck, IconChevronDown, IconMapPin, IconPlus } from '@tabler/icons-react';;
 
 export interface ComboboxOption {
   label: string;
@@ -45,7 +45,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
     <div className="relative" ref={wrapperRef}>
       <div className="relative">
         <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary">
-          {icon || <MapPin className="w-4 h-4" />}
+          {icon || <IconMapPin className="w-4 h-4" />}
         </div>
         
         <input
@@ -62,7 +62,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
           autoComplete="off"
         />
         <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-textSecondary">
-          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
+          <IconChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
                   onClick={() => setIsOpen(false)}
                   className="mt-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-md font-medium flex items-center hover:bg-emerald-100 transition"
                >
-                 <Check className="w-3.5 h-3.5 mr-1" /> Use Custom Value
+                 <IconCheck className="w-3.5 h-3.5 mr-1" /> Use Custom Value
                </button>
             </div>
           ) : (
@@ -96,7 +96,7 @@ export function Combobox({ value, onChange, options, placeholder = "Search or se
                   }`}
                 >
                   <span className="truncate pr-4">{option.label}</span>
-                  {isSelected && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
+                  {isSelected && <IconCheck className="w-4 h-4 text-emerald-600 shrink-0" />}
                 </button>
               );
             })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Search, Plus, MoreVertical, ShieldAlert, UserX, UserCheck, Loader2, X, Eye, Trash2, AlertTriangle, User, Wifi, WifiOff } from 'lucide-react';
+import { IconAlertTriangle, IconDotsVertical, IconEye, IconLoader2, IconPlus, IconSearch, IconShieldX, IconTrash, IconUser, IconUserCheck, IconUserX, IconWifi, IconWifiOff, IconX } from '@tabler/icons-react';;
 import CustomLoader from '../../components/common/CustomLoader';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
@@ -243,7 +243,7 @@ export default function AllUsers() {
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${modal.customer.status === 'active' ? 'bg-rose-500/15' : 'bg-emerald-500/15'}`}>
-                  {modal.customer.status === 'active' ? <UserX className="w-5 h-5 text-rose-600" /> : <UserCheck className="w-5 h-5 text-emerald-600" />}
+                  {modal.customer.status === 'active' ? <IconUserX className="w-5 h-5 text-rose-600" /> : <IconUserCheck className="w-5 h-5 text-emerald-600" />}
                 </div>
                 <div>
                   <h3 className="text-[16px] font-medium text-textPrimary">
@@ -252,7 +252,7 @@ export default function AllUsers() {
                   <p className="text-[12px] text-textSecondary mt-0.5">{modal.customer.name}</p>
                 </div>
               </div>
-              <button onClick={closeModal} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5" /></button>
+              <button onClick={closeModal} className="text-textSecondary hover:text-textSecondary"><IconX className="w-5 h-5" /></button>
             </div>
 
             {modal.customer.status === 'active' ? (
@@ -297,7 +297,7 @@ export default function AllUsers() {
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center">
-                  <AlertTriangle className="w-5 h-5 text-rose-600" />
+                  <IconAlertTriangle className="w-5 h-5 text-rose-600" />
                 </div>
                 <div>
                   <h3 className="text-[16px] font-medium text-textPrimary">Delete Customer</h3>
@@ -308,7 +308,7 @@ export default function AllUsers() {
                 onClick={() => setDeleteModal({ customer: null, loading: false })} 
                 className="text-textSecondary hover:text-textSecondary"
               >
-                <X className="w-5 h-5" />
+                <IconX className="w-5 h-5" />
               </button>
             </div>
 
@@ -343,7 +343,7 @@ export default function AllUsers() {
           <p className="text-[13px] text-textSecondary mt-1">{customers.length} total subscriber{customers.length !== 1 ? 's' : ''}</p>
         </div>
         <button onClick={() => navigate('/customers/add')} className="btn-primary flex items-center">
-          <Plus className="w-4 h-4 mr-2" /> Onboard Customer
+          <IconPlus className="w-4 h-4 mr-2" /> Onboard Customer
         </button>
       </div>
 
@@ -351,7 +351,7 @@ export default function AllUsers() {
         {/* Search & Filter */}
         <div className="p-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center gap-3 bg-bgSecondary rounded-t-xl">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+            <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, account ID, or phone..." className="pl-10 input-field" />
           </div>
           <SelectDropdown
@@ -380,13 +380,13 @@ export default function AllUsers() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <ShieldAlert className="w-8 h-8 text-textSecondary mb-4" />
+            <IconShieldX className="w-8 h-8 text-textSecondary mb-4" />
             <h3 className="text-[15px] font-medium text-textPrimary mb-1">{search || statusFilter !== 'All Statuses' ? 'No matches found' : 'No Customers Registered'}</h3>
             <p className="text-[13px] text-textSecondary max-w-sm mb-6">
               {search ? `No customers match "${search}".` : 'Onboard your first subscriber to get started.'}
             </p>
             {!search && statusFilter === 'All Statuses' && (
-              <button onClick={() => navigate('/customers/add')} className="btn-primary"><Plus className="w-4 h-4 mr-2" /> Onboard Customer</button>
+              <button onClick={() => navigate('/customers/add')} className="btn-primary"><IconPlus className="w-4 h-4 mr-2" /> Onboard Customer</button>
             )}
           </div>
         ) : (
@@ -471,7 +471,7 @@ export default function AllUsers() {
                           onClick={() => setMenuOpenId(menuOpenId === u.id ? null : u.id)}
                           className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 text-textSecondary hover:text-textPrimary transition"
                         >
-                          <MoreVertical className="w-4 h-4" />
+                          <IconDotsVertical className="w-4 h-4" />
                         </button>
 
                         {menuOpenId === u.id && (
@@ -480,13 +480,13 @@ export default function AllUsers() {
                               onClick={() => { navigate(`/customers/edit/${u.id}`); setMenuOpenId(null); }}
                               className="w-full text-left px-3 py-2.5 rounded-lg text-[13px] text-textPrimary hover:bg-white/5 flex items-center gap-2.5 transition"
                             >
-                              <User className="w-3.5 h-3.5 text-textSecondary" /> Edit Customer
+                              <IconUser className="w-3.5 h-3.5 text-textSecondary" /> Edit Customer
                             </button>
                             <button
                               onClick={() => { navigate(`/customers/${u.id}`); setMenuOpenId(null); }}
                               className="w-full text-left px-3 py-2.5 rounded-lg text-[13px] text-textPrimary hover:bg-white/5 flex items-center gap-2.5 transition"
                             >
-                              <Eye className="w-3.5 h-3.5 text-textSecondary" /> View Profile
+                              <IconEye className="w-3.5 h-3.5 text-textSecondary" /> View Profile
                             </button>
                             <button
                               onClick={() => { openSuspend(u); setMenuOpenId(null); }}
@@ -496,15 +496,15 @@ export default function AllUsers() {
                               disabled={u.status !== 'active' && u.status !== 'suspended'}
                             >
                               {u.status === 'active'
-                                ? <><UserX className="w-3.5 h-3.5" /> Suspend Account</>
-                                : <><UserCheck className="w-3.5 h-3.5" /> Reconnect Account</>}
+                                ? <><IconUserX className="w-3.5 h-3.5" /> Suspend Account</>
+                                : <><IconUserCheck className="w-3.5 h-3.5" /> Reconnect Account</>}
                             </button>
                             <div className="border-t border-white/5 my-1" />
                             <button
                               onClick={() => { setDeleteModal({ customer: u, loading: false }); setMenuOpenId(null); }}
                               className="w-full text-left px-3 py-2.5 rounded-lg text-[13px] text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition"
                             >
-                              <Trash2 className="w-3.5 h-3.5" /> Delete Customer
+                              <IconTrash className="w-3.5 h-3.5" /> Delete Customer
                             </button>
                           </div>
                         )}

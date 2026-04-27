@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Wifi, RefreshCw, Loader2, XOctagon, Share2, Users } from 'lucide-react';
+import { IconCircleX, IconLoader2, IconRefresh, IconShare, IconUsers, IconWifi } from '@tabler/icons-react';;
 import CustomLoader from '../../components/common/CustomLoader';
 
 import { apiFetch } from '../../lib/apiClient';
@@ -80,19 +80,19 @@ export default function ActiveUsers() {
           </p>
         </div>
         <button onClick={fetchSessions} disabled={loading} className="btn-secondary flex items-center text-[13px]">
-          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh
+          <IconRefresh className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </button>
       </div>
 
       {/* Search */}
       <div className="relative max-w-md">
-        <Wifi className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+        <IconWifi className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
         <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by username, IP, or router..." className="pl-10 input-field" />
       </div>
 
       {error && (
         <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-[13px] text-amber-800">
-          <XOctagon className="w-4 h-4 text-amber-500 shrink-0" />
+          <IconCircleX className="w-4 h-4 text-amber-500 shrink-0" />
           {error}
         </div>
       )}
@@ -104,7 +104,7 @@ export default function ActiveUsers() {
         </div>
       ) : !sessions.length && !error ? (
         <div className="card flex flex-col items-center justify-center h-52 text-center">
-          <Users className="w-8 h-8 text-textSecondary mb-3" />
+          <IconUsers className="w-8 h-8 text-textSecondary mb-3" />
           <h3 className="text-[14px] font-medium text-textPrimary mb-1">No Active Sessions</h3>
           <p className="text-[13px] text-textSecondary">No subscribers are currently connected across any linked router.</p>
         </div>
@@ -114,7 +114,7 @@ export default function ActiveUsers() {
           {pppoe.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Share2 className="w-4 h-4 text-blue-500" />
+                <IconShare className="w-4 h-4 text-blue-500" />
                 <h3 className="text-[14px] font-medium text-textPrimary">PPPoE Sessions <span className="text-textSecondary font-normal">({pppoe.length})</span></h3>
               </div>
               <div className="card p-0 overflow-x-auto">
@@ -164,7 +164,7 @@ export default function ActiveUsers() {
           {hotspot.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Wifi className="w-4 h-4 text-emerald-500" />
+                <IconWifi className="w-4 h-4 text-emerald-500" />
                 <h3 className="text-[14px] font-medium text-textPrimary">Hotspot Sessions <span className="text-textSecondary font-normal">({hotspot.length})</span></h3>
               </div>
               <div className="card p-0 overflow-x-auto">

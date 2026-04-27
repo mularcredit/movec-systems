@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Server, MessageSquare, CreditCard, Network, Activity, ArrowRight, ShieldCheck, Zap, WalletCards, BellRing, Router as RouterIcon, Radar, Gauge, Fingerprint } from 'lucide-react';
+import { IconActivity, IconArrowRight, IconBellRinging, IconBolt, IconCreditCard, IconFingerprint, IconGauge, IconMessage, IconNetwork, IconRadar, IconRouter, IconServer, IconShieldCheck, IconWallet } from '@tabler/icons-react';;
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ export default function LandingPage() {
         {/* Hero Content */}
         <div className="relative z-10 text-center px-6 max-w-4xl pt-20 animate-in fade-in slide-in-from-bottom-5 duration-1000">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-bgSecondary/5 border border-white/10 text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-8">
-            <Zap className="w-3 h-3" /> Smarter ISP Management
+            <IconBolt className="w-3 h-3" /> Smarter ISP Management
           </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
             Grow your ISP business <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">without the hustle.</span>
@@ -50,7 +50,7 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button onClick={() => navigate('/signup')} className="w-full sm:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full font-medium transition flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/20 text-lg">
-              Get Started <ArrowRight className="w-5 h-5" />
+              Get Started <IconArrowRight className="w-5 h-5" />
             </button>
             <button onClick={() => {
               document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
@@ -74,7 +74,7 @@ export default function LandingPage() {
             {/* Feature 1 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-emerald-500/20 to-emerald-600/5 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <WalletCards className="w-7 h-7 text-emerald-400 drop-shadow-md" />
+                <IconWallet className="w-7 h-7 text-emerald-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Automated Billing</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">
@@ -85,7 +85,7 @@ export default function LandingPage() {
             {/* Feature 2 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-blue-600/5 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <BellRing className="w-7 h-7 text-blue-400 drop-shadow-md" />
+                <IconBellRinging className="w-7 h-7 text-blue-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Smart Reminders</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">
@@ -96,7 +96,7 @@ export default function LandingPage() {
             {/* Feature 3 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-purple-600/5 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20 shadow-[0_0_20px_rgba(168,85,247,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <RouterIcon className="w-7 h-7 text-purple-400 drop-shadow-md" />
+                <IconRouter className="w-7 h-7 text-purple-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Works With Any Router</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">
@@ -107,7 +107,7 @@ export default function LandingPage() {
             {/* Feature 4 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-amber-500/20 to-amber-600/5 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <Radar className="w-7 h-7 text-amber-400 drop-shadow-md" />
+                <IconRadar className="w-7 h-7 text-amber-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Live Dashboards</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">
@@ -118,7 +118,7 @@ export default function LandingPage() {
             {/* Feature 5 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-cyan-600/5 rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <Gauge className="w-7 h-7 text-cyan-400 drop-shadow-md" />
+                <IconGauge className="w-7 h-7 text-cyan-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Traffic Control</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">
@@ -129,7 +129,7 @@ export default function LandingPage() {
             {/* Feature 6 */}
             <div className="bg-bgSecondary/40 backdrop-blur-sm border border-slate-700/50 p-8 rounded-3xl hover:bg-bgSecondary/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-rose-500/10 group">
               <div className="w-14 h-14 bg-gradient-to-br from-rose-500/20 to-rose-600/5 rounded-2xl flex items-center justify-center mb-6 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.1)] group-hover:scale-110 transition-transform duration-300">
-                <Fingerprint className="w-7 h-7 text-rose-400 drop-shadow-md" />
+                <IconFingerprint className="w-7 h-7 text-rose-400 drop-shadow-md" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Secure Remote Access</h3>
               <p className="text-textSecondary leading-relaxed text-[15px]">

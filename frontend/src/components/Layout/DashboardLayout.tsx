@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, Users, UserCheck, Box, MessageSquare, 
-  CreditCard, BarChart2, Server, Settings, HelpCircle,
-  Wifi, Shield, Activity, Share2, Radio, Terminal, Cpu, Clock, ChevronDown, ChevronRight, Bookmark,
-  LogOut, User, Bell, Menu, X
-} from 'lucide-react';
+import { IconActivity, IconBell, IconBookmark, IconBox, IconChartBar, IconChevronDown, IconChevronRight, IconClock, IconCpu, IconCreditCard, IconHelpCircle, IconLayoutDashboard, IconLogout, IconMenu2, IconMessage, IconRouter, IconServer, IconSettings, IconShare, IconShield, IconTerminal2, IconUser, IconUserCheck, IconUsers, IconWifi, IconX } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import clsx from 'clsx';
 
@@ -47,33 +42,33 @@ export default function DashboardLayout() {
   };
 
   const navGroups = [
-    { label: 'Dashboard',        path: '/',                icon: LayoutDashboard },
-    { label: 'Active Users',     path: '/customers/active', icon: UserCheck },
-    { label: 'All Users',        path: '/customers/all',   icon: Users },
-    { label: 'Packages',         path: '/packages',        icon: Box },
-    { label: 'Communication',    path: '/communication',   icon: MessageSquare },
-    { label: 'Payments',         path: '/payments',        icon: CreditCard },
-    { label: 'Payment Monitor',  path: '/payment-monitor', icon: Activity },
-    { label: 'Statistics',       path: '/statistics',      icon: BarChart2 },
+    { label: 'Dashboard',        path: '/',                icon: IconLayoutDashboard },
+    { label: 'Active Users',     path: '/customers/active', icon: IconUserCheck },
+    { label: 'All Users',        path: '/customers/all',   icon: IconUsers },
+    { label: 'Packages',         path: '/packages',        icon: IconBox },
+    { label: 'Communication',    path: '/communication',   icon: IconMessage },
+    { label: 'Payments',         path: '/payments',        icon: IconCreditCard },
+    { label: 'Payment Monitor',  path: '/payment-monitor', icon: IconActivity },
+    { label: 'Statistics',       path: '/statistics',      icon: IconChartBar },
   ];
 
   const networkSubmenu = [
-    { label: 'Routers', path: '/network/routers', icon: Server },
-    { label: 'Hotspot Server', path: '/network/hotspot', icon: Wifi },
-    { label: 'PPPoE Server', path: '/network/pppoe', icon: Share2 },
-    { label: 'Scripts & Schedulers', path: '/network/scripts', icon: Terminal },
-    { label: 'Firewall', path: '/network/firewall', icon: Shield },
-    { label: 'DHCP', path: '/network/dhcp', icon: Cpu },
-    { label: 'Interfaces', path: '/network/interfaces', icon: Activity },
-    { label: 'Wireless', path: '/network/wireless', icon: Radio },
-    { label: 'Router Stats', path: '/network/stats', icon: BarChart2 },
-    { label: 'Live Subscriber Hub', path: '/network/monitor', icon: Activity },
+    { label: 'Routers', path: '/network/routers', icon: IconServer },
+    { label: 'Hotspot Server', path: '/network/hotspot', icon: IconWifi },
+    { label: 'PPPoE Server', path: '/network/pppoe', icon: IconShare },
+    { label: 'Scripts & Schedulers', path: '/network/scripts', icon: IconTerminal2 },
+    { label: 'Firewall', path: '/network/firewall', icon: IconShield },
+    { label: 'DHCP', path: '/network/dhcp', icon: IconCpu },
+    { label: 'Interfaces', path: '/network/interfaces', icon: IconActivity },
+    { label: 'Wireless', path: '/network/wireless', icon: IconRouter },
+    { label: 'Router Stats', path: '/network/stats', icon: IconChartBar },
+    { label: 'Live Subscriber Hub', path: '/network/monitor', icon: IconActivity },
   ];
 
   const bottomGroup = [
-    { label: 'Settings', path: '/settings', icon: Settings },
-    { label: 'Subscription', path: '/subscriptions', icon: Bookmark },
-    { label: 'Help', path: '/help', icon: HelpCircle },
+    { label: 'Settings', path: '/settings', icon: IconSettings },
+    { label: 'Subscription', path: '/subscriptions', icon: IconBookmark },
+    { label: 'Help', path: '/help', icon: IconHelpCircle },
   ];
 
   const Item = ({ item, isSub = false }: any) => {
@@ -120,7 +115,7 @@ export default function DashboardLayout() {
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 text-textSecondary hover:text-textPrimary"
           >
-            <X className="w-5 h-5" />
+            <IconX className="w-5 h-5" />
           </button>
         </div>
         
@@ -136,7 +131,7 @@ export default function DashboardLayout() {
               className="w-full flex items-center justify-between px-2 py-1.5 text-textSecondary hover:text-textPrimary transition group mb-2"
             >
               <div className="text-[10px] font-medium text-textSecondary/80 uppercase tracking-widest">Network Edge</div>
-              {networkOpen ? <ChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100" /> : <ChevronRight className="w-3 h-3 opacity-50 group-hover:opacity-100" />}
+              {networkOpen ? <IconChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100" /> : <IconChevronRight className="w-3 h-3 opacity-50 group-hover:opacity-100" />}
             </button>
             
             {networkOpen && (
@@ -162,7 +157,7 @@ export default function DashboardLayout() {
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 -ml-2 text-textSecondary hover:text-textPrimary transition"
             >
-              <Menu className="w-5 h-5" />
+              <IconMenu2 className="w-5 h-5" />
             </button>
             <h2 className="text-[13px] lg:text-[14px] font-medium text-textPrimary">Platform Command</h2>
           </div>
@@ -175,7 +170,7 @@ export default function DashboardLayout() {
             </div>
 
             <button className="text-textSecondary hover:text-textPrimary transition relative p-1">
-              <Bell className="w-5 h-5" />
+              <IconBell className="w-5 h-5" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 border-2 border-bgSecondary rounded-full"></span>
             </button>
 
@@ -192,7 +187,7 @@ export default function DashboardLayout() {
                   <p className="text-[13px] font-medium text-textPrimary leading-none mb-0.5">{userData?.name}</p>
                   <p className="text-[11px] text-textSecondary leading-none truncate w-32">Movec Administrator</p>
                 </div>
-                <ChevronDown className={clsx("w-3.5 h-3.5 text-textSecondary transition-transform", profileOpen && "rotate-180")} />
+                <IconChevronDown className={clsx("w-3.5 h-3.5 text-textSecondary transition-transform", profileOpen && "rotate-180")} />
               </button>
 
               {profileOpen && (
@@ -206,14 +201,14 @@ export default function DashboardLayout() {
                     onClick={() => { setProfileOpen(false); navigate('/settings'); }}
                     className="w-full flex items-center px-4 py-2 text-[13px] text-textSecondary hover:bg-bgPrimary hover:text-textPrimary transition"
                   >
-                    <User className="w-4 h-4 mr-3 text-textSecondary" />
+                    <IconUser className="w-4 h-4 mr-3 text-textSecondary" />
                     My Profile
                   </button>
                   <button 
                     onClick={() => { setProfileOpen(false); navigate('/settings'); }}
                     className="w-full flex items-center px-4 py-2 text-[13px] text-textSecondary hover:bg-bgPrimary hover:text-textPrimary transition"
                   >
-                    <Settings className="w-4 h-4 mr-3 text-textSecondary" />
+                    <IconSettings className="w-4 h-4 mr-3 text-textSecondary" />
                     Account Settings
                   </button>
                   
@@ -223,7 +218,7 @@ export default function DashboardLayout() {
                     onClick={handleLogout}
                     className="w-full flex items-center px-4 py-2 text-[13px] text-rose-500 hover:bg-rose-500/10 transition"
                   >
-                    <LogOut className="w-4 h-4 mr-3" />
+                    <IconLogout className="w-4 h-4 mr-3" />
                     Logout Session
                   </button>
                 </div>

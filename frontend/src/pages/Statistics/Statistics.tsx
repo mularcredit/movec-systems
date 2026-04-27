@@ -2,11 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { 
-  Activity, Server, Users, Signal, 
-  Clock, Globe, AlertCircle,
-  ArrowUp, ArrowDown, RefreshCw
-} from 'lucide-react';
+import { IconActivity, IconAlertCircle, IconAntenna, IconArrowDown, IconArrowUp, IconClock, IconGlobe, IconRefresh, IconServer, IconUsers } from '@tabler/icons-react';;
 import { apiFetch } from '../../lib/apiClient';
 import CustomLoader from '../../components/common/CustomLoader';
 
@@ -86,7 +82,7 @@ export default function Statistics() {
   if (error && !overview) {
     return (
       <div className="h-[70vh] flex flex-col items-center justify-center space-y-4 px-6 text-center">
-        <AlertCircle className="w-10 h-10 text-rose-200" strokeWidth={1} />
+        <IconAlertCircle className="w-10 h-10 text-rose-200" strokeWidth={1} />
         <div>
           <h3 className="text-lg font-light text-textPrimary">Synchronization failed</h3>
           <p className="text-[13px] text-textSecondary mt-1 max-w-xs">{error}</p>
@@ -95,7 +91,7 @@ export default function Statistics() {
           onClick={() => { setLoading(true); fetchNetworkData(); }}
           className="bg-bgSecondary text-white px-6 py-2.5 rounded-xl text-[13px] font-normal hover:bg-bgPrimary transition-all flex items-center"
         >
-          <RefreshCw className="w-3.5 h-3.5 mr-2" />
+          <IconRefresh className="w-3.5 h-3.5 mr-2" />
           Retry connection
         </button>
       </div>
@@ -117,7 +113,7 @@ export default function Statistics() {
         <div>
           <h1 className="text-2xl font-light text-textPrimary tracking-tight">Live network intelligence</h1>
           <p className="text-[13px] text-textSecondary mt-1 flex items-center">
-            <Globe className="w-3.5 h-3.5 mr-2 text-blue-400/70" strokeWidth={1.5} />
+            <IconGlobe className="w-3.5 h-3.5 mr-2 text-blue-400/70" strokeWidth={1.5} />
             Monitoring {overview?.total_routers} gateway nodes
           </p>
         </div>
@@ -144,10 +140,10 @@ export default function Statistics() {
 
       {/* Grid: 4 Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard title="Active sessions" value={overview?.total_active_sessions || 0} unit="Subscribers" icon={Users} colorClass="text-blue-500" />
-        <MetricCard title="Traffic (download)" value={(overview?.total_rx_bps / 1000000).toFixed(1)} unit="Mbps" icon={ArrowDown} colorClass="text-emerald-500" />
-        <MetricCard title="Traffic (upload)" value={(overview?.total_tx_bps / 1000000).toFixed(1)} unit="Mbps" icon={ArrowUp} colorClass="text-blue-400" />
-        <MetricCard title="Network stability" value={overview?.online_routers > 0 ? "Stable" : "Offline"} unit={overview?.online_routers === overview?.total_routers ? "All nodes up" : "Partial outage"} icon={Activity} colorClass={overview?.online_routers === overview?.total_routers ? "text-emerald-500" : "text-rose-500"} />
+        <MetricCard title="Active sessions" value={overview?.total_active_sessions || 0} unit="Subscribers" icon={IconUsers} colorClass="text-blue-500" />
+        <MetricCard title="Traffic (download)" value={(overview?.total_rx_bps / 1000000).toFixed(1)} unit="Mbps" icon={IconArrowDown} colorClass="text-emerald-500" />
+        <MetricCard title="Traffic (upload)" value={(overview?.total_tx_bps / 1000000).toFixed(1)} unit="Mbps" icon={IconArrowUp} colorClass="text-blue-400" />
+        <MetricCard title="Network stability" value={overview?.online_routers > 0 ? "Stable" : "Offline"} unit={overview?.online_routers === overview?.total_routers ? "All nodes up" : "Partial outage"} icon={IconActivity} colorClass={overview?.online_routers === overview?.total_routers ? "text-emerald-500" : "text-rose-500"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -199,7 +195,7 @@ export default function Statistics() {
         <div className="space-y-4">
           <div className="bg-bgPrimary rounded-2xl p-6 text-white overflow-hidden relative">
             <div className="absolute top-0 right-0 p-6 opacity-5">
-              <Activity className="w-24 h-24" strokeWidth={1} />
+              <IconActivity className="w-24 h-24" strokeWidth={1} />
             </div>
             <h3 className="text-sm font-normal mb-6 flex items-center text-textSecondary">
               Node health matrix

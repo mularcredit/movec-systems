@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings as SettingsIcon, Building, CreditCard, Bell, Shield, PaintBucket, Save, Info, User, Lock, CheckCircle2, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { IconAlertCircle, IconBell, IconBuilding, IconCircleCheck, IconCreditCard, IconDeviceFloppy, IconEye, IconEyeOff, IconInfoCircle, IconLoader2, IconLock, IconPaint, IconSettings, IconShield, IconUser } from '@tabler/icons-react';;
 import CustomLoader from '../components/common/CustomLoader';
 
 import { apiFetch } from '../lib/apiClient';
@@ -210,11 +210,11 @@ export default function Settings() {
   };
 
   const tabs = [
-    { name: 'Company Profile',        icon: Building    },
-    { name: 'Billing & IPN Rules',    icon: CreditCard  },
-    { name: 'Communication Specs',    icon: Bell        },
-    { name: 'Authentication Struct',  icon: Shield      },
-    { name: 'Theme & Whitelabel',     icon: PaintBucket },
+    { name: 'Company Profile',        icon: IconBuilding    },
+    { name: 'Billing & IPN Rules',    icon: IconCreditCard  },
+    { name: 'Communication Specs',    icon: IconBell        },
+    { name: 'Authentication Struct',  icon: IconShield      },
+    { name: 'Theme & Whitelabel',     icon: IconPaint },
   ];
 
   return (
@@ -225,7 +225,7 @@ export default function Settings() {
         <div className={`fixed top-5 right-5 z-50 text-[13px] font-medium px-4 py-3 rounded-xl shadow-lg border animate-in fade-in slide-in-from-top-2 flex items-center gap-2 ${
           toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'
         }`}>
-          {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertCircle className="w-4 h-4 text-rose-600" />}
+          {toast.type === 'success' ? <IconCircleCheck className="w-4 h-4 text-emerald-600" /> : <IconAlertCircle className="w-4 h-4 text-rose-600" />}
           {toast.msg}
         </div>
       )}
@@ -308,7 +308,7 @@ export default function Settings() {
 
               {/* Info banner */}
               <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                <IconInfoCircle className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-[13px] font-medium text-blue-800">IPN Callback URL</p>
                   <p className="text-[12px] text-blue-700 mt-0.5">Register this URL on your <strong>Daraja App → STK Push → Callback URL</strong>:</p>
@@ -486,7 +486,7 @@ export default function Settings() {
               {/* Admin Profile */}
               <form onSubmit={handleSaveProfile} className="space-y-5">
                 <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
-                  <User className="w-4 h-4 text-emerald-500" /> Admin Identity
+                  <IconUser className="w-4 h-4 text-emerald-500" /> Admin Identity
                 </h3>
                 <div className="grid grid-cols-2 gap-5">
                   <div>
@@ -515,7 +515,7 @@ export default function Settings() {
                 </div>
                 <div className="flex justify-start">
                   <button type="submit" className="btn-primary flex items-center gap-2" disabled={savingProfile}>
-                    {savingProfile ? <CustomLoader inline size="sm" /> : <User className="w-4 h-4" />}
+                    {savingProfile ? <CustomLoader inline size="sm" /> : <IconUser className="w-4 h-4" />}
                     Save Identity
                   </button>
                 </div>
@@ -524,7 +524,7 @@ export default function Settings() {
               {/* Change Password */}
               <form onSubmit={handleChangePassword} className="space-y-5">
                 <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-emerald-500" /> Change Admin Password
+                  <IconLock className="w-4 h-4 text-emerald-500" /> Change Admin Password
                 </h3>
                 <div className="space-y-4">
                   {(['current', 'newPw', 'confirm'] as const).map((field, i) => (
@@ -546,7 +546,7 @@ export default function Settings() {
                           onClick={() => setShowPw(p => ({ ...p, [field]: !p[field] }))}
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-textSecondary"
                         >
-                          {showPw[field] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          {showPw[field] ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
                         </button>
                       </div>
                     </div>
@@ -557,7 +557,7 @@ export default function Settings() {
                 </div>
                 <div className="flex justify-start">
                   <button type="submit" className="btn-primary flex items-center gap-2" disabled={savingPw || !pwForm.newPw}>
-                    {savingPw ? <CustomLoader inline size="sm" /> : <Lock className="w-4 h-4" />}
+                    {savingPw ? <CustomLoader inline size="sm" /> : <IconLock className="w-4 h-4" />}
                     Change Password
                   </button>
                 </div>
@@ -569,7 +569,7 @@ export default function Settings() {
           {activeTab === 'Theme & Whitelabel' && (
             <div className="space-y-6">
               <h3 className="text-[15px] font-medium text-textPrimary border-b border-white/5 pb-4 flex items-center gap-2">
-                <PaintBucket className="w-4 h-4 text-emerald-500" /> Branding & Whitelabel
+                <IconPaint className="w-4 h-4 text-emerald-500" /> Branding & Whitelabel
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -601,7 +601,7 @@ export default function Settings() {
               </div>
 
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl flex gap-3 mt-4">
-                <Info className="w-5 h-5 text-blue-500 shrink-0" />
+                <IconInfoCircle className="w-5 h-5 text-blue-500 shrink-0" />
                 <p className="text-[12px] text-blue-800 leading-relaxed">
                   <strong>Looking for Custom Logos?</strong> Image asset uploading is currently managed directly by your account manager. Please reach out to <a href="mailto:support@movec.co" className="underline font-semibold">support@movec.co</a> to update your invoices and portal company logo.
                 </p>
@@ -611,7 +611,7 @@ export default function Settings() {
 
           <div className="flex justify-end pt-4 border-t border-white/5">
             <button onClick={handleSave} className={`btn-primary flex items-center transition-all ${saved ? 'bg-emerald-600' : ''}`}>
-              <Save className="w-4 h-4 mr-2" />
+              <IconDeviceFloppy className="w-4 h-4 mr-2" />
               {saved ? 'Saved!' : 'Update Configuration'}
             </button>
           </div>

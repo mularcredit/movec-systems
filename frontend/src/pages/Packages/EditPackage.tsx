@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomLoader from '../../components/common/CustomLoader';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  Shield, Wifi, Zap, DollarSign, Clock, ArrowLeft,
-  Server, CheckCircle2, XCircle, Loader2, AlertTriangle, Globe, Info, Save
-} from 'lucide-react';
+import { IconAlertTriangle, IconArrowLeft, IconBolt, IconCircleCheck, IconCircleX, IconClock, IconCurrencyDollar, IconDeviceFloppy, IconGlobe, IconInfoCircle, IconLoader2, IconServer, IconShield, IconWifi } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
 import { SelectDropdown } from '../../components/ui/SelectDropdown';
@@ -205,7 +202,7 @@ export default function EditPackage() {
           onClick={() => navigate('/packages')}
           className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition"
         >
-          <ArrowLeft className="w-4 h-4 text-textSecondary" />
+          <IconArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
           <h2 className="text-[18px] font-medium text-textPrimary">Edit Package</h2>
@@ -225,9 +222,9 @@ export default function EditPackage() {
             </label>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { type: 'PPPoE',   icon: Shield, desc: 'Username/password authenticated tunnel' },
-                { type: 'Hotspot', icon: Wifi,   desc: 'Captive portal / voucher-based access' },
-                { type: 'Static',  icon: Globe,  desc: 'Fixed IP — no RouterOS profile needed' }
+                { type: 'PPPoE',   icon: IconShield, desc: 'Username/password authenticated tunnel' },
+                { type: 'Hotspot', icon: IconWifi,   desc: 'Captive portal / voucher-based access' },
+                { type: 'Static',  icon: IconGlobe,  desc: 'Fixed IP — no RouterOS profile needed' }
               ].map(({ type, icon: Icon, desc }) => (
                 <label
                   key={type}
@@ -266,7 +263,7 @@ export default function EditPackage() {
               placeholder="e.g. Home Broadband 10Mbps"
             />
             <p className="text-[11px] text-textSecondary mt-1.5 flex items-center gap-1">
-              <Info className="w-3 h-3" />
+              <IconInfoCircle className="w-3 h-3" />
               Used in billing UI and customer lists only. Not sent to the router.
             </p>
           </div>
@@ -307,7 +304,7 @@ export default function EditPackage() {
                       onChange={(val: string) => { setVerifyRouterId(val); setVerifyStatus('idle'); setVerifyResult(null); }}
                       options={routers.map((r: any) => ({ label: `${r.name} (${r.ip_address})`, value: r.id }))}
                       placeholder="— Select router to test against —"
-                      icon={<Server className="w-4 h-4" />}
+                      icon={<IconServer className="w-4 h-4" />}
                     />
                   </div>
                   <button
@@ -324,14 +321,14 @@ export default function EditPackage() {
 
                 {verifyStatus === 'success' && verifyResult && (
                   <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-3 rounded-xl text-[13px]">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
+                    <IconCircleCheck className="w-4 h-4 shrink-0" />
                     Profile <span className="font-mono font-semibold mx-1">{activeProfileValue}</span> confirmed on router.
                   </div>
                 )}
                 {verifyStatus === 'error' && verifyResult && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
                     <div className="flex items-start gap-2 text-amber-800 text-[13px]">
-                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                      <IconAlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>{verifyResult.warning || `Profile '${activeProfileValue}' not found on selected router.`}</span>
                     </div>
                     {(form.service_type === 'Hotspot' ? verifyResult.hotspot_profiles : verifyResult.ppp_profiles).length > 0 && (
@@ -360,14 +357,14 @@ export default function EditPackage() {
             <div>
               <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Download Speed (Mbps) *</label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconBolt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input type="number" min="0.1" step="0.1" value={form.speed_down_mbps} onChange={e => set('speed_down_mbps', e.target.value)} className="pl-10 input-field font-mono" placeholder="10" />
               </div>
             </div>
             <div>
               <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Upload Speed (Mbps) *</label>
               <div className="relative">
-                <Zap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconBolt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input type="number" min="0.1" step="0.1" value={form.speed_up_mbps} onChange={e => set('speed_up_mbps', e.target.value)} className="pl-10 input-field font-mono" placeholder="5" />
               </div>
             </div>
@@ -375,7 +372,7 @@ export default function EditPackage() {
             <div>
               <label className="block text-[12px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Monthly Price (Ksh) *</label>
               <div className="relative">
-                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                <IconCurrencyDollar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                 <input type="number" min="0" value={form.price} onChange={e => set('price', e.target.value)} className="pl-10 input-field font-mono" placeholder="2500" />
               </div>
             </div>
@@ -391,7 +388,7 @@ export default function EditPackage() {
                     { label: 'Semi-Annual (6 months)',  value: '6' },
                     { label: 'Annual (12 months)',      value: '12' }
                   ]}
-                  icon={<Clock className="w-4 h-4" />}
+                  icon={<IconClock className="w-4 h-4" />}
                 />
               </div>
             </div>
@@ -415,7 +412,7 @@ export default function EditPackage() {
                       { label: '7 Days (604800s)',                value: '604800' },
                       { label: '30 Days (2592000s)',               value: '2592000' }
                     ]}
-                    icon={<Clock className="w-4 h-4" />}
+                    icon={<IconClock className="w-4 h-4" />}
                   />
                 </div>
               </div>
@@ -429,7 +426,7 @@ export default function EditPackage() {
 
           {error && (
             <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-[13px] text-rose-700 flex items-start gap-2">
-              <XCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <IconCircleX className="w-4 h-4 shrink-0 mt-0.5" />
               {error}
             </div>
           )}
@@ -440,7 +437,7 @@ export default function EditPackage() {
             Cancel
           </button>
           <button onClick={handleSave} disabled={loading} className="btn-primary flex items-center gap-2">
-            {loading ? <><CustomLoader inline size="sm" /> Saving...</> : <><Save className="w-4 h-4" /> Save Changes</>}
+            {loading ? <><CustomLoader inline size="sm" /> Saving...</> : <><IconDeviceFloppy className="w-4 h-4" /> Save Changes</>}
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Wifi, Shield, Globe, Edit2, Archive, AlertTriangle, X, Loader2 } from 'lucide-react';
+import { IconAlertTriangle, IconArchive, IconEdit, IconGlobe, IconLoader2, IconPlus, IconSearch, IconShield, IconWifi, IconX } from '@tabler/icons-react';;
 import CustomLoader from '../components/common/CustomLoader';
 
 import { useNavigate } from 'react-router-dom';
@@ -100,9 +100,9 @@ export default function Packages() {
   };
 
   const TypeBadge = ({ type }: { type: string }) => {
-    if (type === 'PPPoE')   return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full"><Shield className="w-3 h-3"/>PPPoE</span>;
-    if (type === 'Hotspot') return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full"><Wifi className="w-3 h-3"/>Hotspot</span>;
-    return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-white/10 text-textSecondary border border-white/10 px-2 py-0.5 rounded-full"><Globe className="w-3 h-3"/>Static</span>;
+    if (type === 'PPPoE')   return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full"><IconShield className="w-3 h-3"/>PPPoE</span>;
+    if (type === 'Hotspot') return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full"><IconWifi className="w-3 h-3"/>Hotspot</span>;
+    return <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-white/10 text-textSecondary border border-white/10 px-2 py-0.5 rounded-full"><IconGlobe className="w-3 h-3"/>Static</span>;
   };
 
   return (
@@ -113,14 +113,14 @@ export default function Packages() {
           <p className="text-[13px] text-textSecondary mt-1">Manage bandwidth limits, service types, and RouterOS profile bindings.</p>
         </div>
         <button onClick={() => navigate('/packages/add')} className="btn-primary flex items-center">
-          <Plus className="w-4 h-4 mr-2" /> Create Package
+          <IconPlus className="w-4 h-4 mr-2" /> Create Package
         </button>
       </div>
 
       <div className="card p-0 flex flex-col">
         <div className="p-4 border-b border-white/10 flex justify-between bg-bgSecondary rounded-t-xl">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+            <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
             <input
               type="text"
               value={search}
@@ -137,14 +137,14 @@ export default function Packages() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <Wifi className="w-8 h-8 text-textSecondary mb-4" />
+            <IconWifi className="w-8 h-8 text-textSecondary mb-4" />
             <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Packages Found</h3>
             <p className="text-[13px] text-textSecondary max-w-sm mb-6">
               {search ? `No packages match "${search}".` : 'Create your first internet package to begin billing customers.'}
             </p>
             {!search && (
               <button onClick={() => navigate('/packages/add')} className="btn-primary">
-                <Plus className="w-4 h-4 mr-2" /> Create Package
+                <IconPlus className="w-4 h-4 mr-2" /> Create Package
               </button>
             )}
           </div>
@@ -184,14 +184,14 @@ export default function Packages() {
                         onClick={() => navigate(`/packages/edit/${pkg.id}`)}
                         className="btn-table"
                       >
-                        <Edit2 className="w-3.5 h-3.5" /> Edit
+                        <IconEdit className="w-3.5 h-3.5" /> Edit
                       </button>
                       <div className="relative" onClick={e => e.stopPropagation()}>
                         <button
                           onClick={() => setMenuOpenId(menuOpenId === pkg.id ? null : pkg.id)}
                           className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 text-textSecondary hover:text-textPrimary transition"
                         >
-                          <Archive className="w-3.5 h-3.5" />
+                          <IconArchive className="w-3.5 h-3.5" />
                         </button>
                         {menuOpenId === pkg.id && (
                           <div className="absolute right-0 top-8 z-20 bg-bgSecondary rounded-xl shadow-xl border border-white/10 min-w-[160px] p-1">
@@ -199,7 +199,7 @@ export default function Packages() {
                               onClick={() => { setArchiveTarget(pkg); setMenuOpenId(null); }}
                               className="w-full text-left px-3 py-2 rounded-lg text-[13px] text-rose-600 hover:bg-rose-500/10 flex items-center gap-2 transition"
                             >
-                              <Archive className="w-3.5 h-3.5" /> Archive Package
+                              <IconArchive className="w-3.5 h-3.5" /> Archive Package
                             </button>
                           </div>
                         )}
@@ -219,7 +219,7 @@ export default function Packages() {
           <div className="bg-bgSecondary rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5 text-amber-400" />
+                <IconAlertTriangle className="w-5 h-5 text-amber-400" />
               </div>
               <div>
                 <h3 className="text-[15px] font-semibold text-textPrimary">Archive Package?</h3>
@@ -240,7 +240,7 @@ export default function Packages() {
                 disabled={archiving}
                 className="px-4 py-2 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/30 text-[13px] font-medium hover:bg-violet-500/30 transition flex items-center gap-2 disabled:opacity-70"
               >
-                {archiving ? <><CustomLoader inline size="sm" /> Archiving...</> : <><Archive className="w-4 h-4" /> Archive Package</>}
+                {archiving ? <><CustomLoader inline size="sm" /> Archiving...</> : <><IconArchive className="w-4 h-4" /> Archive Package</>}
               </button>
             </div>
           </div>

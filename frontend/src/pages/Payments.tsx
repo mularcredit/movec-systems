@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Plus, CreditCard, Download, X, Loader2, CheckCircle2, Smartphone, History, Receipt } from 'lucide-react';
+import { IconCircleCheck, IconCreditCard, IconDeviceMobile, IconDownload, IconHistory, IconLoader2, IconPlus, IconReceipt, IconSearch, IconX } from '@tabler/icons-react';;
 import CustomLoader from '../components/common/CustomLoader';
 
 import { supabase } from '../lib/supabase';
@@ -205,12 +205,12 @@ export default function Payments() {
                     {modal.mode === 'stk' ? 'Initiate an STK Push to the customer\'s phone.' : 'Log a cash or external bank payment.'}
                 </p>
               </div>
-              <button onClick={() => setM('open', false)} className="text-textSecondary hover:text-textSecondary"><X className="w-5 h-5" /></button>
+              <button onClick={() => setM('open', false)} className="text-textSecondary hover:text-textSecondary"><IconX className="w-5 h-5" /></button>
             </div>
 
             {modal.success ? (
               <div className="flex flex-col items-center py-8 text-center">
-                <CheckCircle2 className="w-14 h-14 text-emerald-500 mb-3" />
+                <IconCircleCheck className="w-14 h-14 text-emerald-500 mb-3" />
                 <p className="text-[16px] font-medium text-textPrimary">
                     {modal.mode === 'stk' ? 'STK Push Sent' : 'Payment Recorded'}
                 </p>
@@ -226,13 +226,13 @@ export default function Payments() {
                         onClick={() => setM('mode', 'stk')}
                         className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'stk' ? 'bg-bgSecondary text-emerald-600 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                     >
-                        <Smartphone className="w-3.5 h-3.5" /> STK Push
+                        <IconDeviceMobile className="w-3.5 h-3.5" /> STK Push
                     </button>
                     <button 
                         onClick={() => setM('mode', 'manual')}
                         className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${modal.mode === 'manual' ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}
                     >
-                        <History className="w-3.5 h-3.5" /> Manual Entry
+                        <IconHistory className="w-3.5 h-3.5" /> Manual Entry
                     </button>
                 </div>
 
@@ -302,10 +302,10 @@ export default function Payments() {
         </div>
         <div className="flex gap-3">
           <button className="btn-secondary flex items-center text-[13px]">
-            <Download className="w-4 h-4 mr-2" /> Export
+            <IconDownload className="w-4 h-4 mr-2" /> Export
           </button>
           <button onClick={openModal} className="btn-primary flex items-center text-[13px]">
-            <Plus className="w-4 h-4 mr-2" /> New Payment Request
+            <IconPlus className="w-4 h-4 mr-2" /> New Payment Request
           </button>
         </div>
       </div>
@@ -322,7 +322,7 @@ export default function Payments() {
         {/* Search & Filter */}
         <div className="p-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center gap-3 bg-bgSecondary rounded-t-xl">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+            <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by TXN code, customer, or account..." className="pl-10 input-field" />
           </div>
           <SelectDropdown
@@ -340,7 +340,7 @@ export default function Payments() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 flex flex-col items-center justify-center text-center">
-            <CreditCard className="w-8 h-8 text-textSecondary mb-4" />
+            <IconCreditCard className="w-8 h-8 text-textSecondary mb-4" />
             <h3 className="text-[15px] font-medium text-textPrimary mb-1">No Transactions Found</h3>
             <p className="text-[13px] text-textSecondary max-w-sm">
               {search ? `Nothing matching "${search}".` : 'No payments recorded yet.'}
@@ -388,7 +388,7 @@ export default function Payments() {
                         className="p-2 text-textSecondary hover:text-emerald-600 transition-colors"
                         title="Download Receipt"
                     >
-                        <Receipt className="w-4 h-4" />
+                        <IconReceipt className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>

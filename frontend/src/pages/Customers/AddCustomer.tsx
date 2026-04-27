@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, Shield, ChevronRight, Hash, Phone, Mail, MapPin, Wifi, Key, Server, Calendar, ArrowLeft, Building2, UserCircle, CheckCircle2, CreditCard, Tag, DollarSign, Bell, RefreshCw, AlertTriangle } from 'lucide-react';
+import { IconAlertTriangle, IconArrowLeft, IconBell, IconBuildingCommunity, IconCalendar, IconChevronRight, IconCircleCheck, IconCreditCard, IconCurrencyDollar, IconHash, IconKey, IconMail, IconMapPin, IconPhone, IconRefresh, IconServer, IconShield, IconTag, IconUserCircle, IconUserPlus, IconWifi } from '@tabler/icons-react';;
 import { supabase } from '../../lib/supabase';
 import { apiFetch } from '../../lib/apiClient';
 import { kenyaLocations } from '../../lib/kenyaLocations';
@@ -344,7 +344,7 @@ export default function AddCustomer() {
     <div className="max-w-4xl mx-auto space-y-6 pb-20">
       <div className="flex items-center gap-4">
         <button onClick={() => navigate('/customers/all')} className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/10 transition shrink-0">
-          <ArrowLeft className="w-4 h-4 text-textSecondary" />
+          <IconArrowLeft className="w-4 h-4 text-textSecondary" />
         </button>
         <div>
           <h2 className="text-[18px] font-medium text-textPrimary">Provision Service</h2>
@@ -371,7 +371,7 @@ export default function AddCustomer() {
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
                 <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
-                  <UserCircle className="w-4 h-4 text-emerald-600" />
+                  <IconUserCircle className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
                   <h3 className="text-[14px] font-medium text-textPrimary">Account Holder</h3>
@@ -398,7 +398,7 @@ export default function AddCustomer() {
                     onChange={val => setI('id', val)}
                     options={persons.map(p => ({ label: `${p.full_name} (${p.phone})`, value: p.id }))}
                     placeholder="Search account holder..."
-                    icon={<UserPlus className="w-4 h-4 text-emerald-500" />}
+                    icon={<IconUserPlus className="w-4 h-4 text-emerald-500" />}
                   />
                 </div>
               ) : (
@@ -406,7 +406,7 @@ export default function AddCustomer() {
                   <div>
                     <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Full Name *</label>
                     <div className="relative">
-                      <UserPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <IconUserPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={identity.fullName} onChange={e => setI('fullName', e.target.value)} className={`pl-10 input-field ${validationErrors.fullName ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="John Mwangi" />
                     </div>
                     {validationErrors.fullName && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.fullName}</p>}
@@ -414,7 +414,7 @@ export default function AddCustomer() {
                   <div>
                     <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Phone Number *</label>
                     <div className="relative">
-                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <IconPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={identity.phone} onChange={e => setI('phone', e.target.value)} className={`pl-10 input-field font-mono ${validationErrors.phone ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="0712 345 678" />
                     </div>
                     {validationErrors.phone && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.phone}</p>}
@@ -422,7 +422,7 @@ export default function AddCustomer() {
                   <div className="md:col-span-2">
                     <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Email Address</label>
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <IconMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="email" value={identity.email} onChange={e => setI('email', e.target.value)} className={`pl-10 input-field ${validationErrors.email ? 'border-rose-300 bg-rose-50/30' : ''}`} placeholder="john@example.com" />
                     </div>
                     {validationErrors.email && <p className="text-[10px] text-rose-500 mt-1 font-medium">{validationErrors.email}</p>}
@@ -437,7 +437,7 @@ export default function AddCustomer() {
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
                 <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
-                  <Building2 className="w-4 h-4 text-emerald-600" />
+                  <IconBuildingCommunity className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
                   <h3 className="text-[14px] font-medium text-textPrimary">Physical Target</h3>
@@ -464,7 +464,7 @@ export default function AddCustomer() {
                     onChange={val => setL('property_id', val)}
                     options={properties.map(p => ({ label: `${p.name} ${p.location ? `(${p.location})` : ''}`, value: p.id }))}
                     placeholder="Search known property..."
-                    icon={<Building2 className="w-4 h-4 text-emerald-500" />}
+                    icon={<IconBuildingCommunity className="w-4 h-4 text-emerald-500" />}
                   />
                 </div>
               ) : (
@@ -472,7 +472,7 @@ export default function AddCustomer() {
                   <div>
                     <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Property / Building Name *</label>
                     <div className="relative">
-                      <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <IconBuildingCommunity className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={location.propertyName} onChange={e => setL('propertyName', e.target.value)} className="pl-10 input-field" placeholder="e.g., Summit Apartments" />
                     </div>
                   </div>
@@ -483,7 +483,7 @@ export default function AddCustomer() {
                       onChange={(val) => setL('area', val)}
                       options={kenyaLocations}
                       placeholder="Search area, estate or town..."
-                      icon={<MapPin className="w-4 h-4 text-emerald-500" />}
+                      icon={<IconMapPin className="w-4 h-4 text-emerald-500" />}
                     />
                   </div>
                 </div>
@@ -492,7 +492,7 @@ export default function AddCustomer() {
                <div>
                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide mt-2">Unit / Door Number *</label>
                  <div className="relative">
-                   <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                   <IconHash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                    <input type="text" value={location.unitNumber} onChange={e => setL('unitNumber', e.target.value)} className="pl-10 input-field font-mono max-w-[200px]" placeholder="e.g., A4" />
                  </div>
                </div>
@@ -504,7 +504,7 @@ export default function AddCustomer() {
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
                 <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
-                  <Shield className="w-4 h-4 text-emerald-600" />
+                  <IconShield className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
                   <h3 className="text-[14px] font-medium text-textPrimary">Internet Parameters</h3>
@@ -519,7 +519,7 @@ export default function AddCustomer() {
                   {['PPPoE', 'Hotspot', 'Static'].map(t => (
                     <label key={t} className={`cursor-pointer rounded-xl border p-3.5 flex items-center gap-2.5 transition-all ${service.service_type === t ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500/20' : 'border-white/10 hover:border-white/20'}`}>
                       <input type="radio" value={t} checked={service.service_type === t} onChange={e => setS('service_type', e.target.value)} className="sr-only" />
-                      <Wifi className={`w-4 h-4 shrink-0 ${service.service_type === t ? 'text-emerald-500' : 'text-textSecondary'}`} />
+                      <IconWifi className={`w-4 h-4 shrink-0 ${service.service_type === t ? 'text-emerald-500' : 'text-textSecondary'}`} />
                       <span className={`text-[13px] font-medium ${service.service_type === t ? 'text-emerald-700' : 'text-textSecondary'}`}>{t}</span>
                     </label>
                   ))}
@@ -530,7 +530,7 @@ export default function AddCustomer() {
                 <div className="md:col-span-2">
                   <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Service Account Num (Auto-Generated)</label>
                   <div className="relative">
-                    <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 w-4 h-4" />
+                    <IconHash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 w-4 h-4" />
                     <input type="text" value={service.accountNumber} readOnly className="pl-10 input-field font-mono bg-emerald-50/40 text-textPrimary" />
                   </div>
                 </div>
@@ -555,7 +555,7 @@ export default function AddCustomer() {
                       { label: '— No Hardware Tied —', value: '' },
                       ...routers.map(r => ({ label: `${r.name} (${r.ip_address})`, value: r.id }))
                     ]}
-                    icon={<Server className="w-4 h-4" />}
+                    icon={<IconServer className="w-4 h-4" />}
                   />
                 </div>
 
@@ -564,14 +564,14 @@ export default function AddCustomer() {
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">{service.service_type} Username *</label>
                       <div className="relative">
-                        <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconHash className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="text" value={service.ppp_username} onChange={e => setS('ppp_username', e.target.value)} className="pl-10 input-field font-mono" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">{service.service_type} Password</label>
                       <div className="relative">
-                        <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconKey className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="text" value={service.ppp_password} onChange={e => setS('ppp_password', e.target.value)} className="pl-10 input-field font-mono" />
                       </div>
                     </div>
@@ -581,7 +581,7 @@ export default function AddCustomer() {
                 <div>
                   <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Static IP (Optional)</label>
                   <div className="relative">
-                    <Server className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                    <IconServer className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                     <input type="text" value={service.ip_address} onChange={e => setS('ip_address', e.target.value)} className="pl-10 input-field font-mono" placeholder="10.0.0.100" />
                   </div>
                 </div>
@@ -589,7 +589,7 @@ export default function AddCustomer() {
                 <div>
                   <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">First Bill Date</label>
                   <div className="relative">
-                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                    <IconCalendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                     <input type="date" value={service.next_due_date} onChange={e => setS('next_due_date', e.target.value)} className="pl-10 input-field" />
                   </div>
                 </div>
@@ -602,7 +602,7 @@ export default function AddCustomer() {
             <div className="space-y-6 animate-in fade-in duration-300">
               <div className="flex items-start gap-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
                 <div className="w-9 h-9 rounded-lg bg-bgSecondary shadow-sm border border-emerald-100 flex items-center justify-center shrink-0">
-                  <CreditCard className="w-4 h-4 text-emerald-600" />
+                  <IconCreditCard className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
                   <h3 className="text-[14px] font-medium text-textPrimary">Payment Selection</h3>
@@ -612,10 +612,10 @@ export default function AddCustomer() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { id: 'full', label: 'Full', icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
-                  { id: 'partial', label: 'Partial', icon: <Hash className="w-3.5 h-3.5" /> },
-                  { id: 'discounted', label: 'Discount', icon: <Tag className="w-3.5 h-3.5" /> },
-                  { id: 'already_paid', label: 'Pre-paid', icon: <Shield className="w-3.5 h-3.5" /> },
+                  { id: 'full', label: 'Full', icon: <IconCircleCheck className="w-3.5 h-3.5" /> },
+                  { id: 'partial', label: 'Partial', icon: <IconHash className="w-3.5 h-3.5" /> },
+                  { id: 'discounted', label: 'Discount', icon: <IconTag className="w-3.5 h-3.5" /> },
+                  { id: 'already_paid', label: 'Pre-paid', icon: <IconShield className="w-3.5 h-3.5" /> },
                 ].map(cat => (
                   <button
                     key={cat.id}
@@ -635,7 +635,7 @@ export default function AddCustomer() {
                   <div className="md:col-span-2">
                     <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount to Pay</label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                      <IconCurrencyDollar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                       <input type="text" value={`Ksh ${packagePrice.toLocaleString()}`} readOnly className="pl-10 input-field bg-bgSecondary font-medium text-textPrimary" />
                     </div>
                   </div>
@@ -646,7 +646,7 @@ export default function AddCustomer() {
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount Paid Now *</label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconCurrencyDollar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="number" value={payment.amount_paid} onChange={e => setP('amount_paid', e.target.value)} className="pl-10 input-field bg-bgSecondary" placeholder="e.g. 500" />
                       </div>
                       <p className="text-[11px] text-textSecondary mt-1.5">Remaining: Ksh {(packagePrice - parseFloat(payment.amount_paid || '0')).toLocaleString()}</p>
@@ -654,7 +654,7 @@ export default function AddCustomer() {
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Balance Due Date *</label>
                       <div className="relative">
-                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconCalendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="date" value={payment.balance_due_date} onChange={e => setP('balance_due_date', e.target.value)} className="pl-10 input-field bg-bgSecondary" />
                       </div>
                     </div>
@@ -666,14 +666,14 @@ export default function AddCustomer() {
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Discount Amount *</label>
                       <div className="relative">
-                        <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconTag className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="number" value={payment.discount_amount} onChange={e => setP('discount_amount', e.target.value)} className="pl-10 input-field bg-bgSecondary" placeholder="e.g. 200" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Final Price</label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
+                        <IconCurrencyDollar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textSecondary w-4 h-4" />
                         <input type="text" value={`Ksh ${(packagePrice - parseFloat(payment.discount_amount || '0')).toLocaleString()}`} readOnly className="pl-10 input-field bg-bgSecondary/50" />
                       </div>
                     </div>
@@ -682,7 +682,7 @@ export default function AddCustomer() {
 
                 {payment.category === 'already_paid' && (
                   <div className="md:col-span-2 p-4 bg-emerald-50 rounded-xl border border-emerald-100 flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                    <IconCircleCheck className="w-5 h-5 text-emerald-500" />
                     <p className="text-[13px] text-emerald-700">Customer has already settled the initial payment. This will be recorded as a completed transaction.</p>
                   </div>
                 )}
@@ -720,11 +720,11 @@ export default function AddCustomer() {
                           }`}
                         >
                           {stkStatus === 'sending' ? (
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            <IconRefresh className="w-3.5 h-3.5 animate-spin" />
                           ) : stkStatus === 'sent' ? (
-                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <IconCircleCheck className="w-3.5 h-3.5" />
                           ) : (
-                            <Phone className="w-3.5 h-3.5" />
+                            <IconPhone className="w-3.5 h-3.5" />
                           )}
                           {stkStatus === 'sending' ? 'Sending...' : stkStatus === 'sent' ? 'Prompted' : 'STK Push'}
                         </button>
@@ -737,7 +737,7 @@ export default function AddCustomer() {
                   <div className="md:col-span-2 p-5 bg-emerald-50/30 border border-emerald-100 rounded-2xl space-y-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-                        <Phone className="w-4 h-4 text-emerald-600" />
+                        <IconPhone className="w-4 h-4 text-emerald-600" />
                       </div>
                       <div>
                         <h4 className="text-[13px] font-semibold text-emerald-900">M-Pesa STK Prompt</h4>
@@ -771,11 +771,11 @@ export default function AddCustomer() {
                           }`}
                         >
                           {stkStatus === 'sending' || stkStatus === 'sent' ? (
-                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <IconRefresh className="w-4 h-4 animate-spin" />
                           ) : stkStatus === 'success' ? (
-                            <CheckCircle2 className="w-4 h-4" />
+                            <IconCircleCheck className="w-4 h-4" />
                           ) : (
-                            <Phone className="w-4 h-4" />
+                            <IconPhone className="w-4 h-4" />
                           )}
                           {stkStatus === 'sending' ? 'Sending...' : stkStatus === 'sent' ? 'Waiting...' : stkStatus === 'success' ? 'Confirmed' : 'Send STK Prompt'}
                         </button>
@@ -784,19 +784,19 @@ export default function AddCustomer() {
 
                     {stkStatus === 'sent' && (
                       <div className="p-3 bg-emerald-100/50 border border-emerald-200 rounded-xl text-[12px] text-emerald-700 flex items-center gap-2 animate-pulse">
-                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        <IconRefresh className="w-4 h-4 animate-spin" />
                         Prompt sent to <strong>{stkPhone || identity.phone}</strong>. Waiting for customer to enter PIN...
                       </div>
                     )}
                     {stkStatus === 'success' && (
                       <div className="p-3 bg-emerald-500 text-white rounded-xl text-[12px] flex items-center gap-2 shadow-md">
-                        <CheckCircle2 className="w-4 h-4" />
+                        <IconCircleCheck className="w-4 h-4" />
                         Payment successfully received! Transaction: <strong>{payment.txn_code}</strong>
                       </div>
                     )}
                     {stkError && (
                       <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-[12px] text-rose-600 flex items-center gap-2">
-                        <AlertTriangle className="w-4 h-4" />
+                        <IconAlertTriangle className="w-4 h-4" />
                         {stkError}
                       </div>
                     )}
@@ -821,7 +821,7 @@ export default function AddCustomer() {
                       <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-bgSecondary rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Bell className={`w-4 h-4 ${payment.send_sms ? 'text-emerald-500' : 'text-textSecondary'}`} />
+                      <IconBell className={`w-4 h-4 ${payment.send_sms ? 'text-emerald-500' : 'text-textSecondary'}`} />
                       <span className="text-[13px] font-medium text-textSecondary group-hover:text-textPrimary transition-colors">Send Welcome SMS to Customer</span>
                     </div>
                   </label>
@@ -841,13 +841,13 @@ export default function AddCustomer() {
             {step > 1 ? 'Back' : 'Cancel'}
           </button>
           
-          {step === 1 && <button onClick={handleNextStep1} className="btn-primary flex items-center">Continue <ChevronRight className="w-4 h-4 ml-1" /></button>}
-          {step === 2 && <button onClick={handleNextStep2} className="btn-primary flex items-center">Continue <ChevronRight className="w-4 h-4 ml-1" /></button>}
-          {step === 3 && <button onClick={handleNextStep3} className="btn-primary flex items-center">Payment <ChevronRight className="w-4 h-4 ml-1" /></button>}
+          {step === 1 && <button onClick={handleNextStep1} className="btn-primary flex items-center">Continue <IconChevronRight className="w-4 h-4 ml-1" /></button>}
+          {step === 2 && <button onClick={handleNextStep2} className="btn-primary flex items-center">Continue <IconChevronRight className="w-4 h-4 ml-1" /></button>}
+          {step === 3 && <button onClick={handleNextStep3} className="btn-primary flex items-center">Payment <IconChevronRight className="w-4 h-4 ml-1" /></button>}
           {step === 4 && (
             <button onClick={handleSave} disabled={loading} className="btn-primary flex items-center shadow-lg shadow-emerald-500/20">
               {loading ? 'Provisioning...' : 'Deploy Service'}
-              {!loading && <CheckCircle2 className="w-4 h-4 ml-2" />}
+              {!loading && <IconCircleCheck className="w-4 h-4 ml-2" />}
             </button>
           )}
         </div>

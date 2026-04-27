@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
+import { IconCheck, IconChevronDown } from '@tabler/icons-react';;
 
 interface SelectOption {
   label: string;
@@ -49,7 +49,7 @@ export function SelectDropdown({
           {icon && <span className="text-textSecondary shrink-0">{icon}</span>}
           <span className="truncate text-[13px]">{displayLabel}</span>
         </span>
-        <ChevronDown className={`w-4 h-4 text-textSecondary shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
+        <IconChevronDown className={`w-4 h-4 text-textSecondary shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-500' : ''}`} />
       </button>
 
       {isOpen && (
@@ -68,7 +68,7 @@ export function SelectDropdown({
                 }`}
               >
                 <span>{opt.label}</span>
-                {isSelected && <Check className="w-4 h-4 text-white shrink-0" />}
+                {isSelected && <IconCheck className="w-4 h-4 text-white shrink-0" />}
               </button>
             );
           })}

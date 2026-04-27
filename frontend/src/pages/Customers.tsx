@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, MoreVertical, Wifi, WifiOff, Activity, ShieldCheck, MapPin } from 'lucide-react';
+import { IconActivity, IconDotsVertical, IconMapPin, IconPlus, IconSearch, IconShieldCheck, IconWifi, IconWifiOff } from '@tabler/icons-react';;
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/apiClient';
 
@@ -70,7 +70,7 @@ export default function Customers() {
           <p className="text-textSecondary mt-1">Manage and monitor live user connectivity</p>
         </div>
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all flex items-center">
-          <Plus className="w-5 h-5 mr-2" />
+          <IconPlus className="w-5 h-5 mr-2" />
           Add Subscriber
         </button>
       </div>
@@ -78,7 +78,7 @@ export default function Customers() {
       <div className="card bg-bgSecondary border border-white/10 rounded-3xl p-0 overflow-hidden shadow-sm">
         <div className="p-5 border-b border-white/5 bg-white/5/30 flex flex-wrap items-center gap-4">
           <div className="relative flex-1 min-w-[300px]">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-textSecondary w-5 h-5" />
+            <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-textSecondary w-5 h-5" />
             <input 
               type="text" 
               placeholder="Search by name, username, or account #..." 
@@ -116,7 +116,7 @@ export default function Customers() {
                 <tr>
                   <td colSpan={5} className="px-6 py-20 text-center">
                     <div className="flex flex-col items-center gap-3">
-                      <Activity className="w-8 h-8 text-blue-500 animate-pulse" />
+                      <IconActivity className="w-8 h-8 text-blue-500 animate-pulse" />
                       <p className="text-textSecondary font-medium italic">Scanning network for active sessions...</p>
                     </div>
                   </td>
@@ -125,7 +125,7 @@ export default function Customers() {
                 <tr>
                   <td colSpan={5} className="px-6 py-20 text-center">
                     <div className="flex flex-col items-center gap-2">
-                      <Search className="w-10 h-10 text-white/30" />
+                      <IconSearch className="w-10 h-10 text-white/30" />
                       <p className="text-textSecondary font-medium">No subscribers found matching your filters.</p>
                     </div>
                   </td>
@@ -139,14 +139,14 @@ export default function Customers() {
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
                         <div className={`p-3 rounded-2xl ${isOnline ? 'bg-emerald-50' : 'bg-white/10'} group-hover:scale-105 transition-transform`}>
-                          {isOnline ? <Wifi className="w-5 h-5 text-emerald-600" /> : <WifiOff className="w-5 h-5 text-textSecondary" />}
+                          {isOnline ? <IconWifi className="w-5 h-5 text-emerald-600" /> : <IconWifiOff className="w-5 h-5 text-textSecondary" />}
                         </div>
                         <div>
                           <p className="font-bold text-textPrimary text-[15px]">{c.full_name}</p>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-[12px] font-mono font-bold text-textSecondary px-1.5 py-0.5 bg-white/10 rounded">@{c.username}</span>
                             <span className="text-[11px] font-medium text-textSecondary flex items-center">
-                              <MapPin className="w-3 h-3 mr-1" />
+                              <IconMapPin className="w-3 h-3 mr-1" />
                               {c.address || 'No Location'}
                             </span>
                           </div>
@@ -162,7 +162,7 @@ export default function Customers() {
                       {isOnline ? (
                         <div className="space-y-1">
                           <p className="text-[13px] font-bold text-emerald-700 flex items-center">
-                            <Activity className="w-3 h-3 mr-1.5" />
+                            <IconActivity className="w-3 h-3 mr-1.5" />
                             {session.address}
                           </p>
                           <p className="text-[11px] font-medium text-textSecondary">Uptime: <span className="text-textPrimary font-bold">{session.uptime}</span></p>
@@ -184,10 +184,10 @@ export default function Customers() {
                     <td className="px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-2">
                          <button className="p-2.5 bg-bgSecondary border border-white/10 rounded-xl text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-all shadow-sm">
-                           <ShieldCheck className="w-4 h-4" />
+                           <IconShieldCheck className="w-4 h-4" />
                          </button>
                          <button className="p-2.5 bg-bgSecondary border border-white/10 rounded-xl text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-all shadow-sm">
-                           <MoreVertical className="w-4 h-4" />
+                           <IconDotsVertical className="w-4 h-4" />
                          </button>
                       </div>
                     </td>

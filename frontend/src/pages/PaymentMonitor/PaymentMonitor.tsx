@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Activity, TrendingUp, AlertCircle, Clock, DollarSign, 
-  Search, Filter, ChevronRight, ArrowUpRight, ArrowDownRight,
-  User, Calendar, CreditCard, Download, MoreHorizontal, Plus, RefreshCw
-} from 'lucide-react';
+import { IconActivity, IconAlertCircle, IconArrowDownRight, IconArrowUpRight, IconCalendar, IconChevronRight, IconClock, IconCreditCard, IconCurrencyDollar, IconDots, IconDownload, IconFilter, IconPlus, IconRefresh, IconSearch, IconTrendingUp, IconUser } from '@tabler/icons-react';;
 import { 
   PieChart, Pie, Cell, 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -122,14 +118,14 @@ export default function PaymentMonitor() {
         </div>
         <div className="flex items-center gap-3">
           <button className="bg-bgSecondary border border-white/5 text-textSecondary px-4 py-2 rounded-xl text-[13px] font-normal hover:bg-white/5 transition-all flex items-center gap-2 shadow-sm">
-            <Download className="w-4 h-4 text-textSecondary" />
+            <IconDownload className="w-4 h-4 text-textSecondary" />
             Export Data
           </button>
           <button 
             onClick={() => navigate('/payments')}
             className="btn-primary flex items-center gap-2"
           >
-            <Plus className="w-4 h-4" />
+            <IconPlus className="w-4 h-4" />
             New Payment
           </button>
         </div>
@@ -141,7 +137,7 @@ export default function PaymentMonitor() {
           label="Total Collected" 
           value={`Ksh ${(summary?.total_collected ?? 0).toLocaleString()}`} 
           subValue="This month" 
-          icon={<DollarSign className="w-4 h-4" />} 
+          icon={<IconCurrencyDollar className="w-4 h-4" />} 
           color="emerald"
           trend="+12.5%"
         />
@@ -149,20 +145,20 @@ export default function PaymentMonitor() {
           label="Overdue Balances" 
           value={`Ksh ${(summary?.overdue_amount ?? 0).toLocaleString()}`} 
           subValue={`${summary?.overdue_count} accounts`} 
-          icon={<AlertCircle className="w-4 h-4" />} 
+          icon={<IconAlertCircle className="w-4 h-4" />} 
           color="rose"
           trend={`${Math.round((summary?.overdue_amount || 0) / (summary?.expected_total || 1) * 100)}%`}
         />
         <SummaryCard 
           label="Partial Pending" 
           value={`Ksh ${(summary?.partial_amount ?? 0).toLocaleString()}`}           subValue={`${summary?.partial_count} accounts`} 
-          icon={<Clock className="w-4 h-4" />} 
+          icon={<IconClock className="w-4 h-4" />} 
           color="amber"
         />
         <SummaryCard 
           label="Expected Revenue" 
           value={`Ksh ${(summary?.expected_total ?? 0).toLocaleString()}`}           subValue="Projected this month" 
-          icon={<TrendingUp className="w-4 h-4" />} 
+          icon={<IconTrendingUp className="w-4 h-4" />} 
           color="indigo"
         />
       </div>
@@ -327,7 +323,7 @@ export default function PaymentMonitor() {
           </div>
 
           <form onSubmit={handleSearch} className="relative w-full md:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-textSecondary" />
+            <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-textSecondary" />
             <input 
               type="text" 
               placeholder="Find transaction or customer..." 
@@ -387,7 +383,7 @@ export default function PaymentMonitor() {
                   <td className="px-6 py-5">
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2 text-textSecondary">
-                        <Calendar className="w-3.5 h-3.5" />
+                        <IconCalendar className="w-3.5 h-3.5" />
                         <span className="text-[12px] font-light">{new Date(acc.next_due_date).toLocaleDateString('en-KE', { day: '2-digit', month: 'short' })}</span>
                       </div>
                     </div>
@@ -408,7 +404,7 @@ export default function PaymentMonitor() {
                   </td>
                   <td className="px-6 py-5 text-right">
                     <button className="p-2 text-textSecondary hover:text-textSecondary transition-colors">
-                      <MoreHorizontal className="w-4 h-4" />
+                      <IconDots className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
@@ -437,7 +433,7 @@ function SummaryCard({ label, value, subValue, icon, color, trend }: { label: st
         </div>
         {trend && (
           <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-textSecondary'}`}>
-            {trend.startsWith('+') ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+            {trend.startsWith('+') ? <IconArrowUpRight className="w-3 h-3" /> : <IconArrowDownRight className="w-3 h-3" />}
             {trend}
           </div>
         )}
