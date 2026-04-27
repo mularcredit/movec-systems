@@ -104,7 +104,7 @@ export default function DashboardLayout() {
 
       {/* SIDEBAR */}
       <aside className={clsx(
-        "fixed inset-y-0 left-0 w-64 bg-bgSecondary flex flex-col z-50 lg:static lg:translate-x-0 transition-transform duration-300 border-r border-white/5",
+        "fixed inset-y-0 left-0 w-64 bg-[#140D24] flex flex-col z-50 lg:static lg:translate-x-0 transition-transform duration-300 border-r border-white/5",
         sidebarOpen ? "translate-x-0 shadow-2xl shadow-slate-900" : "-translate-x-full"
       )}>
         <div className="h-14 lg:h-20 flex items-center px-4 border-b border-white/5 shrink-0 justify-between lg:justify-start">
