@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconActivity, IconAlertCircle, IconArrowDownRight, IconArrowUpRight, IconCalendar, IconChevronRight, IconClock, IconCreditCard, IconCurrencyDollar, IconDots, IconDownload, IconFilter, IconPlus, IconRefresh, IconSearch, IconTrendingUp, IconUser } from '@tabler/icons-react';;
+import { IconAlertCircle, IconArrowDownRight, IconArrowUpRight, IconCalendar, IconCircleCheck, IconClock, IconCreditCard, IconCurrencyDollar, IconDeviceMobile, IconDots, IconDownload, IconHistory, IconPlus, IconSearch, IconTrendingUp, IconUser, IconX } from '@tabler/icons-react';
 import { 
   PieChart, Pie, Cell, 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -8,9 +8,14 @@ import {
 } from 'recharts';
 import { apiFetch } from '../../lib/apiClient';
 import CustomLoader from '../../components/common/CustomLoader';
+import { Combobox } from '../../components/ui/Combobox';
+import { SelectDropdown } from '../../components/ui/SelectDropdown';
+import { supabase } from '../../lib/supabase';
 
 interface SummaryData {
   total_collected: number;
+  prev_month_collected: number;
+  collected_trend_pct: number | null;
   overdue_count: number;
   overdue_amount: number;
   partial_count: number;
@@ -61,31 +66,66 @@ export default function PaymentMonitor() {
   const [collections, setCollections] = useState<CollectionItem[]>([]);
   const [trends, setTrends] = useState<TrendItem[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
-  
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalAccounts, setTotalAccounts] = useState(0);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [period, setPeriod] = useState('day');
+  const [actionOpen, setActionOpen] = useState<string | null>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
 
+  // Inline pay modal state
+  const [payModal, setPayModal] = useState({ open: false, loading: false, error: '', success: false, mode: 'stk' as 'stk' | 'manual', customerId: '', amount: '', method: 'M-Pesa', txnCode: '', notes: '', phone: '', prefillCustomerId: '' });
+  const [customers, setCustomers] = useState<any[]>([]);
+
+  useEffect(() => { fetchData(); }, [filter, period]);
+
+  // Close action dropdown on outside click
   useEffect(() => {
-    fetchData();
-  }, [filter, period]);
+    const close = (e: MouseEvent) => { if (actionRef.current && !actionRef.current.contains(e.target as Node)) setActionOpen(null); };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, []);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const fetchCustomers = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: profile } = await supabase.from('profiles').select('tenant_id').eq('id', user.id).single();
+    if (!profile?.tenant_id) return;
+    const [legacy, modern] = await Promise.all([
+      supabase.from('customers').select('id, full_name, account_number, phone').eq('tenant_id', profile.tenant_id).eq('status', 'active'),
+      supabase.from('services').select('id, account_number, status, persons(full_name, phone)').eq('tenant_id', profile.tenant_id).eq('status', 'active')
+    ]);
+    const combined = [
+      ...(legacy.data || []).map((c: any) => ({ id: c.id, full_name: c.full_name, account_number: c.account_number, phone: c.phone })),
+      ...(modern.data || []).map((s: any) => ({ id: s.id, full_name: (s.persons as any)?.full_name || 'Unknown', account_number: s.account_number, phone: (s.persons as any)?.phone || '—' }))
+    ];
+    setCustomers(combined.sort((a, b) => a.full_name.localeCompare(b.full_name)));
+  };
+
+  const fetchData = async (pg = 1) => {
+    if (pg === 1) setLoading(true);
     try {
       const [sumRes, distRes, collRes, trendRes, accRes] = await Promise.all([
         apiFetch('/api/payment-monitor/summary').then(r => r.json()),
         apiFetch('/api/payment-monitor/status-distribution').then(r => r.json()),
         apiFetch(`/api/payment-monitor/collections?period=${period}`).then(r => r.json()),
         apiFetch('/api/payment-monitor/trends').then(r => r.json()),
-        apiFetch(`/api/payment-monitor/accounts?filter=${filter}&search=${search}`).then(r => r.json()),
+        apiFetch(`/api/payment-monitor/accounts?filter=${filter}&search=${search}&page=${pg}`).then(r => r.json()),
       ]);
-
       setSummary(sumRes.summary);
       setDistribution(distRes.distribution);
       setCollections(collRes.data);
       setTrends(trendRes.trend);
-      setAccounts(accRes.accounts);
+      if (pg === 1) {
+        setAccounts(accRes.accounts || []);
+      } else {
+        setAccounts(prev => [...prev, ...(accRes.accounts || [])]);
+      }
+      setHasMore(accRes.hasMore || false);
+      setTotalAccounts(accRes.total || 0);
+      setPage(pg);
     } catch (e) {
       console.error('Failed to fetch payment monitor data', e);
     } finally {
@@ -93,10 +133,45 @@ export default function PaymentMonitor() {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchData();
+  const handleSearch = (e: React.FormEvent) => { e.preventDefault(); fetchData(1); };
+
+  const exportCSV = () => {
+    const headers = ['Customer', 'Account', 'Phone', 'Package', 'Paid', 'Balance Due', 'Due Date', 'Status'];
+    const rows = accounts.map(a => [a.name, a.account, a.phone, a.package, a.amount_paid, a.balance_due, a.balance_due_date || '—', a.pay_status]);
+    const csv = [headers, ...rows].map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `accounts_${filter}_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click(); URL.revokeObjectURL(url);
   };
+
+  const openPayModal = (acc?: Account) => {
+    fetchCustomers();
+    setPayModal(p => ({ ...p, open: true, error: '', success: false, mode: 'stk', customerId: acc?.id || '', amount: String(acc?.balance_due || ''), method: 'M-Pesa', txnCode: '', notes: '', phone: acc?.phone || '', prefillCustomerId: acc?.id || '' }));
+  };
+
+  const submitPayment = async () => {
+    if (!payModal.customerId || !payModal.amount) { setPayModal(p => ({ ...p, error: 'Customer and amount required.' })); return; }
+    setPayModal(p => ({ ...p, loading: true, error: '' }));
+    try {
+      const endpoint = payModal.mode === 'stk' ? '/api/mpesa/stk-push' : '/api/mpesa/manual';
+      const body = payModal.mode === 'stk'
+        ? { customer_id: payModal.customerId, amount: parseFloat(payModal.amount), phone: payModal.phone }
+        : { customer_id: payModal.customerId, amount: parseFloat(payModal.amount), method: payModal.method, transaction_code: payModal.txnCode || null, notes: payModal.notes || null };
+      const res = await apiFetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed');
+      setPayModal(p => ({ ...p, success: true }));
+      setTimeout(() => { setPayModal(p => ({ ...p, open: false })); fetchData(1); }, 2000);
+    } catch (e: any) {
+      setPayModal(p => ({ ...p, error: e.message }));
+    } finally {
+      setPayModal(p => ({ ...p, loading: false }));
+    }
+  };
+
+  const setP = (k: string, v: any) => setPayModal(prev => ({ ...prev, [k]: v }));
 
   if (loading && !summary) {
     return (
@@ -111,22 +186,15 @@ export default function PaymentMonitor() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-light text-textPrimary tracking-tight flex items-center gap-3">
-            Payment Monitoring
-          </h2>
+          <h2 className="text-2xl font-light text-textPrimary tracking-tight">Payment Monitoring</h2>
           <p className="text-[12px] text-textSecondary mt-1">Real-time financial standing and collection insights.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="bg-bgSecondary border border-white/5 text-textSecondary px-4 py-2 rounded-xl text-[13px] font-normal hover:bg-white/5 transition-all flex items-center gap-2 shadow-sm">
-            <IconDownload className="w-4 h-4 text-textSecondary" />
-            Export Data
+          <button onClick={exportCSV} className="bg-bgSecondary border border-white/5 text-textSecondary px-4 py-2 rounded-xl text-[13px] font-normal hover:bg-white/5 transition-all flex items-center gap-2 shadow-sm">
+            <IconDownload className="w-4 h-4" /> Export CSV
           </button>
-          <button 
-            onClick={() => navigate('/payments')}
-            className="btn-primary flex items-center gap-2"
-          >
-            <IconPlus className="w-4 h-4" />
-            New Payment
+          <button onClick={() => openPayModal()} className="btn-primary flex items-center gap-2">
+            <IconPlus className="w-4 h-4" /> New Payment
           </button>
         </div>
       </div>
@@ -139,19 +207,21 @@ export default function PaymentMonitor() {
           subValue="This month" 
           icon={<IconCurrencyDollar className="w-4 h-4" />} 
           color="emerald"
-          trend="+12.5%"
+          trend={summary?.collected_trend_pct != null ? `${summary.collected_trend_pct > 0 ? '+' : ''}${summary.collected_trend_pct}% vs last month` : undefined}
         />
         <SummaryCard 
           label="Overdue Balances" 
           value={`Ksh ${(summary?.overdue_amount ?? 0).toLocaleString()}`} 
-          subValue={`${summary?.overdue_count} accounts`} 
+          subValue={`${summary?.overdue_count ?? 0} accounts`} 
           icon={<IconAlertCircle className="w-4 h-4" />} 
           color="rose"
-          trend={`${Math.round((summary?.overdue_amount || 0) / (summary?.expected_total || 1) * 100)}%`}
+          trend={summary?.expected_total ? `-${Math.round((summary.overdue_amount / summary.expected_total) * 100)}% of expected` : undefined}
+          isNegative
         />
         <SummaryCard 
           label="Partial Pending" 
-          value={`Ksh ${(summary?.partial_amount ?? 0).toLocaleString()}`}           subValue={`${summary?.partial_count} accounts`} 
+          value={`Ksh ${(summary?.partial_amount ?? 0).toLocaleString()}`}
+          subValue={`${summary?.partial_count ?? 0} accounts`} 
           icon={<IconClock className="w-4 h-4" />} 
           color="amber"
         />
@@ -403,21 +473,116 @@ export default function PaymentMonitor() {
                     </span>
                   </td>
                   <td className="px-6 py-5 text-right">
-                    <button className="p-2 text-textSecondary hover:text-textSecondary transition-colors">
-                      <IconDots className="w-4 h-4" />
-                    </button>
+                    <div className="relative" ref={actionOpen === acc.id ? actionRef : undefined}>
+                      <button
+                        onClick={() => setActionOpen(actionOpen === acc.id ? null : acc.id)}
+                        className="p-2 text-textSecondary hover:text-textPrimary transition-colors rounded-lg hover:bg-white/5"
+                      >
+                        <IconDots className="w-4 h-4" />
+                      </button>
+                      {actionOpen === acc.id && (
+                        <div className="absolute right-0 mt-1 w-48 bg-bgSecondary border border-white/10 rounded-xl shadow-xl z-20 py-1 animate-in fade-in zoom-in-95 duration-100">
+                          <button
+                            onClick={() => { setActionOpen(null); openPayModal(acc); }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[12px] text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-colors"
+                          >
+                            <IconCurrencyDollar className="w-4 h-4 text-emerald-400" />
+                            Record Payment
+                          </button>
+                          <button
+                            onClick={() => { setActionOpen(null); navigate(`/customers/${acc.id}`); }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[12px] text-textSecondary hover:bg-white/5 hover:text-textPrimary transition-colors"
+                          >
+                            <IconUser className="w-4 h-4 text-blue-400" />
+                            View Profile
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {/* Load More */}
+        {hasMore && (
+          <div className="p-4 flex items-center justify-between border-t border-white/5">
+            <p className="text-[12px] text-textSecondary">Showing {accounts.length} of {totalAccounts} accounts</p>
+            <button
+              onClick={() => fetchData(page + 1)}
+              className="px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[12px] text-textSecondary hover:text-textPrimary transition-all"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Inline Pay Modal */}
+      {payModal.open && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-bgSecondary rounded-2xl shadow-2xl max-w-md w-full p-7 animate-in zoom-in-95 duration-200 border border-[rgba(167,139,250,0.18)]">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-[17px] font-medium text-textPrimary">{payModal.mode === 'stk' ? 'Request Mobile Payment' : 'Record Manual Payment'}</h3>
+                <p className="text-[12px] text-textSecondary mt-0.5">{payModal.mode === 'stk' ? "Initiate STK Push to customer's phone." : 'Log a cash or external bank payment.'}</p>
+              </div>
+              <button onClick={() => setP('open', false)} className="text-textSecondary hover:text-textPrimary"><IconX className="w-5 h-5" /></button>
+            </div>
+            {payModal.success ? (
+              <div className="flex flex-col items-center py-8 text-center">
+                <IconCircleCheck className="w-14 h-14 text-emerald-500 mb-3" />
+                <p className="text-[16px] font-medium text-textPrimary">{payModal.mode === 'stk' ? 'STK Push Sent' : 'Payment Recorded'}</p>
+                <p className="text-[13px] text-textSecondary mt-1">{payModal.mode === 'stk' ? 'Ask the customer to enter their PIN.' : 'The ledger has been updated.'}</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex p-1 bg-white/10 rounded-lg">
+                  <button onClick={() => setP('mode', 'stk')} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${payModal.mode === 'stk' ? 'bg-bgSecondary text-emerald-400 shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}>
+                    <IconDeviceMobile className="w-3.5 h-3.5" /> STK Push
+                  </button>
+                  <button onClick={() => setP('mode', 'manual')} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[12px] font-medium transition-all ${payModal.mode === 'manual' ? 'bg-bgSecondary text-textPrimary shadow-sm' : 'text-textSecondary hover:text-textPrimary'}`}>
+                    <IconHistory className="w-3.5 h-3.5" /> Manual Entry
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Customer *</label>
+                  <Combobox value={payModal.customerId} onChange={(v: string) => setP('customerId', v)} options={customers.map(c => ({ label: `${c.full_name} (${c.account_number})`, value: c.id }))} placeholder="Search customer..." />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Amount (KES) *</label>
+                  <input type="number" value={payModal.amount} onChange={e => setP('amount', e.target.value)} className="input-field font-mono" placeholder="2500" />
+                </div>
+                {payModal.mode === 'stk' ? (
+                  <div>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Phone</label>
+                    <input type="text" value={payModal.phone} onChange={e => setP('phone', e.target.value)} className="input-field font-mono" placeholder="254712345678" />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-[11px] font-medium text-textSecondary mb-2 uppercase tracking-wide">Method</label>
+                    <SelectDropdown value={payModal.method} onChange={(v: string) => setP('method', v)} options={['M-Pesa', 'Cash', 'Bank Transfer', 'Cheque']} />
+                  </div>
+                )}
+                {payModal.error && <div className="p-3 bg-rose-500/15 border border-rose-500/20 rounded-xl text-[12px] text-rose-400">{payModal.error}</div>}
+                <div className="flex gap-3 mt-2">
+                  <button onClick={() => setP('open', false)} className="flex-1 btn-secondary text-[13px]">Cancel</button>
+                  <button onClick={submitPayment} disabled={payModal.loading} className={`flex-1 btn-primary text-[13px] flex items-center justify-center gap-2 ${payModal.mode === 'stk' ? 'bg-emerald-600 hover:bg-emerald-700' : ''}`}>
+                    {payModal.loading ? <CustomLoader inline size="sm" /> : payModal.mode === 'stk' ? 'Send STK Push' : 'Record Payment'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function SummaryCard({ label, value, subValue, icon, color, trend }: { label: string; value: string; subValue: string; icon: React.ReactNode; color: 'emerald' | 'rose' | 'amber' | 'indigo'; trend?: string }) {
+function SummaryCard({ label, value, subValue, icon, color, trend, isNegative }: { label: string; value: string; subValue: string; icon: React.ReactNode; color: 'emerald' | 'rose' | 'amber' | 'indigo'; trend?: string; isNegative?: boolean }) {
   const colors = {
     emerald: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
     rose: 'bg-rose-500/15 text-rose-400 border-rose-500/20',
@@ -432,8 +597,10 @@ function SummaryCard({ label, value, subValue, icon, color, trend }: { label: st
           {icon}
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-textSecondary'}`}>
-            {trend.startsWith('+') ? <IconArrowUpRight className="w-3 h-3" /> : <IconArrowDownRight className="w-3 h-3" />}
+          <div className={`flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full ${
+            isNegative ? 'bg-rose-500/15 text-rose-400' : trend.startsWith('+') ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-textSecondary'
+          }`}>
+            {isNegative ? <IconArrowDownRight className="w-3 h-3" /> : <IconArrowUpRight className="w-3 h-3" />}
             {trend}
           </div>
         )}
@@ -446,3 +613,4 @@ function SummaryCard({ label, value, subValue, icon, color, trend }: { label: st
     </div>
   );
 }
+

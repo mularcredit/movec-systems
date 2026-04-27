@@ -22,26 +22,29 @@ function startOfDay(date) {
 exports.getSummary = async (req, res) => {
     try {
         const now = new Date();
-        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        const monthStart     = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+        const prevMonthEnd   = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59).toISOString();
         const today = now.toISOString().split('T')[0];
 
-        const [paymentsRes, servicesRes] = await Promise.all([
-            supabase
-                .from('payments')
-                .select('amount')
-                .eq('tenant_id', req.tenant_id)
-                .gte('paid_at', monthStart),
-            supabase
-                .from('services')
-                .select('payment_category, balance_due, balance_due_date, next_due_date, packages(price)')
-                .eq('tenant_id', req.tenant_id)
-                .not('status', 'eq', 'cancelled')
+        const [paymentsRes, prevMonthRes, servicesRes] = await Promise.all([
+            supabase.from('payments').select('amount').eq('tenant_id', req.tenant_id).gte('paid_at', monthStart),
+            supabase.from('payments').select('amount').eq('tenant_id', req.tenant_id).gte('paid_at', prevMonthStart).lte('paid_at', prevMonthEnd),
+            supabase.from('services').select('payment_category, balance_due, balance_due_date, next_due_date, packages(price)').eq('tenant_id', req.tenant_id).not('status', 'eq', 'cancelled')
         ]);
 
-        const payments  = paymentsRes.data  || [];
-        const services  = servicesRes.data  || [];
+        const payments      = paymentsRes.data  || [];
+        const prevPayments  = prevMonthRes.data  || [];
+        const services      = servicesRes.data   || [];
 
-        const totalCollected = payments.reduce((s, p) => s + parseFloat(p.amount || 0), 0);
+        const totalCollected     = payments.reduce((s, p) => s + parseFloat(p.amount || 0), 0);
+        const prevMonthCollected = prevPayments.reduce((s, p) => s + parseFloat(p.amount || 0), 0);
+
+        // Real month-over-month trend %
+        let collectedTrendPct = null;
+        if (prevMonthCollected > 0) {
+            collectedTrendPct = Math.round(((totalCollected - prevMonthCollected) / prevMonthCollected) * 100);
+        }
 
         let overdueCount  = 0, overdueAmount = 0;
         let partialCount  = 0, partialAmount = 0;
@@ -63,12 +66,14 @@ exports.getSummary = async (req, res) => {
         res.json({
             success: true,
             summary: {
-                total_collected:  totalCollected,
-                overdue_count:    overdueCount,
-                overdue_amount:   overdueAmount,
-                partial_count:    partialCount,
-                partial_amount:   partialAmount,
-                expected_total:   expectedTotal,
+                total_collected:      totalCollected,
+                prev_month_collected: prevMonthCollected,
+                collected_trend_pct:  collectedTrendPct,
+                overdue_count:        overdueCount,
+                overdue_amount:       overdueAmount,
+                partial_count:        partialCount,
+                partial_amount:       partialAmount,
+                expected_total:       expectedTotal,
             }
         });
     } catch (e) {
@@ -236,13 +241,15 @@ exports.getTrends = async (req, res) => {
 // ─────────────────────────────────────────────────────────────
 exports.getAccounts = async (req, res) => {
     try {
-        const today = new Date().toISOString().split('T')[0];
-        const filter = req.query.filter || 'all'; // all | overdue | partial | unpaid
-        const search = req.query.search || '';
+        const today  = new Date().toISOString().split('T')[0];
+        const filter = req.query.filter || 'all';
+        const search = (req.query.search || '').toLowerCase();
         const page   = parseInt(req.query.page || '1');
         const limit  = 50;
 
-        let query = supabase
+        // Fetch a large batch then filter in JS (Supabase doesn't let us filter on joined column)
+        // Use a high range to avoid pagination cutting into filter results
+        const { data: services, error, count } = await supabase
             .from('services')
             .select(`
                 id, account_number, service_type, status,
@@ -250,22 +257,20 @@ exports.getAccounts = async (req, res) => {
                 next_due_date, created_at,
                 persons(full_name, phone),
                 packages(display_name, price)
-            `)
+            `, { count: 'exact' })
             .eq('tenant_id', req.tenant_id)
             .not('status', 'eq', 'cancelled')
-            .order('created_at', { ascending: false })
-            .range((page - 1) * limit, page * limit - 1);
+            .order('created_at', { ascending: false });
 
-        const { data: services, error } = await query;
         if (error) throw new Error(error.message);
 
         let rows = (services || []).map(s => {
-            const name     = s.persons ? s.persons.full_name : '—';
-            const phone    = s.persons ? s.persons.phone : '—';
-            const pkg      = s.packages ? s.packages.display_name : '—';
-            const price    = parseFloat(s.packages ? s.packages.price : 0);
-            const balDue   = parseFloat(s.balance_due || 0);
-            const dueDate  = s.balance_due_date;
+            const name    = s.persons ? s.persons.full_name : '—';
+            const phone   = s.persons ? s.persons.phone : '—';
+            const pkg     = s.packages ? s.packages.display_name : '—';
+            const price   = parseFloat(s.packages ? s.packages.price : 0);
+            const balDue  = parseFloat(s.balance_due || 0);
+            const dueDate = s.balance_due_date;
 
             let payStatus;
             if (s.payment_category === 'already_paid') payStatus = 'paid';
@@ -290,22 +295,24 @@ exports.getAccounts = async (req, res) => {
             };
         });
 
-        // Filter
-        if (filter !== 'all') {
-            rows = rows.filter(r => r.pay_status === filter);
-        }
+        // Apply filter BEFORE pagination
+        if (filter !== 'all') rows = rows.filter(r => r.pay_status === filter);
 
-        // Search
+        // Apply search BEFORE pagination
         if (search) {
-            const q = search.toLowerCase();
             rows = rows.filter(r =>
-                r.name.toLowerCase().includes(q) ||
-                r.account.toLowerCase().includes(q) ||
-                r.phone.toLowerCase().includes(q)
+                r.name.toLowerCase().includes(search) ||
+                r.account.toLowerCase().includes(search) ||
+                r.phone.toLowerCase().includes(search)
             );
         }
 
-        res.json({ success: true, accounts: rows, total: rows.length });
+        const total = rows.length;
+
+        // Paginate AFTER filter+search
+        const paginated = rows.slice((page - 1) * limit, page * limit);
+
+        res.json({ success: true, accounts: paginated, total, page, hasMore: page * limit < total });
     } catch (e) {
         console.error('[PaymentMonitor] getAccounts error:', e.message);
         res.status(500).json({ error: e.message });
