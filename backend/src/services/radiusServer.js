@@ -32,7 +32,7 @@ function trackSession(packet, rinfo, router) {
             rx: packet.attributes['Acct-Input-Octets'] || 0,
             lastUpdate: Date.now(),
             routerId: router?.id || 'unknown',
-            service: packet.attributes['Service-Type'] || 'PPPoE'
+            service: packet.attributes['Service-Type'] === 'Framed-User' ? 'PPPoE' : (packet.attributes['Service-Type'] || 'PPPoE')
         });
     } else if (status === 'Stop') {
         activeSessions.delete(sessionId);
@@ -56,27 +56,25 @@ async function resolveSecret(nasIp) {
     try {
         const { data: routers } = await supabase
             .from('routers')
-            .select('id, tenant_id, vendor_config')
-            .eq('vendor', 'radius');
+            .select('id, tenant_id, vendor, ip_address, vendor_config');
 
         if (routers) {
             // PASS 1: Try exact NAS-IP match first (most specific wins)
             for (const r of routers) {
                 const config = r.vendor_config || {};
-                const configuredNasIp = config.nas_ip || null;
+                const configuredNasIp = config.nas_ip || r.ip_address || null;
                 
-                if (configuredNasIp && configuredNasIp === nasIp && config.radius_secret) {
+                if (configuredNasIp && configuredNasIp === nasIp) {
+                    const secret = config.radius_secret || process.env.RADIUS_DEFAULT_SECRET;
                     console.log(`[RADIUS] Exact NAS-IP match: ${nasIp} → router ${r.id}`);
-                    return { secret: config.radius_secret, router: r };
+                    return { secret, router: r };
                 }
             }
 
             // PASS 2: Fall back to wildcard entries (no nas_ip configured)
             for (const r of routers) {
                 const config = r.vendor_config || {};
-                const configuredNasIp = config.nas_ip || null;
-
-                if (!configuredNasIp && config.radius_secret) {
+                if (r.vendor === 'radius' && !config.nas_ip && config.radius_secret) {
                     console.log(`[RADIUS] Wildcard match for ${nasIp} → router ${r.id}`);
                     return { secret: config.radius_secret, router: r };
                 }

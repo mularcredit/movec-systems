@@ -83,8 +83,8 @@ exports.getLiveSessions = async (req, res) => {
         // PATH B: RADIUS memory sessions for ALL routers (credential-independent)
         // This ensures RADIUS-only routers that have no API credentials still appear in the Live Hub
         tenantRadiusSessions.forEach(s => {
-            if (!seenUsernames.has(s.username)) {
-                const router = routers.find(r => r.id === s.routerId);
+            const router = routers.find(r => r.id === s.routerId);
+            if (router && !seenUsernames.has(s.username)) {
                 liveData.push({
                     source: 'radius',
                     username: s.username,

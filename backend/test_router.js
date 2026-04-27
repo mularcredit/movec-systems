@@ -12,7 +12,7 @@ async function runTest() {
     const { data: routers, error } = await supabase
         .from('routers')
         .select('*')
-        .ilike('name', '%Tuli%');
+        .ilike('name', '%360%');
 
     if (error) {
         console.error('❌ Database error:', error.message);

@@ -82,21 +82,24 @@ export default function EditRouter() {
           body.password = authPass;
         }
       } else {
-        body.api_port = 1812;
+        body.api_port = (apiPort && apiPort !== '1812') ? apiPort : 1812;
         body.vendor_config = {
           nas_ip: nasIp,
           radius_secret: radiusSecret
         };
         // NAS IP is the primary IP for RADIUS accounting
         body.ip_address = nasIp;
-        // If API credentials were provided, also store them for enhanced monitoring
-        if (authUser && authUser !== '(credentials stored)' && authPass) {
-          body.username = authUser;
+        
+        // Update credentials if provided
+        if (authPass) {
           body.password = authPass;
-          // If a separate MikroTik API IP is set, use it
-          if (directIp && directIp !== nasIp) body.ip_address = directIp;
-          if (apiPort && apiPort !== '1812') body.api_port = apiPort;
+          // Fallback to 'admin' or previous stored username if not overwritten
+          body.username = (authUser && authUser !== '(credentials stored)') ? authUser : 'admin';
+        } else if (authUser && authUser !== '(credentials stored)') {
+          body.username = authUser;
         }
+        // If a separate MikroTik API IP is set, use it
+        if (directIp && directIp !== nasIp) body.ip_address = directIp;
       }
 
       const res = await apiFetch(`/api/router/${id}`, {

@@ -425,12 +425,12 @@ exports.getAllActiveSessions = async (req, res) => {
         const radiusSessions = radiusService.getActiveSessions();
         radiusSessions.forEach(s => {
             const r = routers.find(router => router.id === s.routerId);
-            if (!seenIds.has(s.sessionId)) {
+            if (r && !seenIds.has(s.sessionId)) {
                 seenIds.add(s.sessionId);
                 allSessions.push({
                     id: s.sessionId,
                     username: s.username,
-                    service: s.service || 'pppoe',
+                    service: (s.service && s.service.toLowerCase() === 'framed-user') ? 'PPPoE' : (s.service || 'PPPoE'),
                     ip: s.ip,
                     mac: s.mac,
                     uptime: s.uptime,

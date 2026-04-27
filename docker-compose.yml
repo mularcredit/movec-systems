@@ -18,6 +18,8 @@ services:
       - "11812:11812/udp"
     env_file:
       - .env
+    environment:
+      - ALLOW_INSECURE_MIKROTIK_API=true
     restart: always
     logging:
       driver: "json-file"
