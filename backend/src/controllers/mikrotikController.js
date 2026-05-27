@@ -1,9 +1,36 @@
+const net     = require('net');
 const supabase = require('../utils/supabase');
 const { encrypt, decrypt } = require('../utils/crypto');
 const { RouterOSClient } = require('routeros-client');
 const mikrotikService = require('../services/mikrotikService');
 const networkVendorService = require('../services/networkVendorService');
 const radiusService = require('../services/radiusServer');
+
+// ---------------------------------------------------------------------------
+// TCP REACHABILITY PROBE
+// ---------------------------------------------------------------------------
+// Last-resort online check: attempts a raw TCP handshake against the router.
+// Resolves true if the port answers within the timeout, false otherwise.
+// Used when a router has no API credentials AND no live RADIUS sessions,
+// which happens right after a server restart or when all clients are suspended.
+// ---------------------------------------------------------------------------
+function tcpProbe(host, port, timeoutMs = 4000) {
+    return new Promise((resolve) => {
+        const socket = new net.Socket();
+        let done = false;
+        const finish = (result) => {
+            if (done) return;
+            done = true;
+            socket.destroy();
+            resolve(result);
+        };
+        socket.setTimeout(timeoutMs);
+        socket.on('connect', () => finish(true));
+        socket.on('timeout', () => finish(false));
+        socket.on('error',   () => finish(false));
+        socket.connect(port, host);
+    });
+}
 
 // Convenience alias — enforces API-SSL policy automatically inside connectToRouter
 const getConnectedClient = async (tenant_id, router_id) => {
@@ -479,7 +506,7 @@ exports.getGlobalNetworkOverview = async (req, res) => {
     try {
         const { data: routers, error } = await supabase
             .from('routers')
-            .select('id, name, connection_status, vendor, ip_address, username_encrypted, password_encrypted')
+            .select('id, name, connection_status, vendor, ip_address, api_port, username_encrypted, password_encrypted, last_seen_at')
             .eq('tenant_id', req.tenant_id);
         
         if (error) throw error;
@@ -505,9 +532,9 @@ exports.getGlobalNetworkOverview = async (req, res) => {
                 return false;
             });
 
-            // 2. Attempt live API handshake for ANY router with credentials
-            // This is how we determine the TRUE online/offline status — not the cached DB column
-            const hasCredentials = router.username_encrypted && router.password_encrypted;
+            // 2. Attempt live API handshake ONLY for MikroTik routers with credentials
+            // This prevents long hangs/timeouts when checking RADIUS-only routers
+            const hasCredentials = router.vendor === 'mikrotik' && router.username_encrypted && router.password_encrypted;
             
             if (hasCredentials) {
                 try {
@@ -542,44 +569,100 @@ exports.getGlobalNetworkOverview = async (req, res) => {
 
             // 3. Final Status Aggregation
             const isApiOnline = apiData?.status === 'online';
-            const isRadiusActive = radiusSessions.length > 0;
+
+            // Check in-memory lastPacketTimes first (most accurate, live).
+            // Fall back to DB last_seen_at when server just restarted and map is empty.
+            // Use a 30-min window for DB fallback (accounting packets come every ~5-10 mins).
+            const lastSeenMemory = radiusService.getLastSeenTime(router.id);
+            const lastSeenDb     = router.last_seen_at ? new Date(router.last_seen_at).getTime() : 0;
+            const effectiveLastSeen = lastSeenMemory || (lastSeenDb > 0 ? lastSeenDb : null);
+            const isRecent      = effectiveLastSeen && (Date.now() - effectiveLastSeen < 30 * 60 * 1000);
+            const isRadiusActive = radiusSessions.length > 0 || isRecent;
+
+            let finalStatus = 'offline';
+            let finalMetric = null;
 
             if (isApiOnline) {
                 overview.online_routers++;
-                return {
+                finalStatus = 'online';
+                finalMetric = {
                     id: router.id,
                     name: router.name,
                     vendor: router.vendor,
                     ...apiData,
-                    // If it's a RADIUS vendor, we might want to show both counts or prioritize one
                     active_sessions: router.vendor === 'radius' ? radiusSessions.length : apiData.active_sessions
                 };
             } else if (isRadiusActive) {
-                // "Ghost" Online: API is down but clients are flowing via RADIUS
+                // If it is a pure RADIUS router, it's fully online. Otherwise, warning status (API down but RADIUS active)
+                finalStatus = router.vendor === 'radius' ? 'online' : 'warning';
                 overview.online_routers++;
                 overview.total_active_sessions += radiusSessions.length;
-                return {
+                finalMetric = {
                     id: router.id,
                     name: router.name,
                     vendor: router.vendor,
-                    status: 'warning',
+                    status: finalStatus,
                     active_sessions: radiusSessions.length,
                     cpu_load: 0,
                     uptime: apiData?.error || 'API Unreachable',
                     tx_bps: 0, rx_bps: 0
                 };
             } else {
-                overview.offline_routers++;
-                return {
-                    id: router.id,
-                    name: router.name,
-                    vendor: router.vendor,
-                    status: router.vendor === 'radius' ? 'pending' : 'offline',
-                    active_sessions: 0,
-                    cpu_load: 0,
-                    uptime: 'Offline'
-                };
+                // 4. TCP PROBE FALLBACK
+                // No API creds, no RADIUS sessions — try a raw TCP ping to the
+                // router's API port. This correctly identifies routers that are
+                // physically online but have zero active clients (e.g. after
+                // a server restart or when all users are suspended).
+                const probePort = (Number(router.api_port) === 1812 || Number(router.api_port) === 1813 || !router.api_port)
+                    ? 8728  // RADIUS routers: probe plaintext API port
+                    : Number(router.api_port);
+                const isReachable = await tcpProbe(router.ip_address, probePort);
+
+                if (isReachable) {
+                    overview.online_routers++;
+                    finalStatus = 'online';
+                    finalMetric = {
+                        id: router.id,
+                        name: router.name,
+                        vendor: router.vendor,
+                        status: 'online',
+                        active_sessions: 0,
+                        cpu_load: 0,
+                        uptime: 'Reachable (no active sessions)',
+                        tx_bps: 0, rx_bps: 0
+                    };
+                } else {
+                    overview.offline_routers++;
+                    finalStatus = 'offline';
+                    finalMetric = {
+                        id: router.id,
+                        name: router.name,
+                        vendor: router.vendor,
+                        status: 'offline',
+                        active_sessions: 0,
+                        cpu_load: 0,
+                        uptime: 'Offline'
+                    };
+                }
             }
+
+            // Sync connection status in DB if changed
+            if (router.connection_status !== finalStatus) {
+                (async () => {
+                    try {
+                        const { error } = await supabase.from('routers')
+                            .update({ connection_status: finalStatus, last_seen_at: new Date().toISOString() })
+                            .eq('id', router.id);
+                        if (error) {
+                            console.error(`[Network Overview] DB sync status update failed for router ${router.id}:`, error.message);
+                        }
+                    } catch (err) {
+                        console.error(`[Network Overview] DB sync status update failed for router ${router.id}:`, err.message);
+                    }
+                })();
+            }
+
+            return finalMetric;
         });
 
         overview.router_metrics = await Promise.all(promises);
